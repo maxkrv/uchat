@@ -1,0 +1,11 @@
+out
+CMake*
+.idea
+obj
+cmake-build-debug
+libmx.a
+libmongoose.a
+test
+note.txt
+uchat_server
+

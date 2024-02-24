@@ -32,3 +32,4 @@ int mx_run_server(t_env_params *env, char *addr) {
 
   return EXIT_SUCCESS;
 }
+

@@ -1,4 +1,4 @@
-#include <uchat.h>
+#include <server.h>
 
 static int sig_no;
 

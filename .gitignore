@@ -5,3 +5,5 @@ obj
 *.txt
 /test
 .DS_Store
+uchat
+uchat_server

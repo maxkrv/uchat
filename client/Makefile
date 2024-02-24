@@ -8,6 +8,9 @@ INC_DIR = inc
 SRC_DIR = src
 OBJ_DIR = obj
 
+GTK3_CFLAGS = `pkg-config --cflags gtk+-3.0`
+GTK3_LINKS = `pkg-config --libs gtk+-3.0`
+
 LIB_DIR = ../lib
 
 LIBMX = $(LIB_DIR)/libmx/libmx.a
@@ -16,10 +19,10 @@ LIBCJSON = $(LIB_DIR)/cJSON/libcjson.a
 
 TARGET = uchat
 
-INC_FILES := -I$(INC_DIR) -I$(dir $(LIBMX))/inc -I$(dir $(LIBMONGOOSE))/inc -I$(dir $(LIBCJSON))/inc
+INC_FILES := -I$(INC_DIR) -I$(dir $(LIBMX))/inc -I$(dir $(LIBMONGOOSE))/inc -I$(dir $(LIBCJSON))/inc $(GTK3_CFLAGS)
 SRC_FILES := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/**/*.c)
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
-LINKS := -L$(dir $(LIBMX)) -lmx -L$(dir $(LIBMONGOOSE)) -lmongoose -L$(dir $(LIBCJSON))  -lcjson
+LINKS := -L$(dir $(LIBMX)) -lmx -L$(dir $(LIBMONGOOSE)) -lmongoose -L$(dir $(LIBCJSON))  -lcjson $(GTK3_LINKS)
 
 RED = \033[31;1m
 GREEN = \033[32;1m
@@ -40,7 +43,7 @@ install: $(TARGET)
 $(OBJ_FILES): $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(MKDIR) -p $(dir $@)
 	@$(PRINT) "\r$(CLEAN_LINE)$(CYAN)$(BOLD)$(TARGET) $(YELLOW)compiling $(CYAN)$< "
-	@$(CC) $(CFLAGS) -c $< -o $@ $(INC_FILES)
+	@$(CC) $(CFLAGS) $(GTK3_CFLAGS) -c $< -o $@ $(INC_FILES)
 
 $(TARGET): $(OBJ_FILES)
 	@$(PRINT) "\r$(CLEAN_LINE)$(CYAN)$(BOLD)$@ $(YELLOW)files compiled$(CYAN)\n"

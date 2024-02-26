@@ -20,8 +20,6 @@ cJSON *mx_user_to_cjson(t_user *user) {
                           mx_messages_to_cjson(user->messages));
     cJSON_AddItemToObject(obj, "read_messages",
                           mx_read_messages_to_cjson(user->read_messages));
-    cJSON_AddArrayToObject(mx_messages_to_cjson(user->messages));
-    cJSON_AddArrayToObject(mx_read_messages_to_cjson(user->read_messages));
 
     return obj;
 }

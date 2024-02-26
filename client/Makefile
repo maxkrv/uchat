@@ -20,7 +20,7 @@ LIBCJSON = $(LIB_DIR)/cJSON/libcjson.a
 TARGET = uchat
 
 INC_FILES := -I$(INC_DIR) -I$(dir $(LIBMX))/inc -I$(dir $(LIBMONGOOSE))/inc -I$(dir $(LIBCJSON))/inc $(GTK3_CFLAGS)
-SRC_FILES := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/**/*.c)
+SRC_FILES := $(shell find $(SRC_DIR) -type f -name '*.c')
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 LINKS := -L$(dir $(LIBMX)) -lmx -L$(dir $(LIBMONGOOSE)) -lmongoose -L$(dir $(LIBCJSON))  -lcjson $(GTK3_LINKS)
 

@@ -14,8 +14,8 @@ typedef struct s_crud_router {
     t_handler *delete;
 } t_crud_router;
 
-void mx_crud_route(t_crud_router *router, t_connection *conn, t_http_message *req);
-
+void mx_crud_route(t_crud_router *router, t_connection *conn,
+                   t_http_message *req);
 int mx_extract_id_from_query(t_string query);
 
 #endif

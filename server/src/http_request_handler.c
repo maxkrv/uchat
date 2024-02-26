@@ -14,7 +14,7 @@ void mx_http_request_handler(t_connection *conn, int event, void *data) {
 
         // Log request
         MG_INFO(("%.*s %.*s %lu -> %.*s %lu", req->method.len, req->method.ptr,
-                req->uri.len, req->uri.ptr, req->body.len, 3, conn->send.buf + 9,
-                conn->send.len));
+                 req->uri.len, req->uri.ptr, req->body.len, 3,
+                 conn->send.buf + 9, conn->send.len));
     }
 }

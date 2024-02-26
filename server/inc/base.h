@@ -1,13 +1,20 @@
 #ifndef UCHAT_BASE
 #define UCHAT_BASE
 
-#include <signal.h>
-#include "mongoose.h"
-#include "libmx.h"
+#define MX_BUFFER_SIZE 8192
+#define MX_EMPTY ""
 
 typedef struct mg_mgr t_mg_manager;
 typedef struct mg_http_message t_http_message;
 typedef struct mg_connection t_connection;
+typedef struct mg_str t_string;
+
+#include <signal.h>
+#include "cJSON.h"
+#include "mongoose.h"
+#include "sqlite3.h"
+#include "libmx.h"
+#include "http.h"
 
 typedef struct s_env_params {
     int port;

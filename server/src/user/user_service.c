@@ -1,6 +1,7 @@
 #include "user.h"
 
 t_user *mx_user_get(int id) {
+    // data from database attached to t_user in this function
   // data from database attached to t_user in this function
 }
 

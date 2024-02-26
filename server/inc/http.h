@@ -81,6 +81,4 @@ typedef enum s_http_status_code {
     HTTP_STATUS_NETWORK_AUTHENTICATION_REQUIRED = 511
 } t_http_status_code;
 
-void mx_http_request_handler(struct mg_connection *c, int ev, void *ev_data);
-
 #endif

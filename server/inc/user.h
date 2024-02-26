@@ -6,22 +6,6 @@
 #include "shared.h"
 
 typedef struct {
-    int id;
-    char *name;
-    char *tag;
-    char *password_hash;
-    char *photo_url;
-    char *status;
-    char *description;
-    int created_at;
-    int edited_at;
-
-    t_list *messages;
-    t_list *rooms;
-    t_list *read_messages;
-} t_user;
-
-typedef struct {
     char *name;
     char *tag;
     char *password;
@@ -54,5 +38,12 @@ t_user *mx_user_put(int id, t_user_put_dto *dto);
 t_user *mx_user_delete(int id);
 
 void mx_user_route(t_connection *conn, t_http_message *req);
+
+//helpers
+cJSON *mx_user_to_cjson(t_user *user);
+
+cJSON *mx_users_to_cjson(t_list *users);
+
+t_string mx_user_stringify(t_user *user);
 
 #endif

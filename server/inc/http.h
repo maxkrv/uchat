@@ -1,10 +1,6 @@
 #ifndef UCHAT_HTTP
 #define UCHAT_HTTP
 
-#include "base.h"
-#include "utils.h"
-#include "shared.h"
-
 #define MX_HTTP_METHOD_GET "GET"
 #define MX_HTTP_METHOD_POST "POST"
 #define MX_HTTP_METHOD_PUT "PUT"

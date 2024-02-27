@@ -1,6 +1,9 @@
 #include "utils.h"
 
 t_string mx_decode_uri_component(t_string str) {
+    if (!str.ptr) {
+        return mg_str(NULL);
+    }
     char buf[MX_BUFFER_SIZE];
 
     int status = mg_url_decode(str.ptr, str.len, buf, sizeof(buf), true);

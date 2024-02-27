@@ -19,8 +19,11 @@ cJSON *mx_read_message_to_cjson(t_read_message *message) {
 
 t_string mx_read_message_stringify(t_read_message *message) {
     cJSON *obj = mx_read_message_to_cjson(message);
+    t_string res = mg_str(cJSON_PrintUnformatted(obj));
 
-    return mg_str(cJSON_PrintUnformatted(obj));
+    cJSON_Delete(obj);
+
+    return res;
 }
 
 cJSON *mx_read_messages_to_cjson(t_list *messages) {
@@ -36,6 +39,9 @@ cJSON *mx_read_messages_to_cjson(t_list *messages) {
 
 t_string mx_read_messages_stringify(t_list *messages) {
     cJSON *obj = mx_read_messages_to_cjson(messages);
+    t_string res = mg_str(cJSON_PrintUnformatted(obj));
 
-    return mg_str(cJSON_PrintUnformatted(obj));
+    cJSON_Delete(obj);
+
+    return res;
 }

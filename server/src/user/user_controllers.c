@@ -1,29 +1,83 @@
 #include "user.h"
 
 void mx_user_ctrl_get(t_connection *c, t_http_message *m) {
-    // validate params
     int user_id = mx_extract_id_from_query(m->query);
 
     if (user_id < 0) {
-        mg_http_reply(c, HTTP_STATUS_UNPROCESSABLE_ENTITY, MX_EMPTY, MX_EMPTY);
+        return mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
+                                       "Invalid user id provided");
     }
 
     t_user *user = mx_user_get(user_id);
 
-    // user struct to json
-    // send response
+    if (!user) {
+        return mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
+                                       "User not found");
+    }
+
     t_string json_string = mx_user_stringify(user);
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string.ptr);
-    // send events to clients if necessary(for example "client new message
-    // created please update your data")
 }
 
 void mx_user_ctrl_post(t_connection *c, t_http_message *m) {
+    t_user_create_dto *dto = mx_parse_user_create_dto(m->body);
+
+    if (!dto) {
+        return mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
+                                       "Invalid user data provided");
+    }
+    t_user *user = mx_user_create(dto);
+
+    if (!user) {
+        return mx_http_reply_exception(c, m, HTTP_STATUS_INTERNAL_SERVER_ERROR,
+                                       "User not found");
+    }
+
+    t_string json_string = mx_user_stringify(user);
+
+    free(dto);
+    mg_http_reply(c, HTTP_STATUS_CREATED, MX_EMPTY, json_string.ptr);
 }
 
 void mx_user_ctrl_put(t_connection *c, t_http_message *m) {
+    int user_id = mx_parse_jwt_auth_token(m);
+    t_user_create_dto *dto = mx_parse_user_create_dto(m->body);
+
+    if (!dto) {
+        return mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
+                                       "Invalid user data provided");
+    }
+
+    t_user *user = mx_user_put(user_id, dto);
+
+    if (!user) {
+        return mx_http_reply_exception(c, m, HTTP_STATUS_INTERNAL_SERVER_ERROR,
+                                       "User not found");
+    }
+
+    t_string json_string = mx_user_stringify(user);
+
+    free(dto);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string.ptr);
 }
 
 void mx_user_ctrl_delete(t_connection *c, t_http_message *m) {
+    int user_id = mx_extract_id_from_query(m->query);
+
+    if (user_id < 0) {
+        return mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
+                                       "Invalid user id provided");
+    }
+
+    t_user *user = mx_user_delete(user_id);
+
+    if (!user) {
+        return mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
+                                       "User not found");
+    }
+
+    t_string json_string = mx_user_stringify(user);
+
+    mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string.ptr);
 }

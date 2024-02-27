@@ -8,7 +8,7 @@ t_message *mx_message_create(t_message_create_dto *dto) {
     return NULL;
 }
 
-t_message *mx_message_put(int id, t_message_put_dto *dto) {
+t_message *mx_message_put(int id, t_message_create_dto *dto) {
     return NULL;
 }
 

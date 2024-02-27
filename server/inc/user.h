@@ -4,6 +4,7 @@
 #include "base.h"
 #include "utils.h"
 #include "shared.h"
+#include "auth.h"
 
 typedef struct {
     char *name;
@@ -12,12 +13,7 @@ typedef struct {
     char *photo_url;
 } t_user_create_dto;
 
-typedef struct {
-    char *name;
-    char *tag;
-    char *password;
-    char *photo_url;
-} t_user_put_dto;
+t_user_create_dto *mx_parse_user_create_dto(t_string body);
 
 // controllers
 void mx_user_ctrl_get(t_connection *c, t_http_message *m);
@@ -28,7 +24,7 @@ void mx_user_ctrl_delete(t_connection *c, t_http_message *m);
 // service
 t_user *mx_user_get(int id);
 t_user *mx_user_create(t_user_create_dto *dto);
-t_user *mx_user_put(int id, t_user_put_dto *dto);
+t_user *mx_user_put(int id, t_user_create_dto *dto);
 t_user *mx_user_delete(int id);
 
 void mx_user_route(t_connection *conn, t_http_message *req);

@@ -27,10 +27,11 @@ cJSON *mx_user_to_cjson(t_user *user) {
 t_string mx_user_stringify(t_user *user) {
     cJSON *obj = mx_user_to_cjson(user);
 
-    return mg_str(cJSON_PrintUnformatted(obj));
-    for (; true;) {
-        pause();
-    }
+    t_string res = mg_str(cJSON_PrintUnformatted(obj));
+
+    cJSON_Delete(obj);
+
+    return res;
 }
 
 cJSON *mx_users_to_cjson(t_list *users) {

@@ -18,8 +18,11 @@ cJSON *mx_room_member_to_cjson(t_room_member *member) {
 
 t_string mx_room_member_stringify(t_room_member *member) {
     cJSON *obj = mx_room_member_to_cjson(member);
+    t_string res = mg_str(cJSON_PrintUnformatted(obj));
 
-    return mg_str(cJSON_PrintUnformatted(obj));
+    cJSON_Delete(obj);
+
+    return res;
 }
 
 cJSON *mx_room_members_to_cjson(t_list *members) {
@@ -35,6 +38,9 @@ cJSON *mx_room_members_to_cjson(t_list *members) {
 
 t_string mx_room_members_stringify(t_list *members) {
     cJSON *obj = mx_room_members_to_cjson(members);
+    t_string res = mg_str(cJSON_PrintUnformatted(obj));
 
-    return mg_str(cJSON_PrintUnformatted(obj));
+    cJSON_Delete(obj);
+
+    return res;
 }

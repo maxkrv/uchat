@@ -1,14 +1,28 @@
 #include "libmx.h"
 
 long mx_atoi(const char *str) {
-	int i = -1;
-	long result = 0;
+    long result = 0;
+    int sign = 1;
+    int i = 0;
 
-	while (str[++i]) {
-		if (mx_isdigit(str[i]))
-			result = result * 10 + str[i] - '0';
-		if (!mx_isdigit(str[i]))
-			return result;
-	}
-	return result;
+    // Skip leading white spaces
+    while (mx_isspace(str[i])) {
+        i++;
+    }
+
+    // Handle optional sign
+    if (str[i] == '-') {
+        sign = -1;
+        i++;
+    } else if (str[i] == '+') {
+        i++;
+    }
+
+    // Process digits
+    while (mx_isdigit(str[i])) {
+        result = result * 10 + (str[i] - '0');
+        i++;
+    }
+
+    return sign * result;
 }

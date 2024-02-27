@@ -23,7 +23,11 @@ cJSON *mx_room_to_cjson(t_room *room) {
 t_string mx_room_stringify(t_room *room) {
     cJSON *obj = mx_room_to_cjson(room);
 
-    return mg_str(cJSON_PrintUnformatted(obj));
+    t_string res = mg_str(cJSON_PrintUnformatted(obj));
+
+    cJSON_Delete(obj);
+
+    return res;
 }
 
 cJSON *mx_rooms_to_cjson(t_list *rooms) {

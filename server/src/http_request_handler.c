@@ -13,6 +13,7 @@ void mx_http_request_handler(t_connection *conn, int event, void *data) {
         } else if (mg_match(req->uri, mg_str("/api/v1/messages"), NULL)) {
             mx_message_route(conn, req);
         } else {
+            MG_INFO(("Common not found"));
             mg_http_reply(conn, HTTP_STATUS_NOT_FOUND, MX_EMPTY, MX_EMPTY);
         }
 

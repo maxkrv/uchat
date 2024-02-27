@@ -9,6 +9,7 @@
 #include "room.h"
 #include "message.h"
 #include "db.h"
+#include "auth.h"
 
 int mx_run_server(t_env_params *env, char *addr);
 void mx_http_request_handler(t_connection *c, int ev, void *ev_data);

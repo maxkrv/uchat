@@ -1,10 +1,6 @@
 #ifndef UCHAT_HTTP
 #define UCHAT_HTTP
 
-#include "base.h"
-#include "utils.h"
-#include "shared.h"
-
 #define MX_HTTP_METHOD_GET "GET"
 #define MX_HTTP_METHOD_POST "POST"
 #define MX_HTTP_METHOD_PUT "PUT"
@@ -80,7 +76,5 @@ typedef enum s_http_status_code {
     HTTP_STATUS_NOT_EXTENDED = 510,
     HTTP_STATUS_NETWORK_AUTHENTICATION_REQUIRED = 511
 } t_http_status_code;
-
-void mx_http_request_handler(struct mg_connection *c, int ev, void *ev_data);
 
 #endif

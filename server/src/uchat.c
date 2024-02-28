@@ -1,4 +1,4 @@
-#include <uchat.h>
+#include <server.h>
 
 static int sig_no;
 
@@ -26,11 +26,12 @@ int mx_run_server(t_env_params *env, char *addr) {
     }
     MG_INFO(("Listening on     : %s", addr));
 
-    while (sig_no == 0) mg_mgr_poll(&mgr, 1000);
+    while (sig_no == 0) {
+        mg_mgr_poll(&mgr, 1000);
+    }
 
     mg_mgr_free(&mgr);
     MG_INFO(("Exiting on signal %d", sig_no));
 
     return EXIT_SUCCESS;
 }
-

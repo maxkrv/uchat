@@ -3,4 +3,6 @@
 
 #include "base.h"
 
+t_string mx_decode_uri_component(t_string str);
+
 #endif

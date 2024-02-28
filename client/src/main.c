@@ -1,38 +1,35 @@
 #include "../inc/client.h"
 
-static void print_hello(GtkWidget *widget, gpointer data) {
-    g_print("Hello World\n");
-}
+int main(int argc, char *argv[]) {
+    gtk_init(&argc, &argv);
 
-static void
-activate(GtkApplication *app, gpointer user_data) {
-    GtkWidget *window;
-    GtkWidget *button;
-    GtkWidget *button_box;
+    GtkBuilder *builder = gtk_builder_new();
 
-    window = gtk_application_window_new(app);
-    gtk_window_set_title(GTK_WINDOW(window), "Window");
-    gtk_window_set_default_size(GTK_WINDOW(window), 200, 200);
+    if (gtk_builder_add_from_file(builder, "client/static/uchat.glade",
+                                  NULL) == 0) {
+        g_print("Error: %s\n", "Failed to load glade file");
+        return 1;
+    }
 
-    button_box = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_container_add(GTK_CONTAINER(window), button_box);
+    GtkWidget *window =
+        GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
 
-    button = gtk_button_new_with_label("Hello World");
-    g_signal_connect(button, "clicked", G_CALLBACK(print_hello), NULL);
-    gtk_container_add(GTK_CONTAINER(button_box), button);
+    if (window == NULL) {
+        g_print("Error: %s\n", "Failed to load auth_window");
+        return 1;
+    }
+
+    load_css(window, "client/static/styles/light.css");
+    load_css(window, "client/static/styles/style.css");
+
+    gtk_builder_connect_signals(builder, NULL);
+    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+
+    show_auth_container(builder, window);
 
     gtk_widget_show_all(window);
+
+    gtk_main();
+
+    return 0;
 }
-
-int main(int argc, char **argv) {
-    GtkApplication *app;
-    int status;
-
-    app = gtk_application_new("org.gtk.example", G_APPLICATION_FLAGS_NONE);
-    g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
-    status = g_application_run(G_APPLICATION(app), argc, argv);
-    g_object_unref(app);
-
-    return status;
-}
-

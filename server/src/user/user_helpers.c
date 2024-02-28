@@ -1,25 +1,30 @@
-// t_user to json
-// req parse and validation
 #include "server.h"
 
 cJSON *mx_user_to_cjson(t_user *user) {
+    if (!user) {
+        return cJSON_CreateNull();
+    }
     cJSON *obj = cJSON_CreateObject();
 
     cJSON_AddNumberToObject(obj, "id", user->id);
     cJSON_AddStringToObject(obj, "name", user->name);
     cJSON_AddStringToObject(obj, "tag", user->tag);
     cJSON_AddStringToObject(obj, "password_hash", user->password_hash);
-    cJSON_AddStringToObject(obj, "photo_url", user->photo_url);
+    cJSON_AddNumberToObject(obj, "photo_id", user->photo_id);
     cJSON_AddStringToObject(obj, "status", user->status);
     cJSON_AddStringToObject(obj, "description", user->description);
     cJSON_AddNumberToObject(obj, "created_at", user->created_at);
     cJSON_AddNumberToObject(obj, "edited_at", user->edited_at);
 
-    cJSON_AddItemToObject(obj, "rooms", mx_rooms_to_cjson(user->rooms));
+    cJSON_AddItemToObject(obj, "rooms_member",
+                          mx_room_members_to_cjson(user->rooms_member));
+    cJSON_AddItemToObject(obj, "favorite_rooms",
+                          mx_favorite_rooms_to_cjson(user->favorite_rooms));
     cJSON_AddItemToObject(obj, "messages",
                           mx_messages_to_cjson(user->messages));
     cJSON_AddItemToObject(obj, "read_messages",
                           mx_read_messages_to_cjson(user->read_messages));
+    cJSON_AddItemToObject(obj, "photo", mx_file_to_cjson(user->photo));
 
     return obj;
 }

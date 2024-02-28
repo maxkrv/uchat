@@ -32,7 +32,7 @@ CLEAN_LINE = \033[K
 
 .PHONY: all uninstall clean reinstall install
 
-all: install
+all: reinstall
 
 install: $(TARGET)
 	@$(PRINT) "\r$(CLEAN_LINE)$(CYAN)$(BOLD)$(TARGET) $@ $(YELLOW)done$(CYAN)\n"

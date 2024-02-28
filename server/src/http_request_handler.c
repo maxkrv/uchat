@@ -1,8 +1,6 @@
 #include "server.h"
 
 void mx_http_request_handler(t_connection *conn, int event, void *data) {
-    t_env_params mx_env = mx_get_env();
-
     if (event == MG_EV_HTTP_MSG) {
         t_http_message *req = data;
 

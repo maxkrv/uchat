@@ -3,7 +3,7 @@
 
 static bool is_method_equal(t_string *m1, char *m2) {
     return strncmp(m1->ptr, m2, m1->len) == 0;
-};
+}
 
 void mx_crud_route(t_crud_router *router, t_connection *conn,
                    t_http_message *req) {

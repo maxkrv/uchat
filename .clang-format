@@ -7,7 +7,6 @@ SpacesInSquareBrackets: false
 SpacesInAngles: false
 IndentCaseLabels: true
 PointerAlignment: Right
-InsertBraces: true
 MaxEmptyLinesToKeep: 1
 SpaceBeforeAssignmentOperators: true
 ContinuationIndentWidth: 4

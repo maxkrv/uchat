@@ -3,11 +3,15 @@
 #include "server.h"
 
 cJSON *mx_room_to_cjson(t_room *room) {
+    if (!room) {
+        return cJSON_CreateNull();
+    }
     cJSON *obj = cJSON_CreateObject();
 
     cJSON_AddNumberToObject(obj, "id", room->id);
-    cJSON_AddBoolToObject(obj, "is_direct_room", room->is_direct_room);
     cJSON_AddStringToObject(obj, "name", room->name);
+    cJSON_AddStringToObject(obj, "type", room->type);
+    cJSON_AddNumberToObject(obj, "photo_id", room->photo_id);
     cJSON_AddStringToObject(obj, "discription", room->discription);
     cJSON_AddNumberToObject(obj, "created_at", room->created_at);
     cJSON_AddNumberToObject(obj, "edited_at", room->edited_at);
@@ -16,6 +20,9 @@ cJSON *mx_room_to_cjson(t_room *room) {
                           mx_room_members_to_cjson(room->members));
     cJSON_AddItemToObject(obj, "messages",
                           mx_messages_to_cjson(room->messages));
+    cJSON_AddItemToObject(obj, "users_favorite",
+                          mx_favorite_rooms_to_cjson(room->users_favorite));
+    cJSON_AddItemToObject(obj, "photo", mx_file_to_cjson(room->photo));
 
     return obj;
 }

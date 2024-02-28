@@ -1,6 +1,9 @@
 #include "server.h"
 
 cJSON *mx_read_message_to_cjson(t_read_message *message) {
+    if (!message) {
+        return cJSON_CreateNull();
+    }
     cJSON *obj = cJSON_CreateObject();
 
     cJSON_AddNumberToObject(obj, "id", message->id);

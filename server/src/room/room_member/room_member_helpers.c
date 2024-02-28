@@ -1,11 +1,15 @@
 #include "server.h"
 
 cJSON *mx_room_member_to_cjson(t_room_member *member) {
+    if (!member) {
+        return cJSON_CreateNull();
+    }
     cJSON *obj = cJSON_CreateObject();
 
     cJSON_AddNumberToObject(obj, "id", member->id);
     cJSON_AddNumberToObject(obj, "room_id", member->room_id);
     cJSON_AddNumberToObject(obj, "user_id", member->user_id);
+    cJSON_AddBoolToObject(obj, "is_admin", member->is_admin);
 
     cJSON_AddNumberToObject(obj, "created_at", member->created_at);
     cJSON_AddNumberToObject(obj, "edited_at", member->edited_at);

@@ -7,8 +7,9 @@ window {
 }
 
 button {
-    border-radius: 0;
+    border-radius: 5px;
     border: none;
+    outline: none;
     background: @secondary_color;
     transition: background 0.2s;
 }

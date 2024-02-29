@@ -20,8 +20,9 @@ typedef struct s_env_params {
     int port;
     char *root_dir;
     int log_level;
+    char *jwt_auth_secret;
 } t_env_params;
 
-t_env_params mx_get_env(void);
+t_env_params *mx_get_env(void);
 
 #endif

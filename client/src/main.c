@@ -1,4 +1,4 @@
-#include "../inc/client.h"
+#include "client.h"
 
 int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);

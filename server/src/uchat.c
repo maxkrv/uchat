@@ -2,10 +2,10 @@
 
 static int sig_no;
 
-t_env_params mx_get_env(void) {
-    static t_env_params env = {3000, ".", MG_LL_INFO};
+t_env_params *mx_get_env(void) {
+    static t_env_params env = {3000, ".", MG_LL_INFO, NULL};
 
-    return env;
+    return &env;
 }
 
 static void signal_handler(int i) {

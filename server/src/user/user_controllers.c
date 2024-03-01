@@ -44,7 +44,13 @@ void mx_user_ctrl_post(t_connection *c, t_http_message *m) {
 }
 
 void mx_user_ctrl_put(t_connection *c, t_http_message *m) {
-    int user_id = mx_parse_jwt_auth_token(m);
+    int user_id = mx_user_id_from_auth_jwt(m);
+
+    if (user_id < 0) {
+        mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
+                                "Invalid token");
+        return;
+    }
     t_user_create_dto *dto = mx_get_user_create_dto(m->body);
 
     if (!dto) {
@@ -68,11 +74,11 @@ void mx_user_ctrl_put(t_connection *c, t_http_message *m) {
 }
 
 void mx_user_ctrl_delete(t_connection *c, t_http_message *m) {
-    int user_id = mx_extract_id_from_query(m->query);
+    int user_id = mx_user_id_from_auth_jwt(m);
 
     if (user_id < 0) {
-        mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
-                                "Invalid user id provided");
+        mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
+                                "Invalid token");
         return;
     }
 

@@ -10,7 +10,7 @@ static void on_password_entry_changed(GtkEntry *entry) {
     printf("Password: %s\n", text);
 }
 
-static void on_password_entry_visibility(GtkEntry *entry, GtkEntryIconPosition icon_position, GdkEvent *event, gpointer user_data) {
+static void on_password_entry_visibility(GtkEntry *entry, GtkEntryIconPosition icon_position) {
     if (icon_position == GTK_ENTRY_ICON_SECONDARY) {
         gboolean current_visibility = gtk_entry_get_visibility(entry);
         gtk_entry_set_visibility(entry, !current_visibility);

@@ -223,6 +223,7 @@
                         <property name="halign">center</property>
                         <property name="valign">center</property>
                         <property name="margin-bottom">10</property>
+                        <property name="justify">center</property>
                         <attributes>
                           <attribute name="foreground" value="#efef29292929"/>
                         </attributes>
@@ -241,7 +242,7 @@
                         <property name="halign">center</property>
                         <property name="margin-bottom">25</property>
                         <child>
-                          <object class="GtkButton">
+                          <object class="GtkButton" id="submit_login">
                             <property name="label" translatable="yes">Submit</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
@@ -412,6 +413,7 @@
                         <property name="halign">center</property>
                         <property name="valign">center</property>
                         <property name="margin-bottom">10</property>
+                        <property name="justify">center</property>
                         <attributes>
                           <attribute name="foreground" value="#efef29292929"/>
                         </attributes>
@@ -430,7 +432,7 @@
                         <property name="halign">center</property>
                         <property name="margin-bottom">25</property>
                         <child>
-                          <object class="GtkButton">
+                          <object class="GtkButton" id="submit_register">
                             <property name="label" translatable="yes">Submit</property>
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>

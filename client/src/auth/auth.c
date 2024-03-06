@@ -78,7 +78,7 @@ static void submit_log_clicked() {
     const gchar *password = user_data->password;
     GtkLabel *label = user_data->err_label;
 
-    if (login != NULL && password != NULL  && gtk_label_get_text(label) == NULL) {
+    if (login != NULL && password != NULL  && (gtk_label_get_text(label) == NULL || g_strcmp0(gtk_label_get_text(label), "") == 0)) {
         printf("You have clicked submit\n");
     }
     else {
@@ -92,7 +92,7 @@ static void submit_reg_clicked() {
     const gchar *confirm_p = user_data->confirm_password;
     GtkLabel *label = user_data->err_label;
 
-    if (login != NULL && password != NULL && confirm_p != NULL && gtk_label_get_text(label) == NULL) {
+    if (login != NULL && password != NULL && confirm_p != NULL && (gtk_label_get_text(label) == NULL || g_strcmp0(gtk_label_get_text(label), "") == 0)) {
         printf("You have clicked 'submit'");
     }
     else {

@@ -9,11 +9,6 @@ typedef struct {
 
 UserData *user_data = NULL;
 
-gboolean is_empty_field(GtkEntry *entry) {
-    const gchar *text = gtk_entry_get_text(entry);
-    return (g_strcmp0(text, "") == 0);
-}
-
 static void show_error_message(GtkLabel *label, const gchar *message) {
     gtk_label_set_text(label, message);
     gtk_widget_show(GTK_WIDGET(label));
@@ -41,18 +36,20 @@ static void on_password_entry_changed(GtkEntry *entry, gpointer data) {
     gboolean numb = FALSE, capital_letter = FALSE, small_letter = FALSE;
     for (gint i = 0; i < len; i++) {
         if (!numb && g_unichar_isdigit(password[i]))
-           numb = TRUE;
+            numb = TRUE;
         else if (!capital_letter && g_unichar_isupper(password[i]))
-           capital_letter = TRUE;
+            capital_letter = TRUE;
         else if (!small_letter && g_unichar_islower(password[i]))
-           small_letter = TRUE;
+            small_letter = TRUE;
     }
     if (g_strcmp0(password, "") == 0)
         show_error_message(label, "Enter your password");
     else if (!numb || !capital_letter || !small_letter)
-	show_error_message(label, "The password must contain numbers,\n uppercase and lowercase letters");
+        show_error_message(label, "The password must contain numbers,\n "
+                                  "uppercase and lowercase letters");
     else if ((len > 16) || (len < 8))
-        show_error_message(label, "The password must contain\n 8 - 16 characters");
+        show_error_message(label,
+                           "The password must contain\n 8 - 16 characters");
     else {
         gtk_label_set_text(label, "");
         user_data->err_label = label;
@@ -78,11 +75,13 @@ static void submit_log_clicked() {
     const gchar *password = user_data->password;
     GtkLabel *label = user_data->err_label;
 
-    if (login != NULL && password != NULL  && (gtk_label_get_text(label) == NULL || g_strcmp0(gtk_label_get_text(label), "") == 0)) {
+    if (login != NULL && password != NULL &&
+        (gtk_label_get_text(label) == NULL ||
+         g_strcmp0(gtk_label_get_text(label), "") == 0)) {
         printf("You have clicked submit\n");
-    }
-    else {
-        show_error_message(label, "Fields cannot be empty.\n Errors must be corrected");
+    } else {
+        show_error_message(
+            label, "Fields cannot be empty.\n Errors must be corrected");
     }
 }
 
@@ -92,15 +91,18 @@ static void submit_reg_clicked() {
     const gchar *confirm_p = user_data->confirm_password;
     GtkLabel *label = user_data->err_label;
 
-    if (login != NULL && password != NULL && confirm_p != NULL && (gtk_label_get_text(label) == NULL || g_strcmp0(gtk_label_get_text(label), "") == 0)) {
+    if (login != NULL && password != NULL && confirm_p != NULL &&
+        (gtk_label_get_text(label) == NULL ||
+         g_strcmp0(gtk_label_get_text(label), "") == 0)) {
         printf("You have clicked 'submit'");
-    }
-    else {
-        show_error_message(label, "Fields cannot be empty.\n Errors must be corrected");
+    } else {
+        show_error_message(
+            label, "Fields cannot be empty.\n Errors must be corrected");
     }
 }
 
-static void on_password_entry_visibility(GtkEntry *entry, GtkEntryIconPosition icon_position) {
+static void on_password_entry_visibility(GtkEntry *entry,
+                                         GtkEntryIconPosition icon_position) {
     if (icon_position == GTK_ENTRY_ICON_SECONDARY) {
         gboolean current_visibility = gtk_entry_get_visibility(entry);
         gtk_entry_set_visibility(entry, !current_visibility);
@@ -128,10 +130,10 @@ void show_auth_container(GtkBuilder *builder, GtkWidget *window) {
     user_data->confirm_password = NULL;
     user_data->err_label = NULL;
 
-    GtkLabel *err_label_log =
-        GTK_LABEL(gtk_builder_get_object(builder, "error_message_login_label"));
-    GtkLabel *err_label_reg =
-        GTK_LABEL(gtk_builder_get_object(builder, "error_message_registration_label"));
+    GtkLabel *err_label_log = GTK_LABEL(
+        gtk_builder_get_object(builder, "error_message_login_label"));
+    GtkLabel *err_label_reg = GTK_LABEL(
+        gtk_builder_get_object(builder, "error_message_registration_label"));
 
     if (err_label_log == NULL || err_label_reg == NULL) {
         g_print("Error: Failed to obtain error labels\n");
@@ -151,7 +153,8 @@ void show_auth_container(GtkBuilder *builder, GtkWidget *window) {
     GtkWidget *confirm_password_entry =
         GTK_WIDGET(gtk_builder_get_object(builder, "confirm_password_entry"));
 
-    if (is_empty_field(GTK_ENTRY(login_entry)) || is_empty_field(GTK_ENTRY(new_login_entry)))
+    if (is_empty_field(GTK_ENTRY(login_entry)) ||
+        is_empty_field(GTK_ENTRY(new_login_entry)))
         show_error_message(err_label_log, "Please fill in the fields");
 
     g_signal_connect(login_entry, "changed",
@@ -160,25 +163,27 @@ void show_auth_container(GtkBuilder *builder, GtkWidget *window) {
                      G_CALLBACK(on_login_entry_changed), err_label_reg);
     g_signal_connect(password_entry, "changed",
                      G_CALLBACK(on_password_entry_changed), err_label_log);
-    
+
     g_signal_connect(new_password_entry, "changed",
                      G_CALLBACK(on_password_entry_changed), err_label_reg);
     g_signal_connect(confirm_password_entry, "changed",
-                     G_CALLBACK(on_confirm_password_entry_changed), err_label_reg);
+                     G_CALLBACK(on_confirm_password_entry_changed),
+                     err_label_reg);
     gtk_label_set_text(err_label_reg, "");
     g_signal_connect(password_entry, "icon-press",
-                    G_CALLBACK(on_password_entry_visibility), NULL);
+                     G_CALLBACK(on_password_entry_visibility), NULL);
     g_signal_connect(new_password_entry, "icon-press",
-                    G_CALLBACK(on_password_entry_visibility), NULL);
+                     G_CALLBACK(on_password_entry_visibility), NULL);
     g_signal_connect(confirm_password_entry, "icon-press",
-                    G_CALLBACK(on_password_entry_visibility), NULL);
+                     G_CALLBACK(on_password_entry_visibility), NULL);
 
-    GtkButton *submit_login = GTK_BUTTON(gtk_builder_get_object(builder, "submit_login"));
-    GtkButton *submit_register = GTK_BUTTON(gtk_builder_get_object(builder, "submit_register"));
-    
-    g_signal_connect(submit_login, "clicked",
-                     G_CALLBACK(submit_log_clicked), NULL);
+    GtkButton *submit_login =
+        GTK_BUTTON(gtk_builder_get_object(builder, "submit_login"));
+    GtkButton *submit_register =
+        GTK_BUTTON(gtk_builder_get_object(builder, "submit_register"));
+
+    g_signal_connect(submit_login, "clicked", G_CALLBACK(submit_log_clicked),
+                     NULL);
     g_signal_connect(submit_register, "clicked",
                      G_CALLBACK(submit_reg_clicked), NULL);
-
 }

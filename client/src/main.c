@@ -24,6 +24,7 @@ int main(int argc, char *argv[]) {
 
     gtk_builder_connect_signals(builder, NULL);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    init_theme_switcher(builder, window);
 
     show_auth_container(builder, window);
 

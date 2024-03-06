@@ -15,5 +15,6 @@ void show_auth_container(GtkBuilder *builder, GtkWidget *window);
 // utils
 GdkPixbuf *load_pixbuf_from_url(const char *url);
 void load_css(GtkWidget *window, const gchar *css_path);
+void init_theme_switcher(GtkBuilder *builder, GtkWidget *window);
 gboolean is_empty_field(GtkEntry *entry);
 

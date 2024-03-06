@@ -1,9 +1,11 @@
+/* start global */
 window {
     background-color: @bg_color;
 }
 
 * {
     color: @text_color;
+    transition: background 0.3s;
 }
 
 button {
@@ -21,8 +23,9 @@ button label {
 button:active {
     background: @secondary_color-dark;
 }
+/* end global */
 
-
+/* auth start */
 .title {
     font-size: 28px;
     font-weight: bold;
@@ -31,6 +34,10 @@ button:active {
 
 .sub-title {
     font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.logo {
     margin-bottom: 20px;
 }
 
@@ -55,4 +62,12 @@ button:active {
     background: @input_bg_color;
     border: 2px solid @border_color;
 }
+/* auth end */
 
+/* start theme */
+
+.theme_switcher * {
+    color: @bg_color;
+}
+
+/* end theme */

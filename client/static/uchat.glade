@@ -55,13 +55,40 @@
             <property name="can-focus">False</property>
             <property name="pixbuf">images/logo.png</property>
             <style>
-              <class name=".logo"/>
+              <class name="logo"/>
             </style>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
             <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBoxText" id="theme_switcher">
+            <property name="name">theme_switcher</property>
+            <property name="visible">True</property>
+            <property name="app-paintable">True</property>
+            <property name="can-focus">False</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <property name="active">0</property>
+            <property name="has-frame">False</property>
+            <property name="button-sensitivity">on</property>
+            <property name="popup-fixed-width">False</property>
+            <property name="active-id">0</property>
+            <items>
+              <item id="0" translatable="yes">light</item>
+              <item id="1" translatable="yes">dark</item>
+            </items>
+            <style>
+              <class name="theme_switcher"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <style>
@@ -492,6 +519,20 @@
     <style>
       <class name="auth_wrapper"/>
     </style>
+  </object>
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name themes -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">light</col>
+      </row>
+      <row>
+        <col id="0">dark</col>
+      </row>
+    </data>
   </object>
   <object class="GtkWindow" id="main_window">
     <property name="width-request">1200</property>

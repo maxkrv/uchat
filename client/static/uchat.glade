@@ -53,7 +53,7 @@
             <property name="height-request">10</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="pixbuf">../git_uchat/uchat-main/client/static/images/logo.png</property>
+            <property name="pixbuf">images/logo.png</property>
             <style>
               <class name=".logo"/>
             </style>
@@ -117,6 +117,8 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="vhomogeneous">False</property>
+                <property name="transition-duration">300</property>
+                <property name="transition-type">slide-left-right</property>
                 <child>
                   <object class="GtkBox" id="login">
                     <property name="visible">True</property>
@@ -196,6 +198,7 @@
                             <property name="max-length">50</property>
                             <property name="visibility">False</property>
                             <property name="invisible-char">•</property>
+                            <property name="secondary-icon-name">view-layout-symbolic</property>
                             <property name="input-purpose">password</property>
                           </object>
                           <packing>
@@ -339,6 +342,7 @@
                             <property name="max-length">50</property>
                             <property name="visibility">False</property>
                             <property name="invisible-char">•</property>
+                            <property name="secondary-icon-name">view-layout-symbolic</property>
                             <property name="input-purpose">password</property>
                           </object>
                           <packing>
@@ -384,6 +388,7 @@
                             <property name="max-length">50</property>
                             <property name="visibility">False</property>
                             <property name="invisible-char">•</property>
+                            <property name="secondary-icon-name">view-layout-symbolic</property>
                             <property name="input-purpose">password</property>
                           </object>
                           <packing>
@@ -492,7 +497,7 @@
     <property name="width-request">1200</property>
     <property name="height-request">600</property>
     <property name="can-focus">False</property>
-    <property name="icon">../git_uchat/uchat-main/client/static/images/logo.png</property>
+    <property name="icon">images/logo.png</property>
     <child>
       <placeholder/>
     </child>

@@ -1,5 +1,3 @@
-// t_user to json
-// req parse and validation
 #include "server.h"
 
 cJSON *mx_message_to_cjson(t_message *message) {
@@ -51,4 +49,16 @@ cJSON *mx_messages_to_cjson(t_list *messages) {
     }
 
     return rooms_array;
+}
+
+t_string mx_messages_stringify(t_list *messages) {
+    if (!messages) {
+        return NULL;
+    }
+    cJSON *obj = mx_messages_to_cjson(messages);
+    t_string res = cJSON_PrintUnformatted(obj);
+
+    cJSON_Delete(obj);
+
+    return res;
 }

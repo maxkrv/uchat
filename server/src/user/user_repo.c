@@ -2,18 +2,9 @@
 #include "auth.h"
 
 t_user *mx_user_repo_get(int id) {
-    static t_user user = {.id = 0,
-                          .name = "Me",
-                          .tag = "@me",
-                          .password_hash = "grgvwF)££(@wrasdfvme",
-                          .photo_id = 1,
-                          .status = "status",
-                          .description = "description",
-                          .created_at = 0,
-                          .edited_at = 0,
-                          .messages = NULL,
-                          .rooms = NULL};
-    return &user;
+    t_user *user = mx_init_user();
+
+    return user;
 }
 
 t_user *mx_user_repo_get_by_tag(char *tag) {

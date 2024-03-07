@@ -9,7 +9,7 @@ void mx_message_ctrl_get(t_connection *c, t_http_message *m) {
         return;
     }
 
-    int message_id = mx_extract_id_from_query(m->query, "id");
+    int message_id = mx_extract_id_from_query(m->query, "message_id");
 
     if (message_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
@@ -29,6 +29,39 @@ void mx_message_ctrl_get(t_connection *c, t_http_message *m) {
     mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string);
     mx_strdel(&json_string);
     mx_delete_message(message);
+}
+
+void mx_message_ctrl_get_many(t_connection *c, t_http_message *m) {
+    t_user_id id = mx_user_id_from_auth_jwt(m);
+
+    if (id <= 0) {
+        mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
+                                "Invalid token");
+        return;
+    }
+    int room_id = mx_extract_id_from_query(m->query, "room_id");
+
+    if (room_id <= 0) {
+        mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
+                                "Invalid room id");
+        return;
+    }
+    if (!mx_is_user_member_of(room_id, id)) {
+        mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN, "No permissions");
+        return;
+    }
+    t_list *messages = mx_message_get_many(room_id);
+
+    if (!messages) {
+        mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
+                                "Messages not found");
+        return;
+    }
+    t_string json_string = mx_messages_stringify(messages);
+
+    mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string);
+    mx_strdel(&json_string);
+    mx_delete_list(&messages, (t_func_void)mx_delete_message);
 }
 
 void mx_message_ctrl_post(t_connection *c, t_http_message *m) {

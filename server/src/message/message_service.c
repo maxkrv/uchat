@@ -5,9 +5,12 @@ t_message *mx_message_get(int id) {
 
     m->author = mx_user_get_discription(m->author_id);
     m->message_files = NULL;
-    m->readed_by = NULL;
 
     return m;
+}
+
+t_list *mx_message_get_many(int room_id) {
+    return mx_message_repo_get_many(room_id);
 }
 
 t_message *mx_message_create(t_message_create_dto *dto) {

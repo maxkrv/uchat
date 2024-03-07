@@ -5,7 +5,7 @@
 #include "utils.h"
 #include "structs.h"
 
-typedef void t_handler(t_connection *c, t_http_message *m);
+typedef void (*t_handler)(t_connection *c, t_http_message *m);
 
 typedef struct s_crud_router {
     t_handler *create;
@@ -14,9 +14,9 @@ typedef struct s_crud_router {
     t_handler *delete;
 } t_crud_router;
 
-bool mx_is_method_equal(struct mg_str *m1, char *m2);
-void mx_crud_route(t_crud_router *router, t_connection *conn,
-                   t_http_message *req);
+void mx_route(t_connection *c, t_http_message *req, const char *path,
+              const char *method, t_handler handler);
+bool mx_is_method_equal(struct mg_str *m1, const char *m2);
 t_string mx_extract_value(struct mg_str from, const char *key);
 int mx_extract_id_from_query(struct mg_str query, const char *key);
 void mx_http_reply_exception(t_connection *conn, t_http_message *req,

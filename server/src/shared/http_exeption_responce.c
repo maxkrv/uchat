@@ -17,3 +17,7 @@ void mx_http_reply_exception(t_connection *conn, t_http_message *req,
     mx_strdel(&uri);
     mx_strdel(&method);
 }
+
+void mx_http_reply_not_found(t_connection *conn, t_http_message *req) {
+    mx_http_reply_exception(conn, req, HTTP_STATUS_NOT_FOUND, "Not Found");
+}

@@ -11,17 +11,27 @@ static t_message_create_dto *init_message_create_dto() {
     return dto;
 }
 
+void mx_delete_message_create_dto(t_message_create_dto *dto) {
+    if (!dto) {
+        return;
+    }
+    mx_strdel(&dto->text);
+    mx_delete_list(&dto->file_ids, free);
+
+    free(dto);
+}
+
 static t_message_create_dto *
 validate_message_create_dto(t_message_create_dto *dto) {
     if (!dto->room_id || !dto->text) {
-        free(dto);
+        mx_delete_message_create_dto(dto);
         return NULL;
     }
 
     return dto;
 }
 
-static t_message_create_dto *parse_message_create_dto(t_string body) {
+static t_message_create_dto *parse_message_create_dto(struct mg_str body) {
     t_message_create_dto *dto = init_message_create_dto();
     cJSON *obj = cJSON_ParseWithLength(body.ptr, body.len);
     cJSON *key;
@@ -53,7 +63,7 @@ static t_message_create_dto *parse_message_create_dto(t_string body) {
     return dto;
 }
 
-t_message_create_dto *mx_get_message_create_dto(t_string body) {
+t_message_create_dto *mx_get_message_create_dto(struct mg_str body) {
     t_message_create_dto *dto = parse_message_create_dto(body);
 
     if (!dto) {

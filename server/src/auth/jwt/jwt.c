@@ -43,7 +43,8 @@ static int get_str_arr_len(char **arr) {
     return i;
 }
 
-char *mx_create_jwt(char *payload_str, char *secret, int expiration_time) {
+t_jwt_token mx_create_jwt(char *payload_str, char *secret,
+                          int expiration_time) {
     char *header = create_jwt_header(expiration_time);
     char *payload =
         mx_base64_encode((unsigned char *)payload_str, strlen(payload_str));
@@ -53,7 +54,7 @@ char *mx_create_jwt(char *payload_str, char *secret, int expiration_time) {
     return concat_with_dot_and_free(header_and_payload, signature);
 }
 
-char *mx_verify_jwt(char *jwt, char *secret) {
+t_jwt_payload mx_verify_jwt(char *jwt, char *secret) {
     char **token = mx_strsplit(jwt, '.');
 
     if (get_str_arr_len(token) != 3) {

@@ -63,15 +63,14 @@ struct s_room {
     int id;
     char *name;
     char *type;
-    char *discription;
+    char *description;
     int photo_id;
     int created_at;
     int edited_at;
 
     t_list *members;
     t_list *messages;
-    t_list *users_favorite;
-    t_list *room_pined_message;
+    t_list *pined_messages;
     t_file *photo;
 };
 
@@ -87,9 +86,8 @@ struct s_user {
     int edited_at;
 
     t_list *messages;
-    t_list *rooms_member;
-    t_list *favorite_rooms;
-    t_list *read_messages;
+    t_list *rooms;
+    t_list *favorites;
     t_file *photo;
 };
 

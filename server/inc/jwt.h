@@ -13,6 +13,13 @@ typedef struct {
     int iat;
 } t_jwt_head;
 
+// string head.payload.signature
+typedef char *t_jwt_token;
+// json payload string
+typedef char *t_jwt_payload;
+// user id(-1 in case of error)
+typedef int t_user_id;
+
 char *mx_base64_encode(unsigned char *input, int size);
 char *mx_base64_decode(char *input);
 

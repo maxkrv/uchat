@@ -7,7 +7,7 @@
 typedef struct mg_mgr t_mg_manager;
 typedef struct mg_http_message t_http_message;
 typedef struct mg_connection t_connection;
-typedef struct mg_str t_string;
+typedef char *t_string;
 
 #include <signal.h>
 #include "cJSON.h"

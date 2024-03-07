@@ -68,6 +68,11 @@ button:active {
 
 .theme_switcher * {
     color: @bg_color;
+    background: @secondary_color;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    transition: background 0.2s;
 }
 
 /* end theme */

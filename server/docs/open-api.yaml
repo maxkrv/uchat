@@ -1,0 +1,382 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:3000/api/v1
+
+security: []
+
+info:
+  title: 'API'
+  version: '1.0.0'
+  license:
+    name: LICENSE
+    url: https://example.com
+
+  contact:
+    name: Mykhailo Kloz
+    email: micha21cloz@gmail.com
+
+tags:
+  - name: User
+    description: Module for interacting with user in API
+  - name: Authorization
+    description: Module for authorization in API
+  - name: Room
+    description: Module for interacting with room in API
+  - name: Message
+    description: Module for interacting with message in API
+  - name: File
+    description: Module for interacting with files(fileupload) in API
+
+paths:
+  /auth/login:
+    post:
+      operationId: Login
+      summary: Get token from the user credentials
+      tags: ['Authorization']
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  example: Mykhailo Kloz
+                password:
+                  type: string
+                  example: <PASSWORD>
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  token:
+                    type: string
+                    example: rwfdsfwrasfd.sdfgerfsdasfrwd.weagvrwesafvd
+        400:
+          $ref: '#/components/responses/Exception'
+  /auth/register:
+    post:
+      operationId: Register
+      summary: Register a new user
+      tags: ['Authorization']
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  example: Mykhailo Kloz
+                password:
+                  type: string
+                  example: <PASSWORD>
+                tag:
+                  type: string
+                  example: mkloz
+                photo_id:
+                  type: integer
+                  example: 1
+                status:
+                  type: integer
+                  example: online
+                description:
+                  type: string
+                  example: And I am filling gooood...
+      responses:
+        201:
+          $ref: '#/components/responses/UserData'
+        400:
+          $ref: '#/components/responses/Exception'
+  /auth/change/password:
+    post:
+      security:
+        - JWT: []
+      operationId: Change-password
+      summary: Change user password
+      tags: ['Authorization']
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                old_password:
+                  type: string
+                  example: wefs£30Xc
+                new_password:
+                  type: string
+                  example: wefs£30Xc1
+      responses:
+        200:
+          $ref: '#/components/responses/UserData'
+        400:
+          $ref: '#/components/responses/Exception'
+  /users/find:
+    get:
+      operationId: Get-user
+      summary: Get user data by tag or id
+      tags: ['User']
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: integer
+        - name: tag
+          in: query
+          schema:
+            type: string
+
+      security:
+        - JWT: []
+      responses:
+        200:
+          description: User description
+          content:
+            application/json:
+              schema:
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+        400:
+          $ref: '#/components/responses/Exception'
+  /users/me:
+    get:
+      operationId: Get-me
+      summary: Get user data by token
+      tags: ['User']
+      security:
+        - JWT: []
+      responses:
+        200:
+          $ref: '#/components/responses/UserData'
+        400:
+          $ref: '#/components/responses/Exception'
+    put:
+      operationId: Put-me
+      summary: Update user data
+      tags: ['User']
+      security:
+        - JWT: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  example: Mykhailo Kloz
+                tag:
+                  type: string
+                  example: mkloz
+                photo_id:
+                  type: integer
+                  example: 1
+                status:
+                  type: integer
+                  example: offline
+                description:
+                  type: string
+                  example: And I am filling baaaad...
+      responses:
+        200:
+          $ref: '#/components/responses/UserData'
+        400:
+          $ref: '#/components/responses/Exception'
+    delete:
+      operationId: Delete-me
+      summary: Delete user data
+      tags: ['User']
+      security:
+        - JWT: []
+      responses:
+        200:
+          $ref: '#/components/responses/UserData'
+        400:
+          $ref: '#/components/responses/Exception'
+  /users/me/favorites:
+    get:
+      operationId: Get-favorites
+      summary: Get user favorites
+      tags: ['Favorites']
+      security:
+        - JWT: []
+      responses:
+        200:
+          $ref: '#/components/responses/FavoritesData'
+        400:
+          $ref: '#/components/responses/Exception'
+    post:
+      operationId: Add-room-to-favorites
+      summary: Add room to favorites
+      tags: ['Favorites']
+      parameters:
+        - in: query
+          name: room_id
+          schema:
+            type: integer
+      security:
+        - JWT: []
+      responses:
+        200:
+          $ref: '#/components/responses/FavoritesData'
+        400:
+          $ref: '#/components/responses/Exception'
+    delete:
+      operationId: Delete-room-from-favorites
+      summary: Delete room from favorites
+      tags: ['Favorites']
+      parameters:
+        - in: query
+          name: room_id
+          schema:
+            type: integer
+      security:
+        - JWT: []
+      responses:
+        200:
+          $ref: '#/components/responses/FavoritesData'
+        400:
+          $ref: '#/components/responses/Exception'
+
+components:
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    File:
+      description: Db data about uploaded files
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: file.png
+        url:
+          type: string
+          example: https://example.com
+        created_at:
+          type: integer
+          example: 1589454400
+        edited_at:
+          type: integer
+          example: 1709632674
+
+    User:
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Mykhailo Kloz
+        tag:
+          type: string
+          example: mkloz
+        photo_id:
+          type: integer
+          example: 1
+        status:
+          type: string
+          example: online
+        description:
+          type: string
+          example: And I am filling gooood...
+        created_at:
+          type: integer
+          example: 1709632674
+        edited_at:
+          type: integer
+          example: 1709632674
+        photo:
+          $ref: '#/components/schemas/File'
+    Message:
+      properties:
+        id:
+          type: integer
+          example: 1
+        user_id:
+          type: integer
+          example: 1
+        room_id:
+          type: integer
+          example: 1
+        text:
+          type: string
+          example: Message
+    Room:
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Uchat
+        photo_id:
+          type: integer
+        photo:
+          $ref: '#/components/schemas/File'
+    Favorite:
+      properties:
+        id:
+          type: integer
+          example: 1
+        user_id:
+          type: integer
+          example: 1
+        room_id:
+          type: integer
+        created_at:
+          type: integer
+          example: 1709632674
+        edited_at:
+          type: integer
+          example: 1709632674
+        room:
+          $ref: '#/components/schemas/Room'
+
+    Exception:
+      properties:
+        timestamp:
+          type: integer
+          format: int32
+          example: 1709632674
+        status:
+          type: integer
+          format: int32
+          example: 400
+        method:
+          type: string
+          example: POST
+        uri:
+          type: string
+          example: /auth/login
+        message:
+          type: string
+          example: 'Something went wrong'
+          description: Error message
+  responses:
+    Exception:
+      description: 4xx and 5xx codes response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Exception'
+    UserData:
+      description: User data
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/User'
+    FavoritesData:
+      description: Favorites data
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Favorite'

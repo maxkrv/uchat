@@ -16,12 +16,17 @@ typedef char *t_string;
 #include "libmx.h"
 #include "http.h"
 
-#define MX_HEADERS                                                            \
+#define MX_HEADERS_JSON                                                       \
+    "Access-Control-Allow-Origin: *\r\n"                                      \
+    "Access-Control-Allow-Methods: *\r\n"                                     \
+    "Access-Control-Allow-Headers: *\r\n"                                     \
+    "Access-Control-Max-Age: 3600\r\n"                                        \
+    "Content-Type: application/json\r\n"
+#define MX_OPTIONS_HEADERS                                                    \
     "Access-Control-Allow-Origin: *\r\n"                                      \
     "Access-Control-Allow-Methods: *\r\n"                                     \
     "Access-Control-Allow-Headers: *\r\n"                                     \
     "Access-Control-Max-Age: 3600\r\n"
-
 typedef struct s_env_params {
     int port;
     char *root_dir;

@@ -5,7 +5,7 @@ void mx_http_request_handler(t_connection *conn, int event, void *data) {
         t_http_message *req = data;
 
         if (mx_is_method_equal(&req->method, MX_HTTP_METHOD_OPTIONS)) {
-            mg_http_reply(conn, HTTP_STATUS_OK, MX_HEADERS, MX_EMPTY);
+            mg_http_reply(conn, HTTP_STATUS_OK, MX_OPTIONS_HEADERS, MX_EMPTY);
         } else if (mg_match(req->uri, mg_str("/api/v1/users/*"), NULL)) {
             mx_user_route(conn, req);
         } else if (mg_match(req->uri, mg_str("/api/v1/rooms/*"), NULL)) {

@@ -24,7 +24,7 @@ void mx_room_ctrl_pine_message(t_connection *c, t_http_message *m) {
 
     t_string json_string = mx_pined_messages_stringify(pines);
 
-    mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS, json_string);
+    mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
     mx_delete_list(&pines, (t_func_void)mx_delete_room_pined);
 }
@@ -52,7 +52,7 @@ void mx_room_ctrl_get_pined(t_connection *c, t_http_message *m) {
 
     t_string json_string = mx_pined_messages_stringify(pines);
 
-    mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS, json_string);
+    mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
     mx_delete_list(&pines, (t_func_void)mx_delete_room_pined);
 }
@@ -85,7 +85,7 @@ void mx_room_ctrl_unpine(t_connection *c, t_http_message *m) {
 
     t_string json_string = mx_pined_messages_stringify(pines);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
     mx_delete_list(&pines, (t_func_void)mx_delete_room_pined);
 }

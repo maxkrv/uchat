@@ -12,9 +12,11 @@ void mx_http_reply_exception(t_connection *conn, t_http_message *req,
     cJSON_AddStringToObject(obj, "uri", uri);
     cJSON_AddStringToObject(obj, "message", message);
 
-    mg_http_reply(conn, status_code, MX_HEADERS, cJSON_PrintUnformatted(obj));
+    char *resp = cJSON_PrintUnformatted(obj);
+    mg_http_reply(conn, status_code, MX_HEADERS_JSON, resp);
 
     mx_strdel(&uri);
+    mx_strdel(&resp);
     mx_strdel(&method);
 }
 

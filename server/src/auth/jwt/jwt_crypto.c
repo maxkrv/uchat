@@ -31,6 +31,10 @@ char *mx_base64_decode(char *input) {
 }
 
 char *mx_create_sha256_signature(char *input_string, char *secret_key) {
+    if (!input_string) {
+        return NULL;
+    }
+
     unsigned char buf_output[SHA256_DIGEST_LENGTH];
     char *to_hash = mx_strjoin(input_string, secret_key);
 
@@ -42,6 +46,10 @@ char *mx_create_sha256_signature(char *input_string, char *secret_key) {
 
 bool mx_verify_sha256_signature(char *signature, char *input_string,
                                 char *secret_key) {
+    if (!signature || !input_string) {
+        return false;
+    }
+
     char *actual_signature =
         mx_create_sha256_signature(input_string, secret_key);
 

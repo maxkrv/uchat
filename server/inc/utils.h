@@ -11,4 +11,8 @@ bool mx_is_user_member_of(int room_id, int user_id);
 bool mx_is_room_admin(int room_id, int user_id);
 bool mx_is_message_author(int user_id, int message_id);
 
+char *mx_cjson_get_string(cJSON *json, const char *key);
+int mx_cjson_get_number(cJSON *json, const char *key);
+bool mx_cjson_get_bool(cJSON *json, const char *key);
+
 #endif

@@ -12,10 +12,12 @@ static t_user_create_dto *init_user_create_dto() {
 
     return dto;
 }
+
 void mx_delete_user_create_dto(t_user_create_dto *dto) {
     if (!dto) {
         return;
     }
+
     mx_strdel(&dto->name);
     mx_strdel(&dto->password);
     mx_strdel(&dto->tag);
@@ -47,23 +49,11 @@ static t_user_create_dto *parse_user_create_dto(struct mg_str body) {
         return NULL;
     }
 
-    key = cJSON_GetObjectItemCaseSensitive(obj, "name");
-    dto->name = cJSON_GetStringValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(obj, "password");
-    dto->password = cJSON_GetStringValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(obj, "photo_id");
-    dto->photo_id = cJSON_GetNumberValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(obj, "tag");
-    dto->tag = cJSON_GetStringValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(obj, "description");
-    dto->description = cJSON_GetStringValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(obj, "status");
-    dto->status = cJSON_GetStringValue(key);
+    dto->name = mx_cjson_get_string(obj, "name");
+    dto->password = mx_cjson_get_string(obj, "password");
+    dto->photo_id = mx_cjson_get_number(obj, "photo_id");
+    dto->tag = mx_cjson_get_string(obj, "tag");
+    dto->status = mx_cjson_get_string(obj, "status");
 
     cJSON_Delete(obj);
 
@@ -72,7 +62,6 @@ static t_user_create_dto *parse_user_create_dto(struct mg_str body) {
 
 t_user_create_dto *mx_get_user_create_dto(struct mg_str body) {
     t_user_create_dto *dto = parse_user_create_dto(body);
-
     if (!dto) {
         return NULL;
     }

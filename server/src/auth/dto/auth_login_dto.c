@@ -13,19 +13,19 @@ bool mx_is_valid_password(char *password) {
     for (int i = 0; i < length; i++) {
         if (password[i] >= 'A' && password[i] <= 'Z') {
             has_upper = true;
-            break;
+            continue;
         }
         if (password[i] >= 'a' && password[i] <= 'z') {
             has_lower = true;
-            break;
+            continue;
         }
         if (password[i] >= '0' && password[i] <= '9') {
             has_digit = true;
-            break;
+            continue;
         }
     }
 
-    return has_lower && has_digit && has_upper && length > 7;
+    return has_lower && has_digit && has_upper;
 }
 
 static t_login_dto *init_login_dto() {
@@ -66,11 +66,8 @@ static t_login_dto *parse_login_dto(struct mg_str body) {
         return NULL;
     }
 
-    key = cJSON_GetObjectItemCaseSensitive(obj, "name");
-    dto->name = cJSON_GetStringValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(obj, "password");
-    dto->password = cJSON_GetStringValue(key);
+    dto->name = mx_cjson_get_string(obj, "name");
+    dto->password = mx_cjson_get_string(obj, "password");
 
     cJSON_Delete(obj);
 

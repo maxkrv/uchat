@@ -9,6 +9,7 @@ static t_room_member_create_dto *init_room_member_create_dto() {
 
     return dto;
 }
+
 t_room_member_create_dto *
 mx_room_member_create_dto_constructor(int room_id, int user_id,
                                       bool is_admin) {
@@ -50,16 +51,10 @@ parse_room_member_create_dto(struct mg_str body) {
         return NULL;
     }
 
-    key = cJSON_GetObjectItemCaseSensitive(obj, "room_id");
-    dto->room_id = cJSON_GetNumberValue(key);
+    dto->room_id = mx_cjson_get_number(obj, "room_id");
+    dto->user_id = mx_cjson_get_number(obj, "user_id");
+    dto->is_admin = mx_cjson_get_bool(obj, "is_admin");
 
-    key = cJSON_GetObjectItemCaseSensitive(obj, "user_id");
-    dto->user_id = cJSON_GetNumberValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(obj, "is_admin");
-    if (cJSON_IsBool(key)) {
-        dto->is_admin = key->valueint;
-    }
     cJSON_Delete(obj);
 
     return dto;

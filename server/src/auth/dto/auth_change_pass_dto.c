@@ -42,11 +42,8 @@ static t_change_password_dto *parse_change_password_dto(struct mg_str body) {
         return NULL;
     }
 
-    key = cJSON_GetObjectItemCaseSensitive(obj, "old_password");
-    dto->old_password = cJSON_GetStringValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(obj, "new_password");
-    dto->new_password = cJSON_GetStringValue(key);
+    dto->old_password = mx_cjson_get_string(obj, "old_password");
+    dto->new_password = mx_cjson_get_string(obj, "new_password");
 
     cJSON_Delete(obj);
 

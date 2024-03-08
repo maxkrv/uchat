@@ -7,7 +7,9 @@ t_jwt_token mx_auth_login(t_login_dto *dto) {
     if (!user) {
         return NULL;
     }
+
     if (!mx_comp_hash(dto->password, user->password_hash)) {
+
         mx_delete_user(user);
         return NULL;
     }

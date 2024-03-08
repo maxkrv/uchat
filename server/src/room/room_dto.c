@@ -42,14 +42,9 @@ static t_room_create_dto *parse_room_create_dto(struct mg_str body) {
         return NULL;
     }
 
-    key = cJSON_GetObjectItemCaseSensitive(obj, "name");
-    dto->name = cJSON_GetStringValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(obj, "description");
-    dto->description = cJSON_GetStringValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(obj, "photo_url");
-    dto->photo_id = cJSON_GetNumberValue(key);
+    dto->name = mx_cjson_get_string(obj, "name");
+    dto->description = mx_cjson_get_string(obj, "description");
+    dto->photo_id = mx_cjson_get_number(obj, "photo_id");
 
     cJSON_Delete(obj);
 

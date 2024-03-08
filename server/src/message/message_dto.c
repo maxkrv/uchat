@@ -41,21 +41,16 @@ static t_message_create_dto *parse_message_create_dto(struct mg_str body) {
         return NULL;
     }
 
-    key = cJSON_GetObjectItemCaseSensitive(obj, "reply_id");
-    dto->reply_id = cJSON_GetNumberValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(obj, "room_id");
-    dto->room_id = cJSON_GetNumberValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(obj, "text");
-    dto->text = cJSON_GetStringValue(key);
+    dto->reply_id = mx_cjson_get_number(obj, "reply_id");
+    dto->room_id = mx_cjson_get_number(obj, "room_id");
+    dto->text = mx_cjson_get_string(obj, "text");
 
     key = cJSON_GetObjectItemCaseSensitive(obj, "file_ids");
     cJSON *arr_value = NULL;
 
     cJSON_ArrayForEach(arr_value, key) {
         if (cJSON_IsNumber(arr_value)) {
-            mx_push_back(&dto->file_ids, &arr_value->valuedouble);
+            mx_push_back(&dto->file_ids, &arr_value->valueint);
         }
     }
     cJSON_Delete(obj);

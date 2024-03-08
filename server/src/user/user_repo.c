@@ -2,9 +2,7 @@
 #include "auth.h"
 
 t_user *mx_user_repo_get(int id) {
-    t_user *user = mx_init_user();
-
-    return user;
+    return mx_init_user();
 }
 
 t_user *mx_user_repo_get_by_tag(char *tag) {

@@ -3,6 +3,8 @@
 
 #define MX_BUFFER_SIZE 8192
 #define MX_EMPTY ""
+#define MX_DEFAULT_DB_PATH "db/sqlite.db"
+#define MX_DEFAULT_ROOT_DIR "."
 
 typedef struct mg_mgr t_mg_manager;
 typedef struct mg_http_message t_http_message;
@@ -14,6 +16,7 @@ typedef char *t_string;
 #include "mongoose.h"
 #include "sqlite3.h"
 #include "libmx.h"
+#include "dirent.h"
 #include "http.h"
 
 #define MX_HEADERS_JSON                                                       \
@@ -32,6 +35,8 @@ typedef struct s_env_params {
     char *root_dir;
     int log_level;
     char *jwt_auth_secret;
+    char *db_path;
+    sqlite3 *db_connection;
 } t_env_params;
 
 t_env_params *mx_get_env(void);

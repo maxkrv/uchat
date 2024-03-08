@@ -18,7 +18,7 @@ void mx_auth_ctrl_login(t_connection *c, t_http_message *m) {
 
     t_string json_string = mx_token_stringify(token);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS, json_string);
     mx_delete_login_dto(dto);
     mx_strdel(&token);
     mx_strdel(&json_string);
@@ -43,7 +43,7 @@ void mx_auth_ctrl_change_password(t_connection *c, t_http_message *m) {
 
     t_string json_string = mx_user_stringify(user);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS, json_string);
     mx_delete_change_password_dto(dto);
     mx_delete_user(user);
     mx_strdel(&json_string);
@@ -67,7 +67,7 @@ void mx_auth_ctrl_register(t_connection *c, t_http_message *m) {
 
     t_string json_string = mx_user_stringify(user);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS, json_string);
     mx_delete_user_create_dto(dto);
     mx_delete_user(user);
     mx_strdel(&json_string);

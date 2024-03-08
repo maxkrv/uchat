@@ -18,7 +18,7 @@ void mx_room_ctrl_get_member(t_connection *c, t_http_message *m) {
     }
     t_string json_string = mx_room_member_stringify(member);
 
-    mg_http_reply(c, HTTP_STATUS_CREATED, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS, json_string);
     mx_strdel(&json_string);
     mx_delete_room_member(member);
 }
@@ -40,7 +40,7 @@ void mx_room_ctrl_get_members(t_connection *c, t_http_message *m) {
     }
     t_string json_string = mx_room_members_stringify(members);
 
-    mg_http_reply(c, HTTP_STATUS_CREATED, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS, json_string);
     mx_strdel(&json_string);
     mx_delete_list(&members, (t_func_void)mx_delete_room_member);
 }
@@ -73,7 +73,7 @@ void mx_room_ctrl_add_member(t_connection *c, t_http_message *m) {
 
     t_string json_string = mx_room_member_stringify(mem);
 
-    mg_http_reply(c, HTTP_STATUS_CREATED, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS, json_string);
     mx_strdel(&json_string);
     mx_delete_room_member_create_dto(dto);
     mx_delete_room_member(mem);
@@ -107,7 +107,7 @@ void mx_room_ctrl_update_member(t_connection *c, t_http_message *m) {
 
     t_string json_string = mx_room_member_stringify(mem);
 
-    mg_http_reply(c, HTTP_STATUS_CREATED, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS, json_string);
     mx_strdel(&json_string);
     mx_delete_room_member(mem);
     mx_delete_room_member_create_dto(dto);
@@ -147,7 +147,7 @@ void mx_room_ctrl_delete_member(t_connection *c, t_http_message *m) {
 
     t_string json_string = mx_room_member_stringify(mem);
 
-    mg_http_reply(c, HTTP_STATUS_CREATED, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS, json_string);
     mx_strdel(&json_string);
     mx_delete_room_member(mem);
 }

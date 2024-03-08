@@ -25,7 +25,7 @@ void mx_message_ctrl_read(t_connection *c, t_http_message *m) {
     }
     t_string json_string = mx_read_message_stringify(read);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS, json_string);
     mx_strdel(&json_string);
     mx_delete_read_message(read);
 }
@@ -56,7 +56,7 @@ void mx_message_ctrl_get_read(t_connection *c, t_http_message *m) {
     }
     t_string json_string = mx_read_message_stringify(read);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS, json_string);
     mx_strdel(&json_string);
     mx_delete_read_message(read);
 }
@@ -87,7 +87,7 @@ void mx_message_ctrl_get_reads(t_connection *c, t_http_message *m) {
     }
     t_string json_string = mx_read_messages_stringify(reads);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS, json_string);
     mx_strdel(&json_string);
     mx_delete_list(&reads, (t_func_void)mx_delete_read_message);
 }

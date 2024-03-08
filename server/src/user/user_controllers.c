@@ -25,7 +25,7 @@ void mx_user_ctrl_get(t_connection *c, t_http_message *m) {
 
     t_string json_string = mx_user_stringify(user);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS, json_string);
     mx_strdel(&json_string);
     mx_delete_user(user);
 }
@@ -48,7 +48,7 @@ void mx_user_ctrl_get_me(t_connection *c, t_http_message *m) {
 
     t_string json_string = mx_user_stringify(user);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS, json_string);
     mx_strdel(&json_string);
     mx_delete_user(user);
 }
@@ -72,7 +72,7 @@ void mx_user_ctrl_get_my_rooms(t_connection *c, t_http_message *m) {
 
     t_string json_string = mx_rooms_stringify(rooms);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS, json_string);
     mx_strdel(&json_string);
     mx_delete_list(&rooms, (t_func_void)mx_delete_room);
 }
@@ -105,7 +105,7 @@ void mx_user_ctrl_put_me(t_connection *c, t_http_message *m) {
 
     t_string json_string = mx_user_stringify(user);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS, json_string);
     mx_strdel(&json_string);
     mx_delete_user(user);
 }
@@ -128,7 +128,7 @@ void mx_user_ctrl_delete_me(t_connection *c, t_http_message *m) {
 
     t_string json_string = mx_user_stringify(user);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_EMPTY, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS, json_string);
     mx_strdel(&json_string);
     mx_delete_user(user);
 }

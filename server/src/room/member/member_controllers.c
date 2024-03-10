@@ -82,26 +82,36 @@ void mx_room_ctrl_add_member(t_connection *c, t_http_message *m) {
 void mx_room_ctrl_update_member(t_connection *c, t_http_message *m) {
     t_user_id id = mx_user_id_from_auth_jwt(m);
     int member_id = mx_extract_id_from_query(m->query, "member_id");
-    t_room_member_create_dto *dto = mx_get_room_member_create_dto(m->body);
+    t_room_member_update_dto *dto = mx_parse_room_member_update_dto(m->body);
 
     if (id <= 0 || !dto || member_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
                                 "Invalid data provided");
         return;
     }
-    if (!mx_is_room_admin(dto->room_id, dto->user_id)) {
-        mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN,
-                                "User has no permissions");
-        mx_delete_room_member_create_dto(dto);
+    t_room_member *member = mx_room_get_member(member_id);
+    if (!member) {
+        mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
+                                "Member not found");
+        mx_delete_room_member_update_dto(dto);
         return;
     }
+    if (!mx_is_room_admin(member->room_id, id)) {
+        mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN,
+                                "User has no permissions");
+        mx_delete_room_member_update_dto(dto);
+        mx_delete_room_member(member);
+        return;
+    }
+    mx_delete_room_member(member);
+
     t_room_member *mem = mx_room_update_member(member_id, dto);
+
+    mx_delete_room_member_update_dto(dto);
 
     if (!mem) {
         mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
                                 "Cant add member");
-        mx_delete_room_member_create_dto(dto);
-        mx_delete_room_member(mem);
         return;
     }
 
@@ -110,7 +120,6 @@ void mx_room_ctrl_update_member(t_connection *c, t_http_message *m) {
     mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
     mx_delete_room_member(mem);
-    mx_delete_room_member_create_dto(dto);
 }
 
 void mx_room_ctrl_delete_member(t_connection *c, t_http_message *m) {
@@ -141,7 +150,6 @@ void mx_room_ctrl_delete_member(t_connection *c, t_http_message *m) {
     if (!mem) {
         mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
                                 "Cant add member");
-        mx_delete_room_member(mem);
         return;
     }
 

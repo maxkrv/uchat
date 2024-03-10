@@ -161,7 +161,7 @@ void mx_message_ctrl_delete(t_connection *c, t_http_message *m) {
     }
     t_message *mess = mx_message_get(id);
 
-    if (!mx_is_message_author(id, message_id) ||
+    if (!mx_is_message_author(id, message_id) &&
         !mx_is_room_admin(mess->room_id, id)) {
         mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN, "No permissions");
         mx_delete_message(mess);

@@ -1,7 +1,7 @@
 #include "room.h"
 
 void mx_room_ctrl_get(t_connection *c, t_http_message *m) {
-    int room_id = mx_extract_id_from_query(m->query, "id");
+    int room_id = mx_extract_id_from_query(m->query, "room_id");
 
     if (room_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,

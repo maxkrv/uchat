@@ -15,18 +15,6 @@ info:
     name: Mykhailo Kloz
     email: micha21cloz@gmail.com
 
-tags:
-  - name: User
-    description: Module for interacting with user in API
-  - name: Authorization
-    description: Module for authorization in API
-  - name: Room
-    description: Module for interacting with room in API
-  - name: Message
-    description: Module for interacting with message in API
-  - name: File
-    description: Module for interacting with files(fileupload) in API
-
 paths:
   /auth/login:
     post:
@@ -76,10 +64,9 @@ paths:
                   type: string
                   example: mkloz
                 photo_id:
-                  type: integer
-                  example: 1
+                  $ref: '#/components/schemas/ID'
                 status:
-                  type: integer
+                  type: string
                   example: online
                 description:
                   type: string
@@ -108,7 +95,7 @@ paths:
                   type: string
                   example: wefs£30Xc1
       responses:
-        200:
+        201:
           $ref: '#/components/responses/UserData'
         400:
           $ref: '#/components/responses/Exception'
@@ -121,7 +108,7 @@ paths:
         - name: id
           in: query
           schema:
-            type: integer
+            $ref: '#/components/schemas/ID'
         - name: tag
           in: query
           schema:
@@ -135,9 +122,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  user:
-                    $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/User'
         400:
           $ref: '#/components/responses/Exception'
   /users/me:
@@ -170,10 +155,9 @@ paths:
                   type: string
                   example: mkloz
                 photo_id:
-                  type: integer
-                  example: 1
+                  $ref: '#/components/schemas/ID'
                 status:
-                  type: integer
+                  type: string
                   example: offline
                 description:
                   type: string
@@ -214,11 +198,11 @@ paths:
         - in: query
           name: room_id
           schema:
-            type: integer
+            $ref: '#/components/schemas/ID'
       security:
         - JWT: []
       responses:
-        200:
+        201:
           $ref: '#/components/responses/FavoritesData'
         400:
           $ref: '#/components/responses/Exception'
@@ -230,7 +214,7 @@ paths:
         - in: query
           name: room_id
           schema:
-            type: integer
+            $ref: '#/components/schemas/ID'
       security:
         - JWT: []
       responses:
@@ -238,7 +222,431 @@ paths:
           $ref: '#/components/responses/FavoritesData'
         400:
           $ref: '#/components/responses/Exception'
+  /users/me/rooms:
+    get:
+      operationId: get-rooms
+      summary: Get user rooms
+      tags: ['User', 'Room']
+      security:
+        - JWT: []
 
+      responses:
+        200:
+          description: Get user rooms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Room'
+        400:
+          $ref: '#/components/responses/Exception'
+  /rooms/find:
+    get:
+      operationId: get-room
+      tags: ['Room']
+      parameters:
+        - in: query
+          name: room_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      summary: Get room data
+      responses:
+        200:
+          $ref: '#/components/responses/RoomData'
+        400:
+          $ref: '#/components/responses/Exception'
+  /rooms:
+    post:
+      operationId: post-room
+      summary: 'Creates a room and sets user as admin of room'
+      tags: ['Room']
+      security:
+        - JWT: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  example: Uchat
+                description:
+                  type: string
+                  example: 'We are cool guys!'
+                photo_id:
+                  $ref: '#/components/schemas/ID'
+                type:
+                  type: string
+                  example: direct
+
+      responses:
+        201:
+          $ref: '#/components/responses/RoomData'
+        400:
+          $ref: '#/components/responses/Exception'
+    put:
+      operationId: put-room
+      summary: 'Updates room info'
+      tags: ['Room']
+      security:
+        - JWT: []
+      parameters:
+        - in: query
+          name: room_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  example: Uchat
+                description:
+                  type: string
+                  example: 'We are cool guys!'
+                photo_id:
+                  $ref: '#/components/schemas/ID'
+                type:
+                  type: string
+                  example: direct
+
+      responses:
+        200:
+          $ref: '#/components/responses/RoomData'
+        400:
+          $ref: '#/components/responses/Exception'
+    delete:
+      operationId: delete-room
+      summary: 'Deletes room'
+      tags: ['Room']
+      security:
+        - JWT: []
+      parameters:
+        - in: query
+          name: room_id
+          schema:
+            $ref: '#/components/schemas/ID'
+
+      responses:
+        200:
+          $ref: '#/components/responses/RoomData'
+        400:
+          $ref: '#/components/responses/Exception'
+  /rooms/members/find:
+    get:
+      operationId: get-member
+      tags: ['Member']
+      parameters:
+        - in: query
+          name: member_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      summary: Get room member data
+      responses:
+        200:
+          $ref: '#/components/responses/MemberData'
+        400:
+          $ref: '#/components/responses/Exception'
+  /rooms/members:
+    get:
+      operationId: get-members
+      security:
+        - JWT: []
+      summary: Get room members
+      tags: ['Member']
+      parameters:
+        - in: query
+          name: room_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      responses:
+        200:
+          description: Members data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Member'
+        400:
+          $ref: '#/components/responses/Exception'
+
+    post:
+      operationId: create-room-member
+      summary: 'Creates a room member'
+      tags: ['Member']
+      security:
+        - JWT: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                room_id:
+                  $ref: '#/components/schemas/ID'
+                user_id:
+                  $ref: '#/components/schemas/ID'
+                is_admin:
+                  type: boolean
+                  example: false
+      responses:
+        201:
+          $ref: '#/components/responses/MemberData'
+        400:
+          $ref: '#/components/responses/Exception'
+    put:
+      operationId: put-room-member
+      summary: 'Updates room member info'
+      tags: ['Member']
+      security:
+        - JWT: []
+      parameters:
+        - in: query
+          name: member_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                is_admin:
+                  type: boolean
+                  example: true
+      responses:
+        200:
+          $ref: '#/components/responses/MemberData'
+        400:
+          $ref: '#/components/responses/Exception'
+    delete:
+      operationId: delete-room-member
+      summary: 'Deletes room memeber'
+      tags: ['Member']
+      security:
+        - JWT: []
+      parameters:
+        - in: query
+          name: member_id
+          schema:
+            $ref: '#/components/schemas/ID'
+
+      responses:
+        200:
+          $ref: '#/components/responses/MemberData'
+        400:
+          $ref: '#/components/responses/Exception'
+  /rooms/pined:
+    get:
+      operationId: get-pined
+      security:
+        - JWT: []
+      summary: Get room pined
+      tags: ['Pined message']
+      parameters:
+        - in: query
+          name: room_id
+          schema:
+            $ref: '#/components/schemas/ID'
+
+      responses:
+        200:
+          $ref: '#/components/responses/PinedMessagesData'
+        400:
+          $ref: '#/components/responses/Exception'
+
+    post:
+      operationId: create-room-pined-message
+      summary: 'Creates a room pined'
+      tags: ['Pined message']
+      security:
+        - JWT: []
+      parameters:
+        - in: query
+          name: room_id
+          schema:
+            $ref: '#/components/schemas/ID'
+        - in: query
+          name: message_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      responses:
+        201:
+          $ref: '#/components/responses/PinedMessagesData'
+        400:
+          $ref: '#/components/responses/Exception'
+    delete:
+      operationId: unpine-room-message
+      summary: 'Unpines room message'
+      tags: ['Pined message']
+      security:
+        - JWT: []
+      parameters:
+        - in: query
+          name: pined_id
+          schema:
+            $ref: '#/components/schemas/ID'
+
+      responses:
+        200:
+          $ref: '#/components/responses/PinedMessagesData'
+        400:
+          $ref: '#/components/responses/Exception'
+  /messages/find:
+    get:
+      operationId: get-message
+      tags: ['Message']
+      parameters:
+        - in: query
+          name: message_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      summary: Get message data
+      security:
+        - JWT: []
+      responses:
+        200:
+          $ref: '#/components/responses/MessageData'
+        400:
+          $ref: '#/components/responses/Exception'
+  /messages:
+    post:
+      operationId: post-message
+      summary: 'Creates a message'
+      tags: ['Message']
+      security:
+        - JWT: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                room_id:
+                  $ref: '#/components/schemas/ID'
+                reply_id:
+                  $ref: '#/components/schemas/ID'
+                file_ids:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ID'
+                text:
+                  type: string
+                  example: Hello World
+
+      responses:
+        201:
+          $ref: '#/components/responses/MessageData'
+        400:
+          $ref: '#/components/responses/Exception'
+    put:
+      operationId: put-message
+      summary: 'Updates message info'
+      tags: ['Message']
+      security:
+        - JWT: []
+      parameters:
+        - in: query
+          name: message_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                room_id:
+                  $ref: '#/components/schemas/ID'
+                reply_id:
+                  $ref: '#/components/schemas/ID'
+                file_ids:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ID'
+                text:
+                  type: string
+                  example: Hello World
+
+      responses:
+        200:
+          $ref: '#/components/responses/MessageData'
+        400:
+          $ref: '#/components/responses/Exception'
+    delete:
+      operationId: delete-message
+      summary: 'Deletes message'
+      tags: ['Message']
+      security:
+        - JWT: []
+      parameters:
+        - in: query
+          name: message_id
+          schema:
+            $ref: '#/components/schemas/ID'
+
+      responses:
+        200:
+          $ref: '#/components/responses/MessageData'
+        400:
+          $ref: '#/components/responses/Exception'
+  /messages/read/find:
+    get:
+      operationId: get-message-reader
+      tags: ['Reader']
+      parameters:
+        - in: query
+          name: read_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      summary: Get message read data
+      security:
+        - JWT: []
+      responses:
+        200:
+          $ref: '#/components/responses/ReadData'
+        400:
+          $ref: '#/components/responses/Exception'
+  /messages/read:
+    post:
+      operationId: post-message-reader
+      summary: 'Creates a mark of readed message by user'
+      tags: ['Reader']
+      security:
+        - JWT: []
+      parameters:
+        - in: query
+          name: message_id
+          schema:
+            $ref: '#/components/schemas/ID'
+
+      responses:
+        201:
+          $ref: '#/components/responses/MessageData'
+        400:
+          $ref: '#/components/responses/Exception'
+    get:
+      operationId: get-message-readers
+      summary: 'Gets message reader info'
+      tags: ['Reader']
+      security:
+        - JWT: []
+      parameters:
+        - in: query
+          name: message_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      responses:
+        200:
+          description: Gets readers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reader'
+        400:
+          $ref: '#/components/responses/Exception'
 components:
   securitySchemes:
     JWT:
@@ -246,12 +654,34 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    ID:
+      description: ID of entity
+      type: integer
+      format: int32
+      example: 1
+    Reader:
+      description: Message reader
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        user_id:
+          $ref: '#/components/schemas/ID'
+        message_id:
+          $ref: '#/components/schemas/ID'
+        created_at:
+          type: integer
+          example: 1589454400
+        edited_at:
+          type: integer
+          example: 1709632674
+
+        user:
+          $ref: '#/components/schemas/User'
     File:
       description: Db data about uploaded files
       properties:
         id:
-          type: integer
-          example: 1
+          $ref: '#/components/schemas/ID'
         name:
           type: string
           example: file.png
@@ -264,12 +694,31 @@ components:
         edited_at:
           type: integer
           example: 1709632674
+    MessageFile:
+      description: Db data about uploaded message file
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        file_id:
+          $ref: '#/components/schemas/ID'
+        message_id:
+          $ref: '#/components/schemas/ID'
+        type:
+          type: string
+          example: audio
+        created_at:
+          type: integer
+          example: 1589454400
+        edited_at:
+          type: integer
+          example: 1709632674
 
+        file:
+          $ref: '#/components/schemas/File'
     User:
       properties:
         id:
-          type: integer
-          example: 1
+          $ref: '#/components/schemas/ID'
         name:
           type: string
           example: Mykhailo Kloz
@@ -277,8 +726,7 @@ components:
           type: string
           example: mkloz
         photo_id:
-          type: integer
-          example: 1
+          $ref: '#/components/schemas/ID'
         status:
           type: string
           example: online
@@ -296,39 +744,61 @@ components:
     Message:
       properties:
         id:
-          type: integer
-          example: 1
-        user_id:
-          type: integer
-          example: 1
+          $ref: '#/components/schemas/ID'
+        author_id:
+          $ref: '#/components/schemas/ID'
         room_id:
-          type: integer
-          example: 1
+          $ref: '#/components/schemas/ID'
+        reply_id:
+          $ref: '#/components/schemas/ID'
         text:
           type: string
           example: Message
+        created_at:
+          type: integer
+          example: 1709632674
+        edited_at:
+          type: integer
+          example: 1709632674
+
+        author:
+          $ref: '#/components/schemas/User'
+        message_files:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageFile'
     Room:
       properties:
         id:
-          type: integer
-          example: 1
+          $ref: '#/components/schemas/ID'
         name:
           type: string
           example: Uchat
         photo_id:
+          $ref: '#/components/schemas/ID'
+        type:
+          type: string
+          example: direct
+        description:
+          type: string
+          example: Cool room
+        created_at:
           type: integer
+          example: 1709632674
+        edited_at:
+          type: integer
+          example: 1709632674
+
         photo:
           $ref: '#/components/schemas/File'
     Favorite:
       properties:
         id:
-          type: integer
-          example: 1
+          $ref: '#/components/schemas/ID'
         user_id:
-          type: integer
-          example: 1
+          $ref: '#/components/schemas/ID'
         room_id:
-          type: integer
+          $ref: '#/components/schemas/ID'
         created_at:
           type: integer
           example: 1709632674
@@ -337,7 +807,41 @@ components:
           example: 1709632674
         room:
           $ref: '#/components/schemas/Room'
-
+    Member:
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        user_id:
+          $ref: '#/components/schemas/ID'
+        room_id:
+          $ref: '#/components/schemas/ID'
+        is_admin:
+          type: boolean
+          example: false
+        created_at:
+          type: integer
+          example: 1709632674
+        edited_at:
+          type: integer
+          example: 1709632674
+        user:
+          $ref: '#/components/schemas/User'
+    PinedMessages:
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        room_id:
+          $ref: '#/components/schemas/ID'
+        message_id:
+          $ref: '#/components/schemas/ID'
+        created_at:
+          type: integer
+          example: 1709632674
+        edited_at:
+          type: integer
+          example: 1709632674
+        message:
+          $ref: '#/components/schemas/Message'
     Exception:
       properties:
         timestamp:
@@ -346,7 +850,6 @@ components:
           example: 1709632674
         status:
           type: integer
-          format: int32
           example: 400
         method:
           type: string
@@ -380,3 +883,35 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Favorite'
+    RoomData:
+      description: Rooms data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Room'
+    MemberData:
+      description: Rooms data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Member'
+    PinedMessagesData:
+      description: Pined messages data
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/PinedMessages'
+    MessageData:
+      description: Message data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Message'
+    ReadData:
+      description: Message read data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Reader'

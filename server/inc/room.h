@@ -21,6 +21,9 @@ typedef struct {
     int user_id;
     bool is_admin;
 } t_room_member_create_dto;
+typedef struct {
+    bool is_admin;
+} t_room_member_update_dto;
 // room router
 void mx_room_route(t_connection *conn, t_http_message *req);
 
@@ -110,6 +113,8 @@ t_room_member_create_dto *
 mx_room_member_create_dto_constructor(int room_id, int user_id, bool is_admin);
 t_room_member_create_dto *mx_get_room_member_create_dto(struct mg_str body);
 void mx_delete_room_member_create_dto(t_room_member_create_dto *dto);
+t_room_member_update_dto *mx_parse_room_member_update_dto(struct mg_str body);
+void mx_delete_room_member_update_dto(t_room_member_update_dto *dto);
 
 // controllers
 void mx_room_ctrl_get_member(t_connection *c, t_http_message *m);
@@ -122,7 +127,7 @@ void mx_room_ctrl_delete_member(t_connection *c, t_http_message *m);
 t_list *mx_room_get_members(int room_id);
 t_room_member *mx_room_get_member(int id);
 t_room_member *mx_room_add_member(t_room_member_create_dto *dto);
-t_room_member *mx_room_update_member(int id, t_room_member_create_dto *dto);
+t_room_member *mx_room_update_member(int id, t_room_member_update_dto *dto);
 t_room_member *mx_room_delete_member(int id);
 
 // repositories

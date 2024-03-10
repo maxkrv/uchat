@@ -3,8 +3,9 @@
 
 t_user *mx_user_repo_get(int id) {
     sqlite3 *db = mx_get_env()->db_connection;
+    t_user *user = mx_init_user();
 
-    return mx_init_user();
+    return user;
 }
 
 t_user *mx_user_repo_get_by_tag(char *tag) {

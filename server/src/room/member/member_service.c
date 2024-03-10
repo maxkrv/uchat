@@ -24,7 +24,7 @@ t_room_member *mx_room_add_member(t_room_member_create_dto *dto) {
     return mx_room_get_member(id);
 }
 
-t_room_member *mx_room_update_member(int id, t_room_member_create_dto *dto) {
+t_room_member *mx_room_update_member(int id, t_room_member_update_dto *dto) {
     bool ok = mx_members_repo_update(id, dto->is_admin);
 
     if (!ok) {

@@ -18,7 +18,7 @@ info:
 paths:
   /auth/login:
     post:
-      operationId: Login
+      operationId: login
       summary: Get token from the user credentials
       tags: ['Authorization']
       requestBody:
@@ -29,9 +29,11 @@ paths:
                 name:
                   type: string
                   example: Mykhailo Kloz
+                  nullable: false
                 password:
                   type: string
                   example: <PASSWORD>
+                  nullable: false
       responses:
         200:
           description: OK
@@ -46,7 +48,7 @@ paths:
           $ref: '#/components/responses/Exception'
   /auth/register:
     post:
-      operationId: Register
+      operationId: register
       summary: Register a new user
       tags: ['Authorization']
       requestBody:
@@ -56,20 +58,27 @@ paths:
               properties:
                 name:
                   type: string
+                  nullable: false
                   example: Mykhailo Kloz
                 password:
                   type: string
+                  nullable: false
                   example: <PASSWORD>
                 tag:
                   type: string
+                  nullable: true
                   example: mkloz
                 photo_id:
                   $ref: '#/components/schemas/ID'
+                  nullable: false
                 status:
                   type: string
+                  nullable: true
+                  default: offline
                   example: online
                 description:
                   type: string
+                  nullable: true
                   example: And I am filling gooood...
       responses:
         201:
@@ -80,7 +89,7 @@ paths:
     post:
       security:
         - JWT: []
-      operationId: Change-password
+      operationId: change-password
       summary: Change user password
       tags: ['Authorization']
       requestBody:
@@ -90,29 +99,34 @@ paths:
               properties:
                 old_password:
                   type: string
+                  nullable: false
                   example: wefs£30Xc
                 new_password:
                   type: string
+                  nullable: false
                   example: wefs£30Xc1
       responses:
-        201:
+        200:
           $ref: '#/components/responses/UserData'
         400:
           $ref: '#/components/responses/Exception'
   /users/find:
     get:
-      operationId: Get-user
+      operationId: get-user
       summary: Get user data by tag or id
       tags: ['User']
       parameters:
-        - name: id
+        - name: user_id
           in: query
           schema:
+            nullable: true
             $ref: '#/components/schemas/ID'
         - name: tag
           in: query
           schema:
+            nullable: true
             type: string
+            example: mkloz
 
       security:
         - JWT: []
@@ -150,17 +164,22 @@ paths:
               properties:
                 name:
                   type: string
+                  nullable: false
                   example: Mykhailo Kloz
                 tag:
                   type: string
+                  nullable: false
                   example: mkloz
                 photo_id:
+                  nullable: false
                   $ref: '#/components/schemas/ID'
                 status:
                   type: string
+                  nullable: false
                   example: offline
                 description:
                   type: string
+                  nullable: false
                   example: And I am filling baaaad...
       responses:
         200:
@@ -214,6 +233,7 @@ paths:
         - in: query
           name: room_id
           schema:
+            nullable: false
             $ref: '#/components/schemas/ID'
       security:
         - JWT: []
@@ -249,6 +269,7 @@ paths:
         - in: query
           name: room_id
           schema:
+            nullable: false
             $ref: '#/components/schemas/ID'
       summary: Get room data
       responses:
@@ -491,7 +512,11 @@ paths:
 
       responses:
         200:
-          $ref: '#/components/responses/PinedMessagesData'
+          description: Return deleted message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PinedMessage'
         400:
           $ref: '#/components/responses/Exception'
   /messages/find:
@@ -590,7 +615,7 @@ paths:
           $ref: '#/components/responses/MessageData'
         400:
           $ref: '#/components/responses/Exception'
-  /messages/read/find:
+  /messages/readers/find:
     get:
       operationId: get-message-reader
       tags: ['Reader']
@@ -607,7 +632,7 @@ paths:
           $ref: '#/components/responses/ReadData'
         400:
           $ref: '#/components/responses/Exception'
-  /messages/read:
+  /messages/readers:
     post:
       operationId: post-message-reader
       summary: 'Creates a mark of readed message by user'
@@ -657,6 +682,7 @@ components:
     ID:
       description: ID of entity
       type: integer
+      nullable: false
       format: int32
       example: 1
     Reader:
@@ -826,7 +852,7 @@ components:
           example: 1709632674
         user:
           $ref: '#/components/schemas/User'
-    PinedMessages:
+    PinedMessage:
       properties:
         id:
           $ref: '#/components/schemas/ID'
@@ -902,7 +928,7 @@ components:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/PinedMessages'
+              $ref: '#/components/schemas/PinedMessage'
     MessageData:
       description: Message data
       content:

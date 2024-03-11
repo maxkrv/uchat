@@ -60,13 +60,18 @@ t_list *mx_user_get_rooms(int user_id) {
 }
 
 t_user *mx_user_create(t_user_create_dto *dto) {
-    t_user_id id = mx_user_repo_create(dto);
+    char *hashed = mx_hash_string(dto->password);
 
-    if (id < 0) {
+    mx_strdel(&dto->password);
+    dto->password = hashed;
+
+    t_user_id user_id = mx_user_repo_create(dto);
+
+    if (user_id < 0) {
         return NULL;
     }
 
-    return mx_user_get(id);
+    return mx_user_get(user_id);
 }
 
 t_user *mx_user_put(int id, t_user_update_dto *dto) {

@@ -2,12 +2,12 @@
 
 void mx_user_ctrl_get(t_connection *c, t_http_message *m) {
     t_user *user;
-    int id = mx_extract_id_from_query(m->query, "id");
+    int user_id = mx_extract_id_from_query(m->query, "user_id");
     t_string tag =
         mx_decode_uri_component(mg_http_var(m->query, mg_str_s("tag")));
 
-    if (id > 0) {
-        user = mx_user_get_discription(id);
+    if (user_id > 0) {
+        user = mx_user_get_discription(user_id);
     } else if (tag) {
         user = mx_user_get_by_tag(tag);
     } else {
@@ -31,15 +31,15 @@ void mx_user_ctrl_get(t_connection *c, t_http_message *m) {
 }
 
 void mx_user_ctrl_get_me(t_connection *c, t_http_message *m) {
-    t_user_id id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_user_id_from_auth_jwt(m);
 
-    if (id < 0) {
+    if (user_id < 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
                                 "Invalid token provided");
         return;
     }
 
-    t_user *user = mx_user_get(id);
+    t_user *user = mx_user_get(user_id);
 
     if (!user) {
         mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND, "User not found");
@@ -54,15 +54,15 @@ void mx_user_ctrl_get_me(t_connection *c, t_http_message *m) {
 }
 
 void mx_user_ctrl_get_my_rooms(t_connection *c, t_http_message *m) {
-    t_user_id id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_user_id_from_auth_jwt(m);
 
-    if (id < 0) {
+    if (user_id < 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
                                 "Invalid token provided");
         return;
     }
 
-    t_list *rooms = mx_user_get_rooms(id);
+    t_list *rooms = mx_user_get_rooms(user_id);
 
     if (!rooms) {
         mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
@@ -78,9 +78,9 @@ void mx_user_ctrl_get_my_rooms(t_connection *c, t_http_message *m) {
 }
 
 void mx_user_ctrl_put_me(t_connection *c, t_http_message *m) {
-    t_user_id id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_user_id_from_auth_jwt(m);
 
-    if (id < 0) {
+    if (user_id < 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
                                 "Invalid token");
         return;
@@ -93,7 +93,7 @@ void mx_user_ctrl_put_me(t_connection *c, t_http_message *m) {
         return;
     }
 
-    t_user *user = mx_user_put(id, dto);
+    t_user *user = mx_user_put(user_id, dto);
 
     mx_delete_user_update_dto(dto);
 
@@ -111,15 +111,15 @@ void mx_user_ctrl_put_me(t_connection *c, t_http_message *m) {
 }
 
 void mx_user_ctrl_delete_me(t_connection *c, t_http_message *m) {
-    t_user_id id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_user_id_from_auth_jwt(m);
 
-    if (id < 0) {
+    if (user_id < 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
                                 "Invalid token");
         return;
     }
 
-    t_user *user = mx_user_delete(id);
+    t_user *user = mx_user_delete(user_id);
 
     if (!user) {
         mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND, "User not found");

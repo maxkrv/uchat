@@ -75,9 +75,9 @@ t_read_message *mx_init_read_message(void);
 void mx_delete_read_message(t_read_message *u);
 
 // constrollers
-void mx_message_ctrl_get_read(t_connection *c, t_http_message *m);
-void mx_message_ctrl_get_reads(t_connection *c, t_http_message *m);
-void mx_message_ctrl_read(t_connection *c, t_http_message *m);
+void mx_message_ctrl_get_reader(t_connection *c, t_http_message *m);
+void mx_message_ctrl_get_readers(t_connection *c, t_http_message *m);
+void mx_message_ctrl_read_message(t_connection *c, t_http_message *m);
 
 // services
 t_list *mx_read_messages_get(int message_id);

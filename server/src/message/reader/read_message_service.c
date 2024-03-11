@@ -9,11 +9,11 @@ t_read_message *mx_read_message_get(int id) {
 }
 
 t_read_message *mx_read_message(int user_id, int message_id) {
-    int id = mx_message_repo_read(user_id, message_id);
+    int read_id = mx_message_repo_read(user_id, message_id);
 
-    if (id <= 0) {
+    if (read_id <= 0) {
         return NULL;
     }
 
-    return mx_read_message_get(id);
+    return mx_read_message_get(read_id);
 }

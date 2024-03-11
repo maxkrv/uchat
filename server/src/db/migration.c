@@ -126,12 +126,6 @@ void mx_run_migrations(sqlite3 *db) {
                 continue;
             }
 
-            FILE *file = fopen(filepath, "r");
-            if (!file) {
-                printf("Error: Failed to open SQL file '%s'\n", filepath);
-                continue;
-            }
-            // executes commands and write migration to database
             mx_execute_sql_from_file(db, filepath);
             mx_record_migration(db, entry->d_name);
         }

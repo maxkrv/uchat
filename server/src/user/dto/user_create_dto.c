@@ -1,4 +1,4 @@
-#include "user.h"
+#include "server.h"
 
 static t_user_create_dto *init_user_create_dto() {
     t_user_create_dto *dto =
@@ -28,10 +28,17 @@ void mx_delete_user_create_dto(t_user_create_dto *dto) {
 }
 
 static t_user_create_dto *validate_user_create_dto(t_user_create_dto *dto) {
+    if (!dto->tag) {
+        dto->tag = mx_gen_uuid();
+    }
+    if (!dto->status) {
+        dto->status = mx_strdup("offline");
+    }
+
     if (!dto->name || !dto->password || !dto->tag || !dto->status ||
         dto->photo_id < 0 || mx_strlen(dto->name) < 4 ||
-        mx_strlen(dto->password) < 4 || mx_strlen(dto->status) < 4 ||
-        mx_strlen(dto->tag) < 4) {
+        mx_strlen(dto->password) < 8 || mx_strlen(dto->status) < 2 ||
+        mx_strlen(dto->tag) < 4 || !mx_is_valid_password(dto->password)) {
         mx_delete_user_create_dto(dto);
         return NULL;
     }

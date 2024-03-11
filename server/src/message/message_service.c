@@ -14,12 +14,12 @@ t_list *mx_message_get_many(int room_id) {
 }
 
 t_message *mx_message_create(t_message_create_dto *dto) {
-    int id = mx_message_repo_create(dto);
-    if (id <= 0) {
+    int message_id = mx_message_repo_create(dto);
+    if (message_id <= 0) {
         return NULL;
     }
 
-    return mx_message_repo_get(id);
+    return mx_message_repo_get(message_id);
 }
 
 t_message *mx_message_put(int id, t_message_create_dto *dto) {

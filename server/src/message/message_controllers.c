@@ -1,9 +1,9 @@
 #include "server.h"
 
 void mx_message_ctrl_get(t_connection *c, t_http_message *m) {
-    t_user_id id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_user_id_from_auth_jwt(m);
 
-    if (id <= 0) {
+    if (user_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
                                 "Invalid token");
         return;
@@ -32,9 +32,9 @@ void mx_message_ctrl_get(t_connection *c, t_http_message *m) {
 }
 
 void mx_message_ctrl_get_many(t_connection *c, t_http_message *m) {
-    t_user_id id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_user_id_from_auth_jwt(m);
 
-    if (id <= 0) {
+    if (user_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
                                 "Invalid token");
         return;
@@ -46,7 +46,7 @@ void mx_message_ctrl_get_many(t_connection *c, t_http_message *m) {
                                 "Invalid room id");
         return;
     }
-    if (!mx_is_user_member_of(room_id, id)) {
+    if (!mx_is_user_member_of(room_id, user_id)) {
         mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN, "No permissions");
         return;
     }
@@ -65,9 +65,9 @@ void mx_message_ctrl_get_many(t_connection *c, t_http_message *m) {
 }
 
 void mx_message_ctrl_post(t_connection *c, t_http_message *m) {
-    t_user_id id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_user_id_from_auth_jwt(m);
 
-    if (id <= 0) {
+    if (user_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
                                 "Invalid token");
         return;
@@ -79,8 +79,9 @@ void mx_message_ctrl_post(t_connection *c, t_http_message *m) {
                                 "Invalid dto provided");
         return;
     }
-    if (!mx_is_user_member_of(dto->room_id, id)) {
+    if (!mx_is_user_member_of(dto->room_id, user_id)) {
         mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN, "No permissions");
+        mx_delete_message_create_dto(dto);
         return;
     }
 
@@ -101,9 +102,9 @@ void mx_message_ctrl_post(t_connection *c, t_http_message *m) {
 }
 
 void mx_message_ctrl_put(t_connection *c, t_http_message *m) {
-    t_user_id id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_user_id_from_auth_jwt(m);
 
-    if (id <= 0) {
+    if (user_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
                                 "Invalid token");
         return;
@@ -122,7 +123,7 @@ void mx_message_ctrl_put(t_connection *c, t_http_message *m) {
                                 "Invalid message data provided");
         return;
     }
-    if (!mx_is_message_author(id, message_id)) {
+    if (!mx_is_message_author(user_id, message_id)) {
         mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN, "No permissions");
         mx_delete_message_create_dto(dto);
         return;
@@ -145,9 +146,9 @@ void mx_message_ctrl_put(t_connection *c, t_http_message *m) {
 }
 
 void mx_message_ctrl_delete(t_connection *c, t_http_message *m) {
-    t_user_id id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_user_id_from_auth_jwt(m);
 
-    if (id <= 0) {
+    if (user_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
                                 "Invalid token");
         return;
@@ -159,10 +160,10 @@ void mx_message_ctrl_delete(t_connection *c, t_http_message *m) {
                                 "Invalid message id provided");
         return;
     }
-    t_message *mess = mx_message_get(id);
+    t_message *mess = mx_message_get(user_id);
 
-    if (!mx_is_message_author(id, message_id) ||
-        !mx_is_room_admin(mess->room_id, id)) {
+    if (!mx_is_message_author(user_id, message_id) &&
+        !mx_is_room_admin(mess->room_id, user_id)) {
         mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN, "No permissions");
         mx_delete_message(mess);
         return;

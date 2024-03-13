@@ -15,14 +15,12 @@ t_list *mx_message_get_many(int room_id) {
 
 t_message *mx_message_create(t_message_create_dto *dto) {
     int message_id = mx_message_repo_create(dto);
-
     if (message_id <= 0) {
         return NULL;
     }
     for (t_list *l = dto->file_ids; l; l = l->next) {
         t_message_file *msg_fl =
             mx_message_file_create(message_id, mx_atoi(l->data));
-
         mx_delete_message_file(msg_fl);
     }
 

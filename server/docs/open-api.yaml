@@ -644,7 +644,6 @@ paths:
           name: message_id
           schema:
             $ref: '#/components/schemas/ID'
-
       responses:
         201:
           $ref: '#/components/responses/MessageData'
@@ -713,6 +712,33 @@ paths:
         400:
           $ref: '#/components/responses/Exception'
 
+      responses:
+        201:
+          $ref: '#/components/responses/MessageData'
+        400:
+          $ref: '#/components/responses/Exception'
+    get:
+      operationId: get-message-readers
+      summary: 'Gets message reader info'
+      tags: ['Reader']
+      security:
+        - JWT: []
+      parameters:
+        - in: query
+          name: message_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      responses:
+        200:
+          description: Gets readers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reader'
+        400:
+          $ref: '#/components/responses/Exception'
 components:
   securitySchemes:
     JWT:

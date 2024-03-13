@@ -59,7 +59,6 @@ static t_login_dto *validate_login_dto(t_login_dto *dto) {
 static t_login_dto *parse_login_dto(struct mg_str body) {
     t_login_dto *dto = init_login_dto();
     cJSON *obj = cJSON_ParseWithLength(body.ptr, body.len);
-    cJSON *key;
 
     if (!obj) {
         free(dto);

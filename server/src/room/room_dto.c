@@ -35,7 +35,6 @@ static t_room_create_dto *validate_room_create_dto(t_room_create_dto *dto) {
 static t_room_create_dto *parse_room_create_dto(struct mg_str body) {
     t_room_create_dto *dto = init_room_create_dto();
     cJSON *obj = cJSON_ParseWithLength(body.ptr, body.len);
-    cJSON *key;
 
     if (!obj) {
         free(dto);

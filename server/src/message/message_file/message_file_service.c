@@ -3,16 +3,13 @@
 t_message_file *mx_message_file_get(int id) {
     return NULL;
 }
-t_list *mx_message_file_get_all(int user_id) {
+t_list *mx_message_file_get_files(int message_id) {
     return NULL;
 }
 t_message_file *mx_message_file_delete(int id) {
     return NULL;
 }
-t_message_file *mx_message_file_update(int id, char *type, char *file_id) {
-    return NULL;
-}
 
-t_message_file *mx_message_file_create(int file_id, char *type) {
+t_message_file *mx_message_file_create(int message_id, int file_id) {
     return NULL;
 }

@@ -49,7 +49,6 @@ static t_user_create_dto *validate_user_create_dto(t_user_create_dto *dto) {
 static t_user_create_dto *parse_user_create_dto(struct mg_str body) {
     t_user_create_dto *dto = init_user_create_dto();
     cJSON *obj = cJSON_ParseWithLength(body.ptr, body.len);
-    cJSON *key;
 
     if (!obj) {
         free(dto);

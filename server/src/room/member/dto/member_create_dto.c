@@ -44,7 +44,6 @@ static t_room_member_create_dto *
 parse_room_member_create_dto(struct mg_str body) {
     t_room_member_create_dto *dto = init_room_member_create_dto();
     cJSON *obj = cJSON_ParseWithLength(body.ptr, body.len);
-    cJSON *key;
 
     if (!obj) {
         free(dto);

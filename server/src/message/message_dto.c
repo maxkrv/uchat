@@ -50,7 +50,7 @@ static t_message_create_dto *parse_message_create_dto(struct mg_str body) {
 
     cJSON_ArrayForEach(arr_value, key) {
         if (cJSON_IsNumber(arr_value)) {
-            mx_push_back(&dto->file_ids, &arr_value->valueint);
+            mx_push_back(&dto->file_ids, mx_itoa(arr_value->valueint));
         }
     }
     cJSON_Delete(obj);

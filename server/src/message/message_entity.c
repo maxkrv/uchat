@@ -15,7 +15,7 @@ t_message *mx_init_message(void) {
     message->author = NULL;
     message->room = NULL;
     message->reply = NULL;
-    message->message_files = NULL;
+    message->files = NULL;
 
     return message;
 }
@@ -32,8 +32,7 @@ void mx_delete_message(t_message *message) {
     mx_delete_message(message->reply);
 
     mx_delete_list(&message->readed_by, (t_func_void)mx_delete_read_message);
-    mx_delete_list(&message->message_files,
-                   (t_func_void)mx_delete_message_file);
+    mx_delete_list(&message->files, (t_func_void)mx_delete_file);
 
     free(message);
 }

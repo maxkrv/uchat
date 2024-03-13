@@ -35,7 +35,6 @@ validate_change_password_dto(t_change_password_dto *dto) {
 static t_change_password_dto *parse_change_password_dto(struct mg_str body) {
     t_change_password_dto *dto = init_change_password_dto();
     cJSON *obj = cJSON_ParseWithLength(body.ptr, body.len);
-    cJSON *key;
 
     if (!obj) {
         free(dto);

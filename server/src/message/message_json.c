@@ -20,8 +20,7 @@ cJSON *mx_message_to_cjson(t_message *message) {
     cJSON_AddItemToObject(obj, "author", mx_user_to_cjson(message->author));
     cJSON_AddItemToObject(obj, "room", mx_room_to_cjson(message->room));
     cJSON_AddItemToObject(obj, "reply", mx_message_to_cjson(message->reply));
-    cJSON_AddItemToObject(obj, "files",
-                          mx_message_files_to_cjson(message->files));
+    cJSON_AddItemToObject(obj, "files", mx_files_to_cjson(message->files));
 
     return obj;
 }

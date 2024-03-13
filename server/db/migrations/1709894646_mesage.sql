@@ -24,7 +24,6 @@ CREATE TABLE IF NOT EXISTS message_reader (
 CREATE TABLE IF NOT EXISTS message_file (
     id              INTEGER PRIMARY KEY,
     file_id         INTEGER NOT NULL,
-    type            VARCHAR(30) DEFAULT 'FILE',
     message_id      INTEGER NOT NULL,
     created_at      INT NOT NULL, 
     edited_at       INT NOT NULL, 

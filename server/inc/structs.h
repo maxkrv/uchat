@@ -18,7 +18,6 @@ struct s_message_file {
     int id;
     int file_id;
     int message_id;
-    char *type;
     int created_at;
     int edited_at;
 
@@ -104,7 +103,7 @@ struct s_message {
     t_user *author;
     t_room *room;
     t_message *reply;
-    t_list *message_files;
+    t_list *files;
 };
 
 struct s_read_message {

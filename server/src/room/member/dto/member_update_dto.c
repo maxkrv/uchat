@@ -19,7 +19,6 @@ void mx_delete_room_member_update_dto(t_room_member_update_dto *dto) {
 t_room_member_update_dto *mx_parse_room_member_update_dto(struct mg_str body) {
     t_room_member_update_dto *dto = init_room_member_update_dto();
     cJSON *obj = cJSON_ParseWithLength(body.ptr, body.len);
-    cJSON *key;
 
     if (!obj) {
         free(dto);

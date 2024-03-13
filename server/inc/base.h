@@ -5,6 +5,8 @@
 #define MX_EMPTY ""
 #define MX_DEFAULT_DB_PATH "db/sqlite.db"
 #define MX_DEFAULT_ROOT_DIR "."
+#define MX_UPLOAD_DIR_PATH "assets/uploads"
+#define MX_STATIC_DIR "assets"
 
 typedef struct mg_mgr t_mg_manager;
 typedef struct mg_http_message t_http_message;
@@ -37,6 +39,9 @@ typedef struct s_env_params {
     char *jwt_auth_secret;
     char *db_path;
     sqlite3 *db_connection;
+    char *upload_dir;
+    char *static_dir_opt;
+    char *domain;
 } t_env_params;
 
 t_env_params *mx_get_env(void);

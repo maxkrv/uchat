@@ -8,4 +8,5 @@ libmongoose.a
 test
 note.txt
 uchat_server
+assets/uploads
 

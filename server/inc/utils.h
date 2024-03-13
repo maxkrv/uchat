@@ -4,6 +4,8 @@
 #include "base.h"
 
 typedef void (*t_func_void)(void *);
+
+bool mx_create_path_if_not_exist(char *path);
 t_string mx_decode_uri_component(struct mg_str str);
 char *mx_gen_uuid(void);
 void mx_delete_list(t_list **list, t_func_void func);

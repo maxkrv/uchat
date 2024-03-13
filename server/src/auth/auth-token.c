@@ -11,11 +11,12 @@ static char *extract_jwt_auth_token(t_http_message *req) {
 }
 
 int mx_user_id_from_auth_jwt(t_http_message *req) {
-    char *token = extract_jwt_auth_token(req);
-    if (!token) {
-        return -1;
-    }
-    return mx_verify_auth_jwt(token);
+    // char *token = extract_jwt_auth_token(req);
+    // if (!token) {
+    //     return -1;
+    // }
+    // return mx_verify_auth_jwt(token);
+    return 1; // todo: uncoment after db implementation
 }
 
 t_string mx_token_stringify(t_jwt_token t) {

@@ -108,21 +108,12 @@ void mx_delete_message_file(t_message_file *u);
 
 // services
 t_message_file *mx_message_file_get(int id);
-t_list *mx_message_file_get_all(int user_id);
+t_list *mx_message_file_get_files(int message_id);
 t_message_file *mx_message_file_delete(int id);
-t_message_file *mx_message_file_update(int id, char *type, char *file_id);
-t_message_file *mx_message_file_create(int file_id, char *type);
+t_message_file *mx_message_file_create(int message_id, int file_id);
 
 // repositories
-t_message_file *mx_message_file_repo_get(int id);
 t_list *mx_message_file_repo_get_all(int user_id);
 int mx_message_file_repo_create(int file_id, char *type);
-bool mx_message_file_repo_update(int id, int file_id, char *type);
 bool mx_message_file_repo_delete(int id);
-
-// json
-cJSON *mx_message_file_to_cjson(t_message_file *message_file);
-t_string mx_message_file_stringify(t_message_file *message);
-cJSON *mx_message_files_to_cjson(t_list *messages);
-t_string mx_message_files_stringify(t_list *messages);
 #endif

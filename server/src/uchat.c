@@ -3,7 +3,8 @@
 static int sig_no;
 
 t_env_params *mx_get_env(void) {
-    static t_env_params env = {3000, NULL, MG_LL_INFO, NULL, NULL, NULL};
+    static t_env_params env = {3000, NULL, MG_LL_INFO, NULL,
+                               NULL, NULL, NULL,       NULL};
 
     return &env;
 }

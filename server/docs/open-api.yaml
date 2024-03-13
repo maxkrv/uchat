@@ -32,7 +32,7 @@ paths:
                   nullable: false
                 password:
                   type: string
-                  example: <PASSWORD>
+                  example: Pass123$
                   nullable: false
       responses:
         200:
@@ -644,6 +644,73 @@ paths:
           name: message_id
           schema:
             $ref: '#/components/schemas/ID'
+      responses:
+        201:
+          $ref: '#/components/responses/MessageData'
+        400:
+          $ref: '#/components/responses/Exception'
+    get:
+      operationId: get-message-readers
+      summary: 'Gets message reader info'
+      tags: ['Reader']
+      security:
+        - JWT: []
+      parameters:
+        - in: query
+          name: message_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      responses:
+        200:
+          description: Gets readers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reader'
+        400:
+          $ref: '#/components/responses/Exception'
+  /files/upload:
+    post:
+      operationId: file-upload
+      tags: ['File']
+      security:
+        - JWT: []
+      summary: Uploads file to servers
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        201:
+          description: File data from db
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+        400:
+          $ref: '#/components/responses/Exception'
+  /files/find:
+    get:
+      operationId: get-file-data
+      tags: ['File']
+      parameters:
+        - in: query
+          name: file_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      summary: Get file data from db
+      responses:
+        200:
+          $ref: '#/components/responses/ReadData'
+        400:
+          $ref: '#/components/responses/Exception'
 
       responses:
         201:

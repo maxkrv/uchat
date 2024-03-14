@@ -1,9 +1,8 @@
-/* for dark theme */
-@define-color bg_color #fff;
+@define-color bg_color #FFF0E7;
 @define-color text_color #36353C;
-@define-color primary_color #272643;
-@define-color secondary_color #2c698d;
-@define-color secondary_color-light #bae8e8;
-@define-color secondary_color-dark #122c3a;
-@define-color border_color #2c698d;
-@define-color input_bg_color #F3F3F3;
+@define-color primary_color #ffc7d5; 
+@define-color secondary_color #fcb6b6;
+@define-color secondary_color-light #fae2d7;
+@define-color secondary_color-dark #fb9f9f;
+@define-color border_color #fcb6b6;
+@define-color input_bg_color #FFF0E7;

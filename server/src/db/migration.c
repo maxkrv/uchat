@@ -10,7 +10,7 @@ void mx_create_migration_table(sqlite3 *db) {
                 "created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
 
     mx_handle_sqlite_error(sqlite3_exec(db, sql, NULL, 0, &message_error),
-                           message_error, "FILE");
+                           message_error);
 }
 
 //-------------------------------------------
@@ -79,8 +79,8 @@ void mx_record_migration(sqlite3 *db, const char *migration_name) {
     const char *insert_sql = "INSERT INTO migration (name) VALUES (?)";
 
     if (sqlite3_prepare_v2(db, insert_sql, -1, &stmt, NULL) != SQLITE_OK) {
-        fprintf(stderr, "Error: Failed to prepare SQL statement for migration "
-                        "recording\n");
+        fprintf(stderr, "Error: Failed to prepare SQL statement for "
+                        "recording rmigration\n");
         return;
     }
 
@@ -102,8 +102,7 @@ void mx_record_migration(sqlite3 *db, const char *migration_name) {
 //-------------------------------------------
 // Function to run migrations
 //-------------------------------------------
-void mx_run_migrations(sqlite3 *db) {
-    t_env_params *env = mx_get_env();
+void mx_run_migrations(sqlite3 *db, t_env_params *env) {
     char *migration_dir = mx_path_join(env->root_dir, "db/migrations");
     DIR *dir = opendir(migration_dir);
     struct dirent *entry;
@@ -112,6 +111,7 @@ void mx_run_migrations(sqlite3 *db) {
 
     if (!dir) {
         printf("Error: Failed to open migration directory.\n");
+        mx_strdel(&migration_dir);
         return;
     }
 
@@ -128,7 +128,10 @@ void mx_run_migrations(sqlite3 *db) {
 
             mx_execute_sql_from_file(db, filepath);
             mx_record_migration(db, entry->d_name);
+
+            mx_strdel(&filepath);
         }
     }
+    mx_strdel(&migration_dir);
     closedir(dir);
 }

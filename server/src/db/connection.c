@@ -5,16 +5,16 @@
 // ---------------------------------------------------------
 sqlite3 *mx_connect_to_database(const char *dbname) {
     sqlite3 *db;
-    int rc;
-    // Open database connection
-    rc = sqlite3_open(dbname, &db);
 
-    if (rc != SQLITE_OK) {
-        MG_ERROR(("Can`t open database: %s\n", sqlite3_errmsg(db)));
+    if (sqlite3_open(dbname, &db) != SQLITE_OK) {
+        MG_ERROR(("Can`t open database: %s", sqlite3_errmsg(db)));
+        MG_ERROR(("DB path: %s", dbname));
         sqlite3_close(db);
+        exit(EXIT_FAILURE);
         return NULL;
     }
-    MG_INFO(("Database connection established"));
+    MG_INFO(("Connection to db established"));
+    MG_INFO(("DB path: %s", dbname));
 
     return db;
 }
@@ -22,12 +22,9 @@ sqlite3 *mx_connect_to_database(const char *dbname) {
 // -------------------------
 // handle error
 // -------------------------
-void mx_handle_sqlite_error(int rc, char *message_error, char *name) {
+void mx_handle_sqlite_error(int rc, char *message_error) {
     if (rc != SQLITE_OK) {
         fprintf(stderr, "SQL error: %s\n", message_error);
         sqlite3_free(message_error);
-        printf("SQL error: %s\n", message_error);
-    } else {
-        printf(name, " table created successfully\n");
     }
 }

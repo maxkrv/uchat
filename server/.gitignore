@@ -9,4 +9,5 @@ test
 note.txt
 uchat_server
 assets/uploads
-
+db/sqlite.db
+db/db.sqlite

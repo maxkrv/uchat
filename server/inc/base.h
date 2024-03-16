@@ -40,10 +40,10 @@ typedef struct s_env_params {
     char *db_path;
     sqlite3 *db_connection;
     char *upload_dir;
-    char *static_dir_opt;
     char *domain;
+    struct mg_http_serve_opts static_dir_opt;
 } t_env_params;
 
-t_env_params *mx_get_env(void);
+t_env_params *mx_env_get(void);
 
 #endif

@@ -1,6 +1,6 @@
 #include "server.h"
 
-t_message *mx_init_message(void) {
+t_message *mx_message_init(void) {
     t_message *message = malloc(sizeof(t_message));
     message->id = 0;
     message->room_id = 0;
@@ -20,19 +20,19 @@ t_message *mx_init_message(void) {
     return message;
 }
 
-void mx_delete_message(t_message *message) {
+void mx_message_free(t_message *message) {
     if (!message) {
         return;
     }
 
     mx_strdel(&message->text);
 
-    mx_delete_user(message->author);
-    mx_delete_room(message->room);
-    mx_delete_message(message->reply);
+    mx_user_free(message->author);
+    mx_room_free(message->room);
+    mx_message_free(message->reply);
 
-    mx_delete_list(&message->readed_by, (t_func_void)mx_delete_read_message);
-    mx_delete_list(&message->files, (t_func_void)mx_delete_file);
+    mx_list_free(&message->readed_by, (t_func_void)mx_read_message_free);
+    mx_list_free(&message->files, (t_func_void)mx_file_free);
 
     free(message);
 }

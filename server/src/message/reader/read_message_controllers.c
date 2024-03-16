@@ -1,7 +1,7 @@
-#include "message.h"
+#include "server.h"
 
 void mx_message_ctrl_read_message(t_connection *c, t_http_message *m) {
-    t_user_id user_id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_auth(m);
 
     if (user_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
@@ -26,12 +26,14 @@ void mx_message_ctrl_read_message(t_connection *c, t_http_message *m) {
     t_string json_string = mx_read_message_stringify(read);
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
+    mx_ws_emit("message-was-readed", read->message->room_id,
+               mx_read_message_to_cjson(read));
     mx_strdel(&json_string);
-    mx_delete_read_message(read);
+    mx_read_message_free(read);
 }
 
 void mx_message_ctrl_get_reader(t_connection *c, t_http_message *m) {
-    t_user_id user_id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_auth(m);
 
     if (user_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
@@ -58,11 +60,11 @@ void mx_message_ctrl_get_reader(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_delete_read_message(read);
+    mx_read_message_free(read);
 }
 
 void mx_message_ctrl_get_readers(t_connection *c, t_http_message *m) {
-    t_user_id user_id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_auth(m);
 
     if (user_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
@@ -89,5 +91,5 @@ void mx_message_ctrl_get_readers(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_delete_list(&reads, (t_func_void)mx_delete_read_message);
+    mx_list_free(&reads, (t_func_void)mx_read_message_free);
 }

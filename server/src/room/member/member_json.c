@@ -20,7 +20,7 @@ cJSON *mx_member_to_cjson(t_room_member *member) {
     return obj;
 }
 
-t_string mx_room_member_stringify(t_room_member *member) {
+t_string mx_member_stringify(t_room_member *member) {
     cJSON *obj = mx_member_to_cjson(member);
     t_string res = cJSON_PrintUnformatted(obj);
 

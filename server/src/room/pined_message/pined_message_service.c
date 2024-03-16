@@ -16,23 +16,22 @@ t_list *mx_room_get_pined_messages(int room_id) {
     return mx_pined_repo_get_many(room_id);
 }
 
-t_list *mx_room_pine_message(int message_id, int room_id) {
-    t_list *list = mx_pined_repo_get_many(room_id);
-    bool is_duplicate = is_already_pined(list, room_id);
+t_room_pined_message *mx_room_pine_message(int message_id, int room_id) {
+    int pined_id = mx_pined_repo_create(message_id, room_id);
 
-    mx_delete_list(&list, (t_func_void)mx_delete_favorite_room);
+    if (pined_id <= 0) {
+        return NULL;
+    }
 
-    return is_duplicate ? NULL
-                        : mx_room_get_pined_messages(
-                              mx_pined_repo_create(message_id, room_id));
+    return mx_pined_repo_get(pined_id);
 }
 
-t_list *mx_room_unpine(int id) {
+t_room_pined_message *mx_room_unpine(int id) {
     t_room_pined_message *pin = mx_pined_repo_get(id);
-    int room_id = pin->room_id;
 
-    mx_pined_repo_delete(id);
-    mx_delete_room_pined(pin);
+    if (!mx_pined_repo_delete(id)) {
+        return NULL;
+    };
 
-    return mx_room_get_pined_messages(room_id);
+    return pin;
 }

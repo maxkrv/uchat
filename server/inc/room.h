@@ -35,10 +35,10 @@ void mx_room_route(t_connection *conn, t_http_message *req);
 /////////////////////////////////////////////
 */
 // structure constructors and destructors
-t_room *mx_init_room(void);
-void mx_delete_room(t_room *u);
-t_room_create_dto *mx_get_room_create_dto(struct mg_str body);
-void mx_delete_room_create_dto(t_room_create_dto *d);
+t_room *mx_room_init(void);
+void mx_room_free(t_room *u);
+t_room_create_dto *mx_room_create_dto_get(struct mg_str body);
+void mx_room_create_dto_free(t_room_create_dto *d);
 
 // constrollers
 void mx_room_ctrl_get(t_connection *c, t_http_message *m);
@@ -73,8 +73,8 @@ t_string mx_rooms_stringify(t_list *rooms);
 /////////////////////////////////////////////
 */
 // structure constructors and destructors
-t_room_pined_message *mx_init_room_pined(void);
-void mx_delete_room_pined(t_room_pined_message *m);
+t_room_pined_message *mx_room_pined_init(void);
+void mx_room_pined_free(t_room_pined_message *m);
 
 // controllers
 void mx_room_ctrl_pine_message(t_connection *c, t_http_message *m);
@@ -83,8 +83,8 @@ void mx_room_ctrl_unpine(t_connection *c, t_http_message *m);
 
 // services
 t_list *mx_room_get_pined_messages(int room_id);
-t_list *mx_room_pine_message(int message_id, int room_id);
-t_list *mx_room_unpine(int id);
+t_room_pined_message *mx_room_pine_message(int message_id, int room_id);
+t_room_pined_message *mx_room_unpine(int id);
 
 // repositories
 t_room_pined_message *mx_pined_repo_get(int id);
@@ -107,14 +107,14 @@ t_string mx_pined_messages_stringify(t_list *members);
 /////////////////////////////////////////////
 */
 // structure constructors and destructors
-t_room_member *mx_init_room_member(void);
-void mx_delete_room_member(t_room_member *m);
+t_room_member *mx_room_member_init(void);
+void mx_room_member_free(t_room_member *m);
 t_room_member_create_dto *
 mx_room_member_create_dto_constructor(int room_id, int user_id, bool is_admin);
-t_room_member_create_dto *mx_get_room_member_create_dto(struct mg_str body);
-void mx_delete_room_member_create_dto(t_room_member_create_dto *dto);
+t_room_member_create_dto *mx_room_member_create_dto_get(struct mg_str body);
+void mx_room_member_create_dto_free(t_room_member_create_dto *dto);
 t_room_member_update_dto *mx_parse_room_member_update_dto(struct mg_str body);
-void mx_delete_room_member_update_dto(t_room_member_update_dto *dto);
+void mx_room_member_update_dto_free(t_room_member_update_dto *dto);
 
 // controllers
 void mx_room_ctrl_get_member(t_connection *c, t_http_message *m);
@@ -141,7 +141,7 @@ bool mx_members_repo_delete(int id);
 
 // json
 cJSON *mx_member_to_cjson(t_room_member *room);
-t_string mx_room_member_stringify(t_room_member *member);
+t_string mx_member_stringify(t_room_member *member);
 cJSON *mx_members_to_cjson(t_list *rooms);
 t_string mx_room_members_stringify(t_list *members);
 

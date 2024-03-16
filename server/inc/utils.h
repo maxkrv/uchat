@@ -5,10 +5,12 @@
 
 typedef void (*t_func_void)(void *);
 
+void mx_list_free(t_list **list, t_func_void func);
+void mx_delete_node(t_list **list, t_list *node, t_func_void clean_data);
+
 bool mx_create_path_if_not_exist(char *path);
 t_string mx_decode_uri_component(struct mg_str str);
 char *mx_gen_uuid(void);
-void mx_delete_list(t_list **list, t_func_void func);
 bool mx_is_user_member_of(int room_id, int user_id);
 bool mx_is_room_admin(int room_id, int user_id);
 char *mx_path_join(const char *path, const char *name);

@@ -17,11 +17,11 @@ void mx_usage(t_string program_name) {
     exit(EXIT_FAILURE);
 }
 
-t_env_params *mx_get_env(void) {
+t_env_params *mx_env_get(void) {
     return env;
 }
 
-void mx_set_env(t_env_params *e) {
+void mx_env_set(t_env_params *e) {
     env = e;
 }
 
@@ -35,7 +35,6 @@ t_env_params *mx_create_env() {
     env->domain = mx_strdup("localhost");
     env->db_connection = NULL;
     env->db_path = NULL;
-    env->static_dir_opt = NULL;
     env->upload_dir = NULL;
 
     return env;
@@ -65,7 +64,7 @@ static void read_env_params(t_env_params *env, int argc, char *argv[]) {
     }
 }
 
-void mx_init_env(t_env_params *env, int argc, char *argv[]) {
+void mx_env_init(t_env_params *env, int argc, char *argv[]) {
     read_env_params(env, argc, argv);
 
     if (!env->db_path) {
@@ -73,20 +72,23 @@ void mx_init_env(t_env_params *env, int argc, char *argv[]) {
     }
 
     env->upload_dir = mx_path_join(env->root_dir, MX_UPLOAD_DIR_PATH);
-    env->static_dir_opt =
-        mg_mprintf("/%s=%s/%s", MX_STATIC_DIR, env->root_dir, MX_STATIC_DIR);
+    struct mg_http_serve_opts opt = {
+        .root_dir = mg_mprintf("/%s=%s/%s", MX_STATIC_DIR, env->root_dir,
+                               MX_STATIC_DIR),
+        .extra_headers = MX_OPTIONS_HEADERS};
+    env->static_dir_opt = opt;
     env->db_connection = mx_connect_to_database(env->db_path);
 
     mx_create_path_if_not_exist(env->upload_dir);
 }
 
-void mx_close_env(t_env_params *env) {
+void mx_env_close(t_env_params *env) {
     mx_strdel(&env->root_dir);
     mx_strdel(&env->domain);
     mx_strdel(&env->jwt_auth_secret);
     mx_strdel(&env->db_path);
     mx_strdel(&env->upload_dir);
-    mx_strdel(&env->static_dir_opt);
+    mx_strdel((char **)&env->static_dir_opt.root_dir);
     sqlite3_close(env->db_connection);
 
     free(env);

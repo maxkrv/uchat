@@ -1,11 +1,10 @@
 #include "db.h"
 
 void mx_create_migration_table(sqlite3 *db) {
-    int rc = 0;
     char *message_error;
     char *sql = "CREATE TABLE IF NOT EXISTS migration ("
                 "id              INTEGER PRIMARY KEY,"
-                "name            TEXT NOT NULL UNIQUE ,"
+                "name            TEXT NOT NULL UNIQUE,"
                 "was_run         INTEGER NOT NULL DEFAULT 1, "
                 "created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
 

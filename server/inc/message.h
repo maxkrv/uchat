@@ -31,10 +31,10 @@ void mx_message_route(t_connection *conn, t_http_message *req);
 /////////////////////////////////////////////
 */
 // structure constructors and destructors
-t_message *mx_init_message(void);
-void mx_delete_message(t_message *u);
-t_message_create_dto *mx_get_message_create_dto(struct mg_str body);
-void mx_delete_message_create_dto(t_message_create_dto *dto);
+t_message *mx_message_init(void);
+void mx_message_free(t_message *u);
+t_message_create_dto *mx_message_create_dto_get(struct mg_str body);
+void mx_message_create_dto_free(t_message_create_dto *dto);
 
 // controllers
 void mx_message_ctrl_get(t_connection *c, t_http_message *m);
@@ -71,8 +71,8 @@ t_string mx_messages_stringify(t_list *messages);
 /////////////////////////////////////////////
 */
 // structure constructors and destructors
-t_read_message *mx_init_read_message(void);
-void mx_delete_read_message(t_read_message *u);
+t_read_message *mx_read_message_init(void);
+void mx_read_message_free(t_read_message *u);
 
 // constrollers
 void mx_message_ctrl_get_reader(t_connection *c, t_http_message *m);
@@ -103,8 +103,8 @@ t_string mx_read_messages_stringify(t_list *messages);
 /////////////////////////////////////////////
 */
 // structure constructors and destructors
-t_message_file *mx_init_message_file(void);
-void mx_delete_message_file(t_message_file *u);
+t_message_file *mx_message_file_init(void);
+void mx_message_file_free(t_message_file *u);
 
 // services
 t_message_file *mx_message_file_get(int id);

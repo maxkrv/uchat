@@ -1,7 +1,7 @@
 #include "server.h"
 
 bool mx_file_upload(const char *file, int file_len, const char *filename) {
-    t_string file_path = mx_path_join(mx_get_env()->upload_dir, filename);
+    t_string file_path = mx_path_join(mx_env_get()->upload_dir, filename);
     FILE *fptr = fopen(file_path, "r");
 
     if (fptr) {
@@ -24,7 +24,7 @@ bool mx_file_upload(const char *file, int file_len, const char *filename) {
 }
 
 bool mx_file_delete_uploaded(char *filename) {
-    t_string file_path = mx_path_join(mx_get_env()->upload_dir, filename);
+    t_string file_path = mx_path_join(mx_env_get()->upload_dir, filename);
     FILE *fptr = fopen(file_path, "r");
 
     if (fptr) {

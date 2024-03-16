@@ -1,0 +1,528 @@
+asyncapi: 3.0.0
+
+info:
+  title: Uchat ws api
+  version: 1.0.0
+  description: |-
+    This api allows you to get different events from Uchat
+
+defaultContentType: application/json
+servers:
+  uchat-server:
+    host: localhost:3000
+    protocol: ws
+    pathname: ws
+    description: Uchat
+    security:
+      - $ref: '#/components/securitySchemes/JWT'
+
+channels:
+  root:
+    address: /
+    servers:
+      - $ref: '#/servers/uchat-server'
+    messages:
+      message-created:
+        payload:
+          type: object
+          properties:
+            event:
+              type: string
+              example: message-created
+              description: event from server
+            payload:
+              type: object
+              description: payload from server
+              $ref: '#/components/schemas/Message'
+      message-deleted:
+        payload:
+          type: object
+          properties:
+            event:
+              type: string
+              example: message-deleted
+              description: event from server
+            payload:
+              type: object
+              description: payload from server
+              $ref: '#/components/schemas/Message'
+      message-updated:
+        payload:
+          type: object
+          properties:
+            event:
+              type: string
+              example: message-updated
+              description: event from server
+            payload:
+              type: object
+              description: payload from server
+              $ref: '#/components/schemas/Message'
+      user-joined:
+        payload:
+          type: object
+          properties:
+            event:
+              type: string
+              example: user-joined
+              description: event from server
+            payload:
+              type: object
+              description: payload from server
+              $ref: '#/components/schemas/Member'
+      user-left:
+        payload:
+          type: object
+          properties:
+            event:
+              type: string
+              example: user-left
+              description: event from server
+            payload:
+              type: object
+              description: payload from server
+              $ref: '#/components/schemas/Member'
+      user-updated:
+        payload:
+          type: object
+          properties:
+            event:
+              type: string
+              example: user-updated
+              description: event from server
+            payload:
+              type: object
+              description: payload from server
+              $ref: '#/components/schemas/Member'
+      message-pinned:
+        payload:
+          type: object
+          properties:
+            event:
+              type: string
+              example: message-pinned
+              description: event from server
+            payload:
+              type: object
+              description: payload from server
+              $ref: '#/components/schemas/PinedMessage'
+      message-unpinned:
+        payload:
+          type: object
+          properties:
+            event:
+              type: string
+              example: message-unpinned
+              description: event from server
+            payload:
+              type: object
+              description: payload from server
+              $ref: '#/components/schemas/PinedMessage'
+      room-updated:
+        payload:
+          type: object
+          properties:
+            event:
+              type: string
+              example: room-updated
+              description: event from server
+            payload:
+              type: object
+              description: payload from server
+              $ref: '#/components/schemas/Room'
+      room-deleted:
+        payload:
+          type: object
+          properties:
+            event:
+              type: string
+              example: room-deleted
+              description: event from server
+            payload:
+              type: object
+              description: payload from server
+              $ref: '#/components/schemas/Room'
+      message-was-readed:
+        payload:
+          type: object
+          properties:
+            event:
+              type: string
+              example: message-was-readed
+              description: event from server
+            payload:
+              type: object
+              description: payload from server
+              $ref: '#/components/schemas/Reader'
+operations:
+  message-created:
+    action: receive
+    tags:
+      - $ref: '#/components/tags/event'
+      - $ref: '#/components/tags/message'
+    channel:
+      $ref: '#/channels/root'
+    description: >-
+      ##
+      Event: <font color='red'>message-created</font>
+
+      ###
+      Informs about creating a new message in the room.
+    messages:
+      - $ref: '#/channels/root/messages/message-created'
+  message-updated:
+    action: receive
+    tags:
+      - $ref: '#/components/tags/event'
+      - $ref: '#/components/tags/message'
+    channel:
+      $ref: '#/channels/root'
+    description: >-
+      ##
+      Event: <font color='red'>message-updated</font>
+
+      ###
+      Informs about updating message in the room
+    messages:
+      - $ref: '#/channels/root/messages/message-updated'
+  message-deleted:
+    action: receive
+    tags:
+      - $ref: '#/components/tags/event'
+      - $ref: '#/components/tags/message'
+    channel:
+      $ref: '#/channels/root'
+    description: >-
+      ##
+      Event: <font color='red'>message-deleted</font>
+
+      ###
+      Informs about deleting message in the room
+    messages:
+      - $ref: '#/channels/root/messages/message-deleted'
+  user-joined:
+    action: receive
+    tags:
+      - $ref: '#/components/tags/event'
+      - $ref: '#/components/tags/user'
+    channel:
+      $ref: '#/channels/root'
+    description: >-
+      ##
+      Event: <font color='red'>user-joined</font>
+
+      ###
+      Informs about user joining to the room
+    messages:
+      - $ref: '#/channels/root/messages/user-joined'
+  user-left:
+    action: receive
+    tags:
+      - $ref: '#/components/tags/event'
+      - $ref: '#/components/tags/user'
+    channel:
+      $ref: '#/channels/root'
+    description: >-
+      ##
+      Event: <font color='red'>user-left</font>
+
+      ###
+      Informs about user lefting the room
+    messages:
+      - $ref: '#/channels/root/messages/user-left'
+  user-updated:
+    action: receive
+    tags:
+      - $ref: '#/components/tags/event'
+      - $ref: '#/components/tags/user'
+    channel:
+      $ref: '#/channels/root'
+    description: >-
+      ##
+      Event: <font color='red'>user-updated</font>
+
+      ###
+      Informs about updating room member
+    messages:
+      - $ref: '#/channels/root/messages/user-updated'
+  message-pinned:
+    action: receive
+    tags:
+      - $ref: '#/components/tags/event'
+      - $ref: '#/components/tags/message'
+    channel:
+      $ref: '#/channels/root'
+    description: >-
+      ##
+      Event: <font color='red'>message-pinned</font>
+
+      ###
+      Informs about pinning message to room
+    messages:
+      - $ref: '#/channels/root/messages/message-pinned'
+  message-unpinned:
+    action: receive
+    tags:
+      - $ref: '#/components/tags/event'
+      - $ref: '#/components/tags/message'
+    channel:
+      $ref: '#/channels/root'
+    description: >-
+      ##
+      Event: <font color='red'>message-unpinned</font>
+
+      ###
+      Informs about unpinning message to room
+    messages:
+      - $ref: '#/channels/root/messages/message-unpinned'
+  room-updated:
+    action: receive
+    tags:
+      - $ref: '#/components/tags/event'
+      - $ref: '#/components/tags/room'
+    channel:
+      $ref: '#/channels/root'
+    description: >-
+      ##
+      Event: <font color='red'>room-updated</font>
+
+      ###
+      Informs about updating room
+    messages:
+      - $ref: '#/channels/root/messages/room-updated'
+  room-deleted:
+    action: receive
+    tags:
+      - $ref: '#/components/tags/event'
+      - $ref: '#/components/tags/room'
+    channel:
+      $ref: '#/channels/root'
+    description: >-
+      ##
+      Event: <font color='red'>room-deleted</font>
+
+      ###
+      Informs about deleting room
+    messages:
+      - $ref: '#/channels/root/messages/room-deleted'
+  message-was-readed:
+    action: receive
+    tags:
+      - $ref: '#/components/tags/event'
+      - $ref: '#/components/tags/message'
+    channel:
+      $ref: '#/channels/root'
+    description: >-
+      ##
+      Event: <font color='red'>message-was-readed</font>
+
+      ###
+      Informs about reading message
+    messages:
+      - $ref: '#/channels/root/messages/message-was-readed'
+components:
+  securitySchemes:
+    JWT:
+      scheme: bearer
+      type: http
+      description: JWT token in Authorization header
+  tags:
+    event:
+      name: server-event
+      description: event sended from server to clients
+    message:
+      name: message-event
+      description: message event sended from server to clients
+    user:
+      name: user-event
+      description: user event sended from server to clients
+    room:
+      name: room-event
+      description: room event sended from server to clients
+  schemas:
+    ID:
+      description: ID of entity
+      type: integer
+      nullable: false
+      format: int32
+      example: 1
+    Reader:
+      type: object
+      nullable: true
+      description: Message reader
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        user_id:
+          $ref: '#/components/schemas/ID'
+        message_id:
+          $ref: '#/components/schemas/ID'
+        created_at:
+          type: integer
+          example: 1589454400
+        edited_at:
+          type: integer
+          example: 1709632674
+
+        user:
+          $ref: '#/components/schemas/User'
+        message:
+          $ref: '#/components/schemas/Message'
+    File:
+      type: object
+      nullable: true
+      description: Db data about uploaded files
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        name:
+          type: string
+          example: file.png
+        url:
+          type: string
+          example: https://example.com
+        created_at:
+          type: integer
+          example: 1589454400
+        edited_at:
+          type: integer
+          example: 1709632674
+    User:
+      type: object
+      nullable: true
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        name:
+          type: string
+          example: Mykhailo Kloz
+        tag:
+          type: string
+          example: mkloz
+        photo_id:
+          $ref: '#/components/schemas/ID'
+        status:
+          type: string
+          example: online
+        description:
+          type: string
+          example: And I am filling gooood...
+        created_at:
+          type: integer
+          example: 1709632674
+        edited_at:
+          type: integer
+          example: 1709632674
+        photo:
+          $ref: '#/components/schemas/File'
+    Message:
+      type: object
+      nullable: true
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        author_id:
+          $ref: '#/components/schemas/ID'
+        room_id:
+          $ref: '#/components/schemas/ID'
+        reply_id:
+          $ref: '#/components/schemas/ID'
+        text:
+          type: string
+          example: Message
+        created_at:
+          type: integer
+          example: 1709632674
+        edited_at:
+          type: integer
+          example: 1709632674
+
+        author:
+          $ref: '#/components/schemas/User'
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/File'
+    Room:
+      type: object
+      nullable: true
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        name:
+          type: string
+          example: Uchat
+        photo_id:
+          $ref: '#/components/schemas/ID'
+        type:
+          type: string
+          example: direct
+        description:
+          type: string
+          example: Cool room
+        created_at:
+          type: integer
+          example: 1709632674
+        edited_at:
+          type: integer
+          example: 1709632674
+
+        photo:
+          $ref: '#/components/schemas/File'
+    Favorite:
+      type: object
+      nullable: true
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        user_id:
+          $ref: '#/components/schemas/ID'
+        room_id:
+          $ref: '#/components/schemas/ID'
+        created_at:
+          type: integer
+          example: 1709632674
+        edited_at:
+          type: integer
+          example: 1709632674
+        room:
+          $ref: '#/components/schemas/Room'
+    Member:
+      type: object
+      nullable: true
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        user_id:
+          $ref: '#/components/schemas/ID'
+        room_id:
+          $ref: '#/components/schemas/ID'
+        is_admin:
+          type: boolean
+          example: false
+        created_at:
+          type: integer
+          example: 1709632674
+        edited_at:
+          type: integer
+          example: 1709632674
+        user:
+          $ref: '#/components/schemas/User'
+    PinedMessage:
+      type: object
+      nullable: true
+      properties:
+        id:
+          $ref: '#/components/schemas/ID'
+        room_id:
+          $ref: '#/components/schemas/ID'
+        message_id:
+          $ref: '#/components/schemas/ID'
+        created_at:
+          type: integer
+          example: 1709632674
+        edited_at:
+          type: integer
+          example: 1709632674
+        message:
+          $ref: '#/components/schemas/Message'

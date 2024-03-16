@@ -5,7 +5,7 @@ int main(int argc, char *argv[]) {
 
     t_env_params *env = mx_create_env();
 
-    mx_init_env(env, argc, argv);
+    mx_env_init(env, argc, argv);
 
     t_string port = mx_itoa(env->port);
     t_string addr = mx_strjoin("http://localhost:", port);
@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 
     mx_strdel(&addr);
     mx_strdel(&port);
-    mx_close_env(env);
+    mx_env_close(env);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

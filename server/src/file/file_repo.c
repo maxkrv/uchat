@@ -1,7 +1,7 @@
 #include "server.h"
 
 t_file *mx_file_repo_get(int id) {
-    return mx_init_file();
+    return mx_file_init();
 }
 int mx_file_repo_create(char *filename, char *url) {
     return 1;

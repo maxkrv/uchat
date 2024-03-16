@@ -20,12 +20,12 @@ void mx_file_ctrl_get(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_delete_file(file);
+    mx_file_free(file);
 }
 
 void mx_file_ctrl_upload(t_connection *c, t_http_message *m) {
     struct mg_http_part part;
-    t_user_id user_id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_auth(m);
 
     if (user_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
@@ -63,5 +63,5 @@ void mx_file_ctrl_upload(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_delete_file(file);
+    mx_file_free(file);
 }

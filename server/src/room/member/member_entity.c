@@ -1,6 +1,6 @@
 #include "server.h"
 
-t_room_member *mx_init_room_member(void) {
+t_room_member *mx_room_member_init(void) {
     t_room_member *member = malloc(sizeof(t_room_member));
     member->id = 0;
     member->user_id = 0;
@@ -15,12 +15,12 @@ t_room_member *mx_init_room_member(void) {
     return member;
 }
 
-void mx_delete_room_member(t_room_member *member) {
+void mx_room_member_free(t_room_member *member) {
     if (!member) {
         return;
     }
-    mx_delete_room(member->room);
-    mx_delete_user(member->user);
+    mx_room_free(member->room);
+    mx_user_free(member->user);
 
     free(member);
 }

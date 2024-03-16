@@ -1,11 +1,11 @@
 #include "message.h"
 
 t_message *mx_message_repo_get(int id) {
-    return mx_init_message();
+    return mx_message_init();
 }
 
 t_list *mx_message_repo_get_many(int room_id) {
-    t_list *list;
+    t_list *list = NULL;
 
     mx_push_back(&list, mx_message_repo_get(1));
 

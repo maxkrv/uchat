@@ -7,8 +7,8 @@
 
 void mx_file_route(t_connection *c, t_http_message *req);
 
-t_file *mx_init_file(void);
-void mx_delete_file(t_file *u);
+t_file *mx_file_init(void);
+void mx_file_free(t_file *u);
 
 void mx_file_ctrl_get(t_connection *c, t_http_message *m);
 void mx_file_ctrl_upload(t_connection *c, t_http_message *m);

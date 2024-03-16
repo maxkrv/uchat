@@ -35,7 +35,7 @@ static t_login_dto *init_login_dto() {
 
     return dto;
 }
-void mx_delete_login_dto(t_login_dto *dto) {
+void mx_login_dto_free(t_login_dto *dto) {
     if (!dto) {
         return;
     }
@@ -49,7 +49,7 @@ static t_login_dto *validate_login_dto(t_login_dto *dto) {
     if (!dto->name || !dto->password || mx_strlen(dto->name) < 4 ||
         !mx_is_valid_password(dto->password)) {
 
-        mx_delete_login_dto(dto);
+        mx_login_dto_free(dto);
         return NULL;
     }
 
@@ -73,7 +73,7 @@ static t_login_dto *parse_login_dto(struct mg_str body) {
     return dto;
 }
 
-t_login_dto *mx_get_login_dto(struct mg_str body) {
+t_login_dto *mx_login_dto_get(struct mg_str body) {
     t_login_dto *dto = parse_login_dto(body);
 
     if (!dto) {

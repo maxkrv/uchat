@@ -13,7 +13,7 @@ static t_user_create_dto *init_user_create_dto() {
     return dto;
 }
 
-void mx_delete_user_create_dto(t_user_create_dto *dto) {
+void mx_user_create_dto_free(t_user_create_dto *dto) {
     if (!dto) {
         return;
     }
@@ -39,7 +39,7 @@ static t_user_create_dto *validate_user_create_dto(t_user_create_dto *dto) {
         dto->photo_id < 0 || mx_strlen(dto->name) < 4 ||
         mx_strlen(dto->password) < 8 || mx_strlen(dto->status) < 2 ||
         mx_strlen(dto->tag) < 4 || !mx_is_valid_password(dto->password)) {
-        mx_delete_user_create_dto(dto);
+        mx_user_create_dto_free(dto);
         return NULL;
     }
 
@@ -66,7 +66,7 @@ static t_user_create_dto *parse_user_create_dto(struct mg_str body) {
     return dto;
 }
 
-t_user_create_dto *mx_get_user_create_dto(struct mg_str body) {
+t_user_create_dto *mx_user_create_dto_get(struct mg_str body) {
     t_user_create_dto *dto = parse_user_create_dto(body);
     if (!dto) {
         return NULL;

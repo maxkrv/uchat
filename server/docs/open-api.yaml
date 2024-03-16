@@ -1,6 +1,6 @@
 openapi: 3.0.3
 servers:
-  - url: http://localhost:3000/api/v1
+  - url: http://localhost:3000
 
 security: []
 
@@ -16,7 +16,36 @@ info:
     email: micha21cloz@gmail.com
 
 paths:
-  /auth/login:
+  /assets/{path-to-file}:
+    get:
+      operationId: get-assets
+      summary: Get assets
+      tags: ['An others']
+      parameters:
+        - in: path
+          name: path-to-file
+          required: true
+          schema:
+            type: string
+            example: 1.txt
+      responses:
+        200:
+          description: Get static files
+        400:
+          $ref: '#/components/responses/Exception'
+  /ws:
+    get:
+      operationId: ws
+      summary: Websocket upgrade
+      tags: ['An others']
+      responses:
+        101:
+          description: Websocket upgrade
+        200:
+          description: Upgrade declined
+        400:
+          $ref: '#/components/responses/Exception'
+  /api/v1/auth/login:
     post:
       operationId: login
       summary: Get token from the user credentials
@@ -46,7 +75,7 @@ paths:
                     example: rwfdsfwrasfd.sdfgerfsdasfrwd.weagvrwesafvd
         400:
           $ref: '#/components/responses/Exception'
-  /auth/register:
+  /api/v1/auth/register:
     post:
       operationId: register
       summary: Register a new user
@@ -85,7 +114,7 @@ paths:
           $ref: '#/components/responses/UserData'
         400:
           $ref: '#/components/responses/Exception'
-  /auth/change/password:
+  /api/v1/auth/change/password:
     post:
       security:
         - JWT: []
@@ -110,7 +139,7 @@ paths:
           $ref: '#/components/responses/UserData'
         400:
           $ref: '#/components/responses/Exception'
-  /users/find:
+  /api/v1/users/find:
     get:
       operationId: get-user
       summary: Get user data by tag or id
@@ -139,7 +168,7 @@ paths:
                 $ref: '#/components/schemas/User'
         400:
           $ref: '#/components/responses/Exception'
-  /users/me:
+  /api/v1/users/me:
     get:
       operationId: Get-me
       summary: Get user data by token
@@ -197,7 +226,7 @@ paths:
           $ref: '#/components/responses/UserData'
         400:
           $ref: '#/components/responses/Exception'
-  /users/me/favorites:
+  /api/v1/users/me/favorites:
     get:
       operationId: Get-favorites
       summary: Get user favorites
@@ -242,7 +271,7 @@ paths:
           $ref: '#/components/responses/FavoritesData'
         400:
           $ref: '#/components/responses/Exception'
-  /users/me/rooms:
+  /api/v1/users/me/rooms:
     get:
       operationId: get-rooms
       summary: Get user rooms
@@ -261,7 +290,7 @@ paths:
                   $ref: '#/components/schemas/Room'
         400:
           $ref: '#/components/responses/Exception'
-  /rooms/find:
+  /api/v1/rooms/find:
     get:
       operationId: get-room
       tags: ['Room']
@@ -277,7 +306,7 @@ paths:
           $ref: '#/components/responses/RoomData'
         400:
           $ref: '#/components/responses/Exception'
-  /rooms:
+  /api/v1/rooms:
     post:
       operationId: post-room
       summary: 'Creates a room and sets user as admin of room'
@@ -356,7 +385,7 @@ paths:
           $ref: '#/components/responses/RoomData'
         400:
           $ref: '#/components/responses/Exception'
-  /rooms/members/find:
+  /api/v1/rooms/members/find:
     get:
       operationId: get-member
       tags: ['Member']
@@ -371,7 +400,7 @@ paths:
           $ref: '#/components/responses/MemberData'
         400:
           $ref: '#/components/responses/Exception'
-  /rooms/members:
+  /api/v1/rooms/members:
     get:
       operationId: get-members
       security:
@@ -459,7 +488,7 @@ paths:
           $ref: '#/components/responses/MemberData'
         400:
           $ref: '#/components/responses/Exception'
-  /rooms/pined:
+  /api/v1/rooms/pined:
     get:
       operationId: get-pined
       security:
@@ -474,7 +503,13 @@ paths:
 
       responses:
         200:
-          $ref: '#/components/responses/PinedMessagesData'
+          description: Returns all pined messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PinedMessage'
         400:
           $ref: '#/components/responses/Exception'
 
@@ -495,7 +530,7 @@ paths:
             $ref: '#/components/schemas/ID'
       responses:
         201:
-          $ref: '#/components/responses/PinedMessagesData'
+          $ref: '#/components/responses/PinnedMessageData'
         400:
           $ref: '#/components/responses/Exception'
     delete:
@@ -519,7 +554,7 @@ paths:
                 $ref: '#/components/schemas/PinedMessage'
         400:
           $ref: '#/components/responses/Exception'
-  /messages/find:
+  /api/v1/messages/find:
     get:
       operationId: get-message
       tags: ['Message']
@@ -536,7 +571,7 @@ paths:
           $ref: '#/components/responses/MessageData'
         400:
           $ref: '#/components/responses/Exception'
-  /messages:
+  /api/v1/messages:
     post:
       operationId: post-message
       summary: 'Creates a message'
@@ -615,7 +650,7 @@ paths:
           $ref: '#/components/responses/MessageData'
         400:
           $ref: '#/components/responses/Exception'
-  /messages/readers/find:
+  /api/v1/messages/readers/find:
     get:
       operationId: get-message-reader
       tags: ['Reader']
@@ -629,10 +664,10 @@ paths:
         - JWT: []
       responses:
         200:
-          $ref: '#/components/responses/ReadData'
+          $ref: '#/components/responses/ReaderData'
         400:
           $ref: '#/components/responses/Exception'
-  /messages/readers:
+  /api/v1/messages/readers:
     post:
       operationId: post-message-reader
       summary: 'Creates a mark of readed message by user'
@@ -646,7 +681,7 @@ paths:
             $ref: '#/components/schemas/ID'
       responses:
         201:
-          $ref: '#/components/responses/MessageData'
+          $ref: '#/components/responses/ReaderData'
         400:
           $ref: '#/components/responses/Exception'
     get:
@@ -671,7 +706,7 @@ paths:
                   $ref: '#/components/schemas/Reader'
         400:
           $ref: '#/components/responses/Exception'
-  /files/upload:
+  /api/v1/files/upload:
     post:
       operationId: file-upload
       tags: ['File']
@@ -696,7 +731,7 @@ paths:
                 $ref: '#/components/schemas/File'
         400:
           $ref: '#/components/responses/Exception'
-  /files/find:
+  /api/v1/files/find:
     get:
       operationId: get-file-data
       tags: ['File']
@@ -708,35 +743,7 @@ paths:
       summary: Get file data from db
       responses:
         200:
-          $ref: '#/components/responses/ReadData'
-        400:
-          $ref: '#/components/responses/Exception'
-
-      responses:
-        201:
-          $ref: '#/components/responses/MessageData'
-        400:
-          $ref: '#/components/responses/Exception'
-    get:
-      operationId: get-message-readers
-      summary: 'Gets message reader info'
-      tags: ['Reader']
-      security:
-        - JWT: []
-      parameters:
-        - in: query
-          name: message_id
-          schema:
-            $ref: '#/components/schemas/ID'
-      responses:
-        200:
-          description: Gets readers
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Reader'
+          $ref: '#/components/responses/ReaderData'
         400:
           $ref: '#/components/responses/Exception'
 components:
@@ -753,6 +760,8 @@ components:
       format: int32
       example: 1
     Reader:
+      type: object
+      nullable: true
       description: Message reader
       properties:
         id:
@@ -771,6 +780,8 @@ components:
         user:
           $ref: '#/components/schemas/User'
     File:
+      type: object
+      nullable: true
       description: Db data about uploaded files
       properties:
         id:
@@ -787,28 +798,9 @@ components:
         edited_at:
           type: integer
           example: 1709632674
-    MessageFile:
-      description: Db data about uploaded message file
-      properties:
-        id:
-          $ref: '#/components/schemas/ID'
-        file_id:
-          $ref: '#/components/schemas/ID'
-        message_id:
-          $ref: '#/components/schemas/ID'
-        type:
-          type: string
-          example: audio
-        created_at:
-          type: integer
-          example: 1589454400
-        edited_at:
-          type: integer
-          example: 1709632674
-
-        file:
-          $ref: '#/components/schemas/File'
     User:
+      type: object
+      nullable: true
       properties:
         id:
           $ref: '#/components/schemas/ID'
@@ -835,6 +827,8 @@ components:
         photo:
           $ref: '#/components/schemas/File'
     Message:
+      type: object
+      nullable: true
       properties:
         id:
           $ref: '#/components/schemas/ID'
@@ -856,11 +850,13 @@ components:
 
         author:
           $ref: '#/components/schemas/User'
-        message_files:
+        files:
           type: array
           items:
-            $ref: '#/components/schemas/MessageFile'
+            $ref: '#/components/schemas/File'
     Room:
+      type: object
+      nullable: true
       properties:
         id:
           $ref: '#/components/schemas/ID'
@@ -885,6 +881,8 @@ components:
         photo:
           $ref: '#/components/schemas/File'
     Favorite:
+      type: object
+      nullable: true
       properties:
         id:
           $ref: '#/components/schemas/ID'
@@ -901,6 +899,8 @@ components:
         room:
           $ref: '#/components/schemas/Room'
     Member:
+      type: object
+      nullable: true
       properties:
         id:
           $ref: '#/components/schemas/ID'
@@ -920,6 +920,8 @@ components:
         user:
           $ref: '#/components/schemas/User'
     PinedMessage:
+      type: object
+      nullable: true
       properties:
         id:
           $ref: '#/components/schemas/ID'
@@ -936,6 +938,8 @@ components:
         message:
           $ref: '#/components/schemas/Message'
     Exception:
+      type: object
+      nullable: true
       properties:
         timestamp:
           type: integer
@@ -988,23 +992,26 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Member'
-    PinedMessagesData:
+    PinnedMessageData:
       description: Pined messages data
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/PinedMessage'
+            $ref: '#/components/schemas/PinedMessage'
     MessageData:
       description: Message data
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Message'
-    ReadData:
+    ReaderData:
       description: Message read data
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Reader'
+            allOf:
+              - $ref: '#/components/schemas/Reader'
+              - type: object
+                properties:
+                  message:
+                    $ref: '#/components/schemas/Message'

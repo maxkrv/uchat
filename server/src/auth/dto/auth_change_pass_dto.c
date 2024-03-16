@@ -9,7 +9,7 @@ static t_change_password_dto *init_change_password_dto() {
     return dto;
 }
 
-void mx_delete_change_password_dto(t_change_password_dto *dto) {
+void mx_change_password_dto_free(t_change_password_dto *dto) {
     if (!dto) {
         return;
     }
@@ -25,7 +25,7 @@ validate_change_password_dto(t_change_password_dto *dto) {
         !mx_is_valid_password(dto->old_password) ||
         !mx_is_valid_password(dto->new_password)) {
 
-        mx_delete_change_password_dto(dto);
+        mx_change_password_dto_free(dto);
         return NULL;
     }
 
@@ -49,7 +49,7 @@ static t_change_password_dto *parse_change_password_dto(struct mg_str body) {
     return dto;
 }
 
-t_change_password_dto *mx_get_change_password_dto(struct mg_str body) {
+t_change_password_dto *mx_change_password_dto_get(struct mg_str body) {
     t_change_password_dto *dto = parse_change_password_dto(body);
 
     if (!dto) {

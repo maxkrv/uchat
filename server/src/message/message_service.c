@@ -21,7 +21,7 @@ t_message *mx_message_create(t_message_create_dto *dto) {
     for (t_list *l = dto->file_ids; l; l = l->next) {
         t_message_file *msg_fl =
             mx_message_file_create(message_id, mx_atoi(l->data));
-        mx_delete_message_file(msg_fl);
+        mx_message_file_free(msg_fl);
     }
 
     return mx_message_repo_get(message_id);

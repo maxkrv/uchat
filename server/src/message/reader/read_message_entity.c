@@ -1,6 +1,6 @@
 #include "server.h"
 
-t_read_message *mx_init_read_message(void) {
+t_read_message *mx_read_message_init(void) {
     t_read_message *member = malloc(sizeof(t_read_message));
     member->id = 0;
     member->user_id = 0;
@@ -14,12 +14,12 @@ t_read_message *mx_init_read_message(void) {
     return member;
 }
 
-void mx_delete_read_message(t_read_message *member) {
+void mx_read_message_free(t_read_message *member) {
     if (!member) {
         return;
     }
-    mx_delete_message(member->message);
-    mx_delete_user(member->user);
+    mx_message_free(member->message);
+    mx_user_free(member->user);
 
     free(member);
 }

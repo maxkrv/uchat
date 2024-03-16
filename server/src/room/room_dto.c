@@ -11,7 +11,7 @@ static t_room_create_dto *init_room_create_dto() {
     return dto;
 }
 
-void mx_delete_room_create_dto(t_room_create_dto *dto) {
+void mx_room_create_dto_free(t_room_create_dto *dto) {
     if (!dto) {
         return;
     }
@@ -25,7 +25,7 @@ void mx_delete_room_create_dto(t_room_create_dto *dto) {
 static t_room_create_dto *validate_room_create_dto(t_room_create_dto *dto) {
     if (!dto->name || !dto->type || dto->photo_id < 0 ||
         mx_strlen(dto->name) < 4 || mx_strlen(dto->type) < 4) {
-        mx_delete_room_create_dto(dto);
+        mx_room_create_dto_free(dto);
         return NULL;
     }
 
@@ -42,6 +42,7 @@ static t_room_create_dto *parse_room_create_dto(struct mg_str body) {
     }
 
     dto->name = mx_cjson_get_string(obj, "name");
+    dto->type = mx_cjson_get_string(obj, "type");
     dto->description = mx_cjson_get_string(obj, "description");
     dto->photo_id = mx_cjson_get_number(obj, "photo_id");
 
@@ -50,7 +51,7 @@ static t_room_create_dto *parse_room_create_dto(struct mg_str body) {
     return dto;
 }
 
-t_room_create_dto *mx_get_room_create_dto(struct mg_str body) {
+t_room_create_dto *mx_room_create_dto_get(struct mg_str body) {
     t_room_create_dto *dto = parse_room_create_dto(body);
 
     if (!dto) {

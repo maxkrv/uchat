@@ -24,15 +24,15 @@ typedef struct s_user_create_dto t_register_dto;
 void mx_auth_route(t_connection *conn, t_http_message *req);
 
 // structs constructors and destructors
-t_login_dto *mx_get_login_dto(struct mg_str body);
-void mx_delete_login_dto(t_login_dto *dto);
-t_change_password_dto *mx_get_change_password_dto(struct mg_str body);
-void mx_delete_change_password_dto(t_change_password_dto *dto);
+t_login_dto *mx_login_dto_get(struct mg_str body);
+void mx_login_dto_free(t_login_dto *dto);
+t_change_password_dto *mx_change_password_dto_get(struct mg_str body);
+void mx_change_password_dto_free(t_change_password_dto *dto);
 
 // auth helpers
 bool mx_is_valid_password(char *password);
 t_string mx_token_stringify(t_jwt_token t);
-int mx_user_id_from_auth_jwt(t_http_message *req);
+int mx_auth(t_http_message *req);
 char *mx_create_auth_jwt(int user_id);
 int mx_verify_auth_jwt(char *jwt);
 

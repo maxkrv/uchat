@@ -2,11 +2,14 @@ CREATE TABLE IF NOT EXISTS room (
     id              INTEGER PRIMARY KEY,
     name            VARCHAR(255) NOT NULL UNIQUE,
     photo_id        VARCHAR(255)  NULL,
-    category        VARCHAR(30) DEFAULT 'DIRECT',
+    type            VARCHAR(30) DEFAULT 'direct',
     description     VARCHAR(255), 
     created_at      INT NULL, 
     edited_at       INT NULL
+
+    FOREIGN KEY(photo_id) REFERENCES file(id),
 );
+
 CREATE TABLE IF NOT EXISTS room_member (
     id              INTEGER PRIMARY KEY,
     user_id         INTEGER NOT NULL,

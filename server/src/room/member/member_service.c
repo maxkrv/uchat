@@ -12,7 +12,7 @@ t_room_member *mx_room_add_member(t_room_member_create_dto *dto) {
     t_room_member *member = mx_members_repo_get_by(dto->user_id, dto->room_id);
 
     if (member) {
-        return member;
+        return NULL;
     }
 
     int id = mx_members_repo_create(dto->user_id, dto->room_id, dto->is_admin);
@@ -45,6 +45,6 @@ t_room_member *mx_room_delete_member(int id) {
     if (!ok) {
         return NULL;
     }
-    mx_delete_room_member(member);
+    mx_room_member_free(member);
     return mx_room_get_member(id);
 }

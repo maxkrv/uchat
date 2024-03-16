@@ -1,7 +1,7 @@
-#include "room.h"
+#include "server.h"
 
 void mx_room_ctrl_get_member(t_connection *c, t_http_message *m) {
-    t_user_id user_id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_auth(m);
     int member_id = mx_extract_id_from_query(m->query, "member_id");
 
     if (user_id <= 0 || member_id <= 0) {
@@ -16,14 +16,14 @@ void mx_room_ctrl_get_member(t_connection *c, t_http_message *m) {
                                 "Member does not exist");
         return;
     }
-    t_string json_string = mx_room_member_stringify(member);
+    t_string json_string = mx_member_stringify(member);
 
     mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_delete_room_member(member);
+    mx_room_member_free(member);
 }
 void mx_room_ctrl_get_members(t_connection *c, t_http_message *m) {
-    t_user_id user_id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_auth(m);
     int room_id = mx_extract_id_from_query(m->query, "room_id");
 
     if (user_id <= 0 || room_id <= 0) {
@@ -42,12 +42,12 @@ void mx_room_ctrl_get_members(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_delete_list(&members, (t_func_void)mx_delete_room_member);
+    mx_list_free(&members, (t_func_void)mx_room_member_free);
 }
 
 void mx_room_ctrl_add_member(t_connection *c, t_http_message *m) {
-    t_user_id user_id = mx_user_id_from_auth_jwt(m);
-    t_room_member_create_dto *dto = mx_get_room_member_create_dto(m->body);
+    t_user_id user_id = mx_auth(m);
+    t_room_member_create_dto *dto = mx_room_member_create_dto_get(m->body);
 
     if (user_id <= 0 || !dto) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
@@ -58,7 +58,7 @@ void mx_room_ctrl_add_member(t_connection *c, t_http_message *m) {
     if (!mx_is_user_member_of(dto->room_id, user_id)) {
         mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN,
                                 "User has no permissions");
-        mx_delete_room_member_create_dto(dto);
+        mx_room_member_create_dto_free(dto);
         return;
     }
     t_room_member *mem = mx_room_add_member(dto);
@@ -66,21 +66,23 @@ void mx_room_ctrl_add_member(t_connection *c, t_http_message *m) {
     if (!mem) {
         mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
                                 "Cant add member");
-        mx_delete_room_member_create_dto(dto);
-        mx_delete_room_member(mem);
+        mx_room_member_create_dto_free(dto);
+        mx_room_member_free(mem);
         return;
     }
 
-    t_string json_string = mx_room_member_stringify(mem);
+    t_string json_string = mx_member_stringify(mem);
 
     mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS_JSON, json_string);
+    mx_push_client_room(user_id, mx_room_get(mem->room_id));
+    mx_ws_emit("user-joined", mem->room_id, mx_member_to_cjson(mem));
     mx_strdel(&json_string);
-    mx_delete_room_member_create_dto(dto);
-    mx_delete_room_member(mem);
+    mx_room_member_create_dto_free(dto);
+    mx_room_member_free(mem);
 }
 
 void mx_room_ctrl_update_member(t_connection *c, t_http_message *m) {
-    t_user_id user_id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_auth(m);
     int member_id = mx_extract_id_from_query(m->query, "member_id");
     t_room_member_update_dto *dto = mx_parse_room_member_update_dto(m->body);
 
@@ -93,21 +95,21 @@ void mx_room_ctrl_update_member(t_connection *c, t_http_message *m) {
     if (!member) {
         mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
                                 "Member not found");
-        mx_delete_room_member_update_dto(dto);
+        mx_room_member_update_dto_free(dto);
         return;
     }
     if (!mx_is_room_admin(member->room_id, user_id)) {
         mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN,
                                 "User has no permissions");
-        mx_delete_room_member_update_dto(dto);
-        mx_delete_room_member(member);
+        mx_room_member_update_dto_free(dto);
+        mx_room_member_free(member);
         return;
     }
-    mx_delete_room_member(member);
+    mx_room_member_free(member);
 
     t_room_member *mem = mx_room_update_member(member_id, dto);
 
-    mx_delete_room_member_update_dto(dto);
+    mx_room_member_update_dto_free(dto);
 
     if (!mem) {
         mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
@@ -115,15 +117,16 @@ void mx_room_ctrl_update_member(t_connection *c, t_http_message *m) {
         return;
     }
 
-    t_string json_string = mx_room_member_stringify(mem);
+    t_string json_string = mx_member_stringify(mem);
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
+    mx_ws_emit("user-updated", mem->room_id, mx_member_to_cjson(mem));
     mx_strdel(&json_string);
-    mx_delete_room_member(mem);
+    mx_room_member_free(mem);
 }
 
 void mx_room_ctrl_delete_member(t_connection *c, t_http_message *m) {
-    t_user_id user_id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_auth(m);
     int member_id = mx_extract_id_from_query(m->query, "member_id");
 
     if (user_id <= 0 || member_id <= 0) {
@@ -141,10 +144,10 @@ void mx_room_ctrl_delete_member(t_connection *c, t_http_message *m) {
     if (!mx_is_room_admin(member->room_id, member->user_id)) {
         mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN,
                                 "User is not a member of room");
-        mx_delete_room_member(member);
+        mx_room_member_free(member);
         return;
     }
-    mx_delete_room_member(member);
+    mx_room_member_free(member);
     t_room_member *mem = mx_room_delete_member(member_id);
 
     if (!mem) {
@@ -153,9 +156,11 @@ void mx_room_ctrl_delete_member(t_connection *c, t_http_message *m) {
         return;
     }
 
-    t_string json_string = mx_room_member_stringify(mem);
+    t_string json_string = mx_member_stringify(mem);
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
+    mx_ws_emit("user-left", mem->room_id, mx_member_to_cjson(mem));
+    mx_delete_client_room(user_id, mem->room_id);
     mx_strdel(&json_string);
-    mx_delete_room_member(mem);
+    mx_room_member_free(mem);
 }

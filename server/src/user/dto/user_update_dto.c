@@ -12,7 +12,7 @@ static t_user_update_dto *init_user_update_dto() {
     return dto;
 }
 
-void mx_delete_user_update_dto(t_user_update_dto *dto) {
+void mx_user_update_dto_free(t_user_update_dto *dto) {
     if (!dto) {
         return;
     }
@@ -29,7 +29,7 @@ static t_user_update_dto *validate_user_update_dto(t_user_update_dto *dto) {
     if (!dto->name || !dto->tag || !dto->status || dto->photo_id < 0 ||
         mx_strlen(dto->name) < 4 || mx_strlen(dto->status) < 4 ||
         mx_strlen(dto->tag) < 4) {
-        mx_delete_user_update_dto(dto);
+        mx_user_update_dto_free(dto);
         return NULL;
     }
 
@@ -55,7 +55,7 @@ static t_user_update_dto *parse_user_update_dto(struct mg_str body) {
     return dto;
 }
 
-t_user_update_dto *mx_get_user_update_dto(struct mg_str body) {
+t_user_update_dto *mx_user_update_dto_get(struct mg_str body) {
     t_user_update_dto *dto = parse_user_update_dto(body);
 
     if (!dto) {

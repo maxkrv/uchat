@@ -5,7 +5,15 @@ t_list *mx_read_messages_get(int message_id) {
 }
 
 t_read_message *mx_read_message_get(int id) {
-    return mx_read_message_repo_get(id);
+    t_read_message *m = mx_read_message_repo_get(id);
+
+    if (!m || m->message_id < 0) {
+        return NULL;
+    }
+
+    m->message = mx_message_get(m->message_id);
+
+    return m;
 }
 
 t_read_message *mx_read_message(int user_id, int message_id) {

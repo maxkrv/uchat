@@ -11,12 +11,12 @@ static t_message_create_dto *init_message_create_dto() {
     return dto;
 }
 
-void mx_delete_message_create_dto(t_message_create_dto *dto) {
+void mx_message_create_dto_free(t_message_create_dto *dto) {
     if (!dto) {
         return;
     }
     mx_strdel(&dto->text);
-    mx_delete_list(&dto->file_ids, free);
+    mx_list_free(&dto->file_ids, free);
 
     free(dto);
 }
@@ -24,7 +24,7 @@ void mx_delete_message_create_dto(t_message_create_dto *dto) {
 static t_message_create_dto *
 validate_message_create_dto(t_message_create_dto *dto) {
     if (!dto->room_id || !dto->text) {
-        mx_delete_message_create_dto(dto);
+        mx_message_create_dto_free(dto);
         return NULL;
     }
 
@@ -58,7 +58,7 @@ static t_message_create_dto *parse_message_create_dto(struct mg_str body) {
     return dto;
 }
 
-t_message_create_dto *mx_get_message_create_dto(struct mg_str body) {
+t_message_create_dto *mx_message_create_dto_get(struct mg_str body) {
     t_message_create_dto *dto = parse_message_create_dto(body);
 
     if (!dto) {

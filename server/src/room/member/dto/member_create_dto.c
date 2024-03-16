@@ -22,7 +22,7 @@ mx_room_member_create_dto_constructor(int room_id, int user_id,
     return dto;
 }
 
-void mx_delete_room_member_create_dto(t_room_member_create_dto *dto) {
+void mx_room_member_create_dto_free(t_room_member_create_dto *dto) {
     if (!dto) {
         return;
     }
@@ -59,7 +59,7 @@ parse_room_member_create_dto(struct mg_str body) {
     return dto;
 }
 
-t_room_member_create_dto *mx_get_room_member_create_dto(struct mg_str body) {
+t_room_member_create_dto *mx_room_member_create_dto_get(struct mg_str body) {
     t_room_member_create_dto *dto = parse_room_member_create_dto(body);
 
     if (!dto) {

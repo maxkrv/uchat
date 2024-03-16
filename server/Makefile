@@ -2,7 +2,7 @@ CC = clang
 RM = rm
 PRINT = printf
 MKDIR = mkdir
-CFLAGS = -std=c11 -Wall -Wextra -Wpedantic -Wno-unused-parameter -Wno-unused-variable -Werror
+CFLAGS = -std=c11 -Wall -Wextra -Wpedantic -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Werror
 
 INC_DIR = inc
 SRC_DIR = src

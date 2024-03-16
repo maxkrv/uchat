@@ -23,7 +23,7 @@ t_list *mx_user_add_favorite(int user_id, int room_id) {
     t_list *list = mx_favorites_repo_get_many(user_id);
     bool is_duplicate = is_already_pined(list, room_id);
 
-    mx_delete_list(&list, (t_func_void)mx_delete_favorite_room);
+    mx_list_free(&list, (t_func_void)mx_favorite_room_free);
 
     return is_duplicate ? NULL
                         : mx_room_get_pined_messages(
@@ -38,10 +38,10 @@ t_list *mx_user_delete_favorite(int id) {
     }
 
     if (!mx_is_user_member_of(fav->room_id, fav->user_id)) {
-        mx_delete_favorite_room(fav);
+        mx_favorite_room_free(fav);
         return NULL;
     }
-    mx_delete_favorite_room(fav);
+    mx_favorite_room_free(fav);
 
     return mx_room_get_pined_messages(fav->user_id);
 }

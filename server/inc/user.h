@@ -33,12 +33,12 @@ void mx_user_route(t_connection *conn, t_http_message *req);
 */
 
 // structure constructors and destructors
-t_user *mx_init_user(void);
-void mx_delete_user(t_user *u);
-t_user_create_dto *mx_get_user_create_dto(struct mg_str body);
-void mx_delete_user_create_dto(t_user_create_dto *dto);
-t_user_update_dto *mx_get_user_update_dto(struct mg_str body);
-void mx_delete_user_update_dto(t_user_update_dto *dto);
+t_user *mx_user_init(void);
+void mx_user_free(t_user *u);
+t_user_create_dto *mx_user_create_dto_get(struct mg_str body);
+void mx_user_create_dto_free(t_user_create_dto *dto);
+t_user_update_dto *mx_user_update_dto_get(struct mg_str body);
+void mx_user_update_dto_free(t_user_update_dto *dto);
 
 // controllers
 void mx_user_ctrl_get(t_connection *c, t_http_message *m);
@@ -80,8 +80,8 @@ cJSON *mx_users_to_cjson(t_list *users);
 /////////////////////////////////////////////
 */
 // structure constructors and destructors
-t_favorite_room *mx_init_favorite_room(void);
-void mx_delete_favorite_room(t_favorite_room *r);
+t_favorite_room *mx_favorite_room_init(void);
+void mx_favorite_room_free(t_favorite_room *r);
 
 // controllers
 void mx_user_ctrl_get_favorites(t_connection *c, t_http_message *m);

@@ -1,9 +1,7 @@
 #include "room.h"
 
 t_room *mx_room_repo_get(int id) {
-    t_room *r = mx_init_room();
-
-    return r;
+    return mx_room_init();
 }
 
 int mx_room_repo_create(t_room_create_dto *dto) {

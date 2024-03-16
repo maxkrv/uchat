@@ -1,6 +1,6 @@
 #include "server.h"
 
-t_file *mx_init_file(void) {
+t_file *mx_file_init(void) {
     t_file *file = malloc(sizeof(t_file));
     file->id = 0;
     file->url = NULL;
@@ -11,7 +11,7 @@ t_file *mx_init_file(void) {
     return file;
 }
 
-void mx_delete_file(t_file *file) {
+void mx_file_free(t_file *file) {
     if (!file) {
         return;
     }

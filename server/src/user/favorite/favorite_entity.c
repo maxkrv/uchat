@@ -1,6 +1,6 @@
 #include "server.h"
 
-t_favorite_room *mx_init_favorite_room(void) {
+t_favorite_room *mx_favorite_room_init(void) {
     t_favorite_room *room = malloc(sizeof(t_favorite_room));
     room->id = 0;
     room->room_id = 0;
@@ -14,12 +14,12 @@ t_favorite_room *mx_init_favorite_room(void) {
     return room;
 }
 
-void mx_delete_favorite_room(t_favorite_room *room) {
+void mx_favorite_room_free(t_favorite_room *room) {
     if (!room) {
         return;
     }
-    mx_delete_user(room->user);
-    mx_delete_room(room->room);
+    mx_user_free(room->user);
+    mx_room_free(room->room);
 
     free(room);
 }

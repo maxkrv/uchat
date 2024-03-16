@@ -36,7 +36,7 @@ t_file *mx_file_service_delete(int file_id) {
     bool is_deleted = mx_file_delete_uploaded(file->name);
 
     if (!is_deleted) {
-        mx_delete_file(file);
+        mx_file_free(file);
         return NULL;
     }
 

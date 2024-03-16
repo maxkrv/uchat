@@ -1,6 +1,6 @@
 #include "server.h"
 
-t_user *mx_init_user(void) {
+t_user *mx_user_init(void) {
     t_user *user = malloc(sizeof(t_user));
     user->id = 0;
     user->name = NULL;
@@ -21,7 +21,7 @@ t_user *mx_init_user(void) {
     return user;
 }
 
-void mx_delete_user(t_user *user) {
+void mx_user_free(t_user *user) {
     if (!user) {
         return;
     }
@@ -32,11 +32,11 @@ void mx_delete_user(t_user *user) {
     mx_strdel(&user->status);
     mx_strdel(&user->description);
 
-    mx_delete_list(&user->messages, (t_func_void)mx_delete_message);
-    mx_delete_list(&user->rooms, (t_func_void)mx_delete_room);
-    mx_delete_list(&user->favorites, (t_func_void)mx_delete_favorite_room);
+    mx_list_free(&user->messages, (t_func_void)mx_message_free);
+    mx_list_free(&user->rooms, (t_func_void)mx_room_free);
+    mx_list_free(&user->favorites, (t_func_void)mx_favorite_room_free);
 
-    mx_delete_file(user->photo);
+    mx_file_free(user->photo);
 
     free(user);
 }

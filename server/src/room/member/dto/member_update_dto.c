@@ -8,7 +8,7 @@ static t_room_member_update_dto *init_room_member_update_dto() {
     return dto;
 }
 
-void mx_delete_room_member_update_dto(t_room_member_update_dto *dto) {
+void mx_room_member_update_dto_free(t_room_member_update_dto *dto) {
     if (!dto) {
         return;
     }

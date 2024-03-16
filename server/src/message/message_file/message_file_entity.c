@@ -1,6 +1,6 @@
 #include "server.h"
 
-t_message_file *mx_init_message_file(void) {
+t_message_file *mx_message_file_init(void) {
     t_message_file *member = malloc(sizeof(t_message_file));
     member->id = 0;
     member->message_id = 0;
@@ -14,12 +14,12 @@ t_message_file *mx_init_message_file(void) {
     return member;
 }
 
-void mx_delete_message_file(t_message_file *file) {
+void mx_message_file_free(t_message_file *file) {
     if (!file) {
         return;
     }
-    mx_delete_message(file->message);
-    mx_delete_file(file->file);
+    mx_message_free(file->message);
+    mx_file_free(file->file);
 
     free(file);
 }

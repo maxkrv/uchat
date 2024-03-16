@@ -1,7 +1,7 @@
 #include "server.h"
 
 static t_string form_url(char *filename) {
-    t_env_params *params = mx_get_env();
+    t_env_params *params = mx_env_get();
     t_string uri = mx_path_join(MX_UPLOAD_DIR_PATH, filename);
     t_string tmp = mx_strjoin("http://", params->domain);
     t_string port = mx_itoa(params->port);
@@ -32,7 +32,7 @@ t_file *mx_file_delete_from_db(int file_id) {
     }
 
     if (!mx_file_repo_delete(file_id)) {
-        mx_delete_file(file);
+        mx_file_free(file);
         return NULL;
     };
 

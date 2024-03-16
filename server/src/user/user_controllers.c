@@ -27,11 +27,11 @@ void mx_user_ctrl_get(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_delete_user(user);
+    mx_user_free(user);
 }
 
 void mx_user_ctrl_get_me(t_connection *c, t_http_message *m) {
-    t_user_id user_id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_auth(m);
 
     if (user_id < 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
@@ -50,11 +50,11 @@ void mx_user_ctrl_get_me(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_delete_user(user);
+    mx_user_free(user);
 }
 
 void mx_user_ctrl_get_my_rooms(t_connection *c, t_http_message *m) {
-    t_user_id user_id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_auth(m);
 
     if (user_id < 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
@@ -74,18 +74,18 @@ void mx_user_ctrl_get_my_rooms(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_delete_list(&rooms, (t_func_void)mx_delete_room);
+    mx_list_free(&rooms, (t_func_void)mx_room_free);
 }
 
 void mx_user_ctrl_put_me(t_connection *c, t_http_message *m) {
-    t_user_id user_id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_auth(m);
 
     if (user_id < 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
                                 "Invalid token");
         return;
     }
-    t_user_update_dto *dto = mx_get_user_update_dto(m->body);
+    t_user_update_dto *dto = mx_user_update_dto_get(m->body);
 
     if (!dto) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
@@ -95,7 +95,7 @@ void mx_user_ctrl_put_me(t_connection *c, t_http_message *m) {
 
     t_user *user = mx_user_put(user_id, dto);
 
-    mx_delete_user_update_dto(dto);
+    mx_user_update_dto_free(dto);
 
     if (!user) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
@@ -107,11 +107,11 @@ void mx_user_ctrl_put_me(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_delete_user(user);
+    mx_user_free(user);
 }
 
 void mx_user_ctrl_delete_me(t_connection *c, t_http_message *m) {
-    t_user_id user_id = mx_user_id_from_auth_jwt(m);
+    t_user_id user_id = mx_auth(m);
 
     if (user_id < 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
@@ -130,5 +130,5 @@ void mx_user_ctrl_delete_me(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_delete_user(user);
+    mx_user_free(user);
 }

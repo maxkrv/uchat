@@ -32,6 +32,7 @@ char *mx_create_jwt(char *payload_str, char *secret, int expiration_time);
 
 char *mx_jwt_head_stringify(t_jwt_head *head);
 t_jwt_head mx_jwt_head_parse(char *header_json);
+void mx_jwt_head_free(t_jwt_head *head);
 
 char *mx_hash_string(char *string);
 bool mx_comp_hash(char *value, char *hash);

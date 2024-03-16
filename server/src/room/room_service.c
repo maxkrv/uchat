@@ -13,7 +13,7 @@ t_room *mx_room_create(t_room_create_dto *dto, int user_id) {
         mx_room_member_create_dto_constructor(room_id, user_id, true);
 
     t_room_member *mem = mx_room_add_member(member);
-    mx_delete_room_member_create_dto(member);
+    mx_room_member_create_dto_free(member);
 
     if (!mem) {
         mx_room_repo_delete(room_id);

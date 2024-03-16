@@ -4,11 +4,12 @@ CREATE TABLE IF NOT EXISTS message (
     author_id       INTEGER NOT NULL,
     room_id         INTEGER NOT NULL,
     reply_id        INTEGER ,
-    word            VARCHAR(255) NOT NULL,
+    data            VARCHAR(5000) NOT NULL,
     created_at      INT NOT NULL, 
     edited_at       INT NOT NULL, 
     FOREIGN KEY(author_id) REFERENCES user(id),
-    FOREIGN KEY(room_id) REFERENCES room(id)
+    FOREIGN KEY(room_id) REFERENCES room(id)       
+    FOREIGN KEY(reply_id) REFERENCES message(id)      
 );
 
 CREATE TABLE IF NOT EXISTS message_reader (
@@ -34,7 +35,7 @@ CREATE TABLE IF NOT EXISTS message_file (
 CREATE TABLE IF NOT EXISTS room_pinned_message (
     id              INTEGER PRIMARY KEY,
     room_id         INTEGER NOT NULL,
-    message_id      INTEGER NOT NULL,
+    message_id      INTEGER NOT NULL UNIQUE,
     created_at      INT NOT NULL, 
     edited_at       INT NOT NULL, 
     FOREIGN KEY(room_id) REFERENCES room(id),

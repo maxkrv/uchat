@@ -10,7 +10,7 @@ t_jwt_token mx_auth_login(t_login_dto *dto) {
 
     if (!mx_comp_hash(dto->password, user->password_hash)) {
 
-        mx_delete_user(user);
+        mx_user_free(user);
         return NULL;
     }
 
@@ -29,7 +29,7 @@ t_user *mx_auth_change_password(int id, t_change_password_dto *dto) {
     }
 
     if (!mx_comp_hash(dto->old_password, user->password_hash)) {
-        mx_delete_user(user);
+        mx_user_free(user);
         return NULL;
     }
 

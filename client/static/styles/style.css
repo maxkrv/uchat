@@ -66,13 +66,22 @@ button:active {
 
 /* start theme */
 
-.theme_switcher * {
-    color: @bg_color;
-    background: @secondary_color;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    transition: background 0.2s;
+.theme_switcher {
+    background-color: #CCC;
+    border-color: #CCC;
+    border-radius: 3px;
+}
+
+.theme_switcher:checked slider {
+    background-image: url('../images/dark_theme.png');
+}
+
+.theme_switcher slider {
+    border-radius: 3px;
+    background-image: url('../images/light_theme.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 /* end theme */

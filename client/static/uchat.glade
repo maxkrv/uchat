@@ -65,30 +65,16 @@
           </packing>
         </child>
         <child>
-          <object class="GtkComboBoxText" id="theme_switcher">
-            <property name="name">theme_switcher</property>
+          <object class="GtkSwitch" id="theme_switcher">
             <property name="visible">True</property>
-            <property name="app-paintable">True</property>
-            <property name="can-focus">False</property>
-            <property name="halign">center</property>
-            <property name="valign">center</property>
-            <property name = "margin-top">15</property>
-            <property name="active">0</property>
-            <property name="has-frame">False</property>
-            <property name="button-sensitivity">on</property>
-            <property name="popup-fixed-width">False</property>
-            <property name="active-id">0</property>
-            <items>
-              <item id="0" translatable="yes">light</item>
-              <item id="1" translatable="yes">dark</item>
-            </items>
+            <property name="can-focus">True</property>
             <style>
               <class name="theme_switcher"/>
             </style>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
+            <property name="fill">True</property>
             <property name="position">3</property>
           </packing>
         </child>

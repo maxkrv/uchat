@@ -111,7 +111,7 @@ static void on_password_entry_visibility(GtkEntry *entry,
 
 void show_auth_container(GtkBuilder *builder, GtkWidget *window) {
     GtkWidget *auth_container =
-        GTK_WIDGET(gtk_builder_get_object(builder, "auth_container"));
+        GTK_WIDGET(gtk_builder_get_object(builder, "chat_container"));
 
     if (auth_container == NULL) {
         g_print("Error: %s\n", "Failed to load auth_container");

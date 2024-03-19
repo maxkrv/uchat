@@ -23,6 +23,11 @@ button label {
 button:active {
     background: @secondary_color-dark;
 }
+
+.scroll {
+    border: 0;
+    outline: 0;
+}
 /* end global */
 
 /* auth start */
@@ -85,3 +90,13 @@ button:active {
 }
 
 /* end theme */
+
+
+/* start chat */
+
+.chat_sidebar {
+    background: @secondary_color-light;
+    min-width: 400px;
+}
+
+/* end chat */

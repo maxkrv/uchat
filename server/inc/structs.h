@@ -7,7 +7,7 @@ typedef struct s_room_member t_room_member;
 typedef struct s_read_message t_read_message;
 typedef struct s_message_file t_message_file;
 typedef struct s_favorite_room t_favorite_room;
-typedef struct s_room_pined_message t_room_pined_message;
+typedef struct s_room_pined_message t_pined_message;
 
 typedef struct s_room t_room;
 typedef struct s_message t_message;

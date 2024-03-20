@@ -1,6 +1,6 @@
 #include "utils.h"
 
-void mx_delete_node(t_list **list, t_list *node, t_func_void clean_data) {
+void mx_delete_node(t_list **list, t_list *node, t_func_free clean_data) {
     if (!list || !*list || !node) {
         return;
     }

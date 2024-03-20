@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "name": "Linux",
+      "includePath": [
+        "${default}",
+        "${workspaceFolder}/server/inc",
+        "${workspaceFolder}/client/inc",
+        "${workspaceFolder}/lib/cJSON/inc",
+        "${workspaceFolder}/lib/mongoose/inc",
+        "${workspaceFolder}/lib/sqlite3/inc",
+        "${workspaceFolder}/lib/libmx/inc",
+        "/usr/include/gtk-3.0",
+        "/usr/include/glib-2.0",
+        "/usr/include/pango-1.0",
+        "/usr/include/harfbuzz",
+        "/usr/include/cairo",
+        "/usr/include/gdk-pixbuf-2.0",
+        "/usr/include/atk-1.0",
+        "/usr/lib/x86_64-linux-gnu/glib-2.0/include"
+      ],
+      "defines": []
+    }
+  ],
+  "version": 4
+}

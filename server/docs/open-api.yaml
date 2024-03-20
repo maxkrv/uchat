@@ -235,7 +235,13 @@ paths:
         - JWT: []
       responses:
         200:
-          $ref: '#/components/responses/FavoritesData'
+          description: User favorites
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Favorite'
         400:
           $ref: '#/components/responses/Exception'
     post:
@@ -260,7 +266,7 @@ paths:
       tags: ['Favorites']
       parameters:
         - in: query
-          name: room_id
+          name: favorite_id
           schema:
             nullable: false
             $ref: '#/components/schemas/ID'
@@ -389,6 +395,8 @@ paths:
     get:
       operationId: get-member
       tags: ['Member']
+      security:
+        - JWT: []
       parameters:
         - in: query
           name: member_id
@@ -556,7 +564,7 @@ paths:
           $ref: '#/components/responses/Exception'
   /api/v1/messages/find:
     get:
-      operationId: get-message
+      operationId: find-message
       tags: ['Message']
       parameters:
         - in: query
@@ -572,6 +580,28 @@ paths:
         400:
           $ref: '#/components/responses/Exception'
   /api/v1/messages:
+    get:
+      operationId: get-messages
+      security:
+        - JWT: []
+      summary: Get room messages
+      tags: ['Message']
+      parameters:
+        - in: query
+          name: room_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      responses:
+        200:
+          description: Members data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        400:
+          $ref: '#/components/responses/Exception'
     post:
       operationId: post-message
       summary: 'Creates a message'
@@ -977,9 +1007,7 @@ components:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Favorite'
+            $ref: '#/components/schemas/Favorite'
     RoomData:
       description: Rooms data
       content:

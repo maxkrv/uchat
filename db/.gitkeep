@@ -1,0 +1,2 @@
+Created this folder couse on server start it will try to find ./db folder
+so if you dont start server usin make server or ./uchat_server --root server it will fail

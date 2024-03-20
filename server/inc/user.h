@@ -90,8 +90,9 @@ void mx_user_ctrl_delete_favorite(t_connection *c, t_http_message *m);
 
 // services
 t_list *mx_user_get_favorites(int user_id);
-t_list *mx_user_add_favorite(int user_id, int room_id);
-t_list *mx_user_delete_favorite(int id);
+t_favorite_room *mx_user_get_favorite(int fav_id);
+t_favorite_room *mx_user_add_favorite(int user_id, int room_id);
+t_favorite_room *mx_user_delete_favorite(int id);
 
 // repositories
 t_favorite_room *mx_favorites_repo_get(int id);

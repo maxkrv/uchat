@@ -1,7 +1,7 @@
 #include "server.h"
 
-t_room_pined_message *mx_pined_repo_get(int id) {
-    t_room_pined_message *m = mx_room_pined_init();
+t_pined_message *mx_pined_repo_get(int id) {
+    t_pined_message *m = mx_room_pined_init();
 
     return m;
 }

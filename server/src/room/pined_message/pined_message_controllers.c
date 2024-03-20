@@ -14,7 +14,7 @@ void mx_room_ctrl_pine_message(t_connection *c, t_http_message *m) {
         mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN, "No permissions");
         return;
     }
-    t_room_pined_message *pine = mx_room_pine_message(message_id, room_id);
+    t_pined_message *pine = mx_room_pine_message(message_id, room_id);
 
     if (!pine) {
         mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
@@ -56,7 +56,7 @@ void mx_room_ctrl_get_pined(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_list_free(&pines, (t_func_void)mx_room_pined_free);
+    mx_list_free(&pines, (t_func_free)mx_room_pined_free);
 }
 
 void mx_room_ctrl_unpine(t_connection *c, t_http_message *m) {
@@ -68,7 +68,7 @@ void mx_room_ctrl_unpine(t_connection *c, t_http_message *m) {
                                 "Invalid data provided");
         return;
     }
-    t_room_pined_message *message = mx_pined_repo_get(pined_id);
+    t_pined_message *message = mx_pined_repo_get(pined_id);
 
     if (!mx_is_user_member_of(message->room_id, user_id)) {
         mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN, "No permissions");
@@ -77,7 +77,7 @@ void mx_room_ctrl_unpine(t_connection *c, t_http_message *m) {
     }
     mx_room_pined_free(message);
 
-    t_room_pined_message *pine = mx_room_unpine(pined_id);
+    t_pined_message *pine = mx_room_unpine(pined_id);
 
     if (!pine) {
         mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,

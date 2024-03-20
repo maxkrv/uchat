@@ -31,10 +31,10 @@ void mx_user_free(t_user *user) {
     mx_strdel(&user->password_hash);
     mx_strdel(&user->status);
     mx_strdel(&user->description);
+    mx_list_free(&user->messages, (t_func_free)mx_message_free);
+    mx_list_free(&user->rooms, (t_func_free)mx_room_free);
+    mx_list_free(&user->favorites, (t_func_free)mx_favorite_room_free);
 
-    mx_list_free(&user->messages, (t_func_void)mx_message_free);
-    mx_list_free(&user->rooms, (t_func_void)mx_room_free);
-    mx_list_free(&user->favorites, (t_func_void)mx_favorite_room_free);
 
     mx_file_free(user->photo);
 

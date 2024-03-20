@@ -7,13 +7,6 @@
 
 typedef void (*t_handler)(t_connection *c, t_http_message *m);
 
-typedef struct s_crud_router {
-    t_handler *create;
-    t_handler *read;
-    t_handler *update;
-    t_handler *delete;
-} t_crud_router;
-
 bool mx_route(t_connection *c, t_http_message *req, const char *path,
               const char *method, t_handler handler);
 bool mx_is_method_equal(struct mg_str *m1, const char *m2);

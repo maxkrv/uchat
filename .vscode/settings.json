@@ -1,0 +1,30 @@
+{
+  "files.associations": {
+    "user.h": "c",
+    "server.h": "c",
+    "base.h": "c",
+    "signal.h": "c",
+    "http.h": "c",
+    "room.h": "c",
+    "shared.h": "c",
+    "message.h": "c",
+    "libmx.h": "c",
+    "auth.h": "c",
+    "string.h": "c",
+    "curl.h": "c",
+    "client.h": "c",
+    "gdk-pixbuf.h": "c",
+    "evp.h": "c",
+    "sha.h": "c",
+    "jwt.h": "c",
+    "utils.h": "c",
+    "typeinfo": "c",
+    "array": "c",
+    "string": "c",
+    "string_view": "c",
+    "ranges": "c",
+    "system_error": "c",
+    "random": "c",
+    "db.h": "c"
+  }
+}

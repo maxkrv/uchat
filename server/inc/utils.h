@@ -3,7 +3,10 @@
 
 #include "base.h"
 
-typedef void (*t_func_void)(void *);
+typedef void (*t_func_free)(void *);
+
+void mx_list_free(t_list **list, t_func_free func);
+void mx_delete_node(t_list **list, t_list *node, t_func_free clean_data);
 
 void mx_list_free(t_list **list, t_func_void func);
 void mx_delete_node(t_list **list, t_list *node, t_func_void clean_data);

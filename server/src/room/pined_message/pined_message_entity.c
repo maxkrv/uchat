@@ -1,7 +1,8 @@
 #include "server.h"
 
-t_room_pined_message *mx_room_pined_init(void) {
-    t_room_pined_message *message = malloc(sizeof(t_room_pined_message));
+t_pined_message *mx_room_pined_init(void) {
+    t_pined_message *message = malloc(sizeof(t_pined_message));
+
     message->id = 0;
     message->message_id = 0;
     message->room_id = 0;
@@ -14,7 +15,7 @@ t_room_pined_message *mx_room_pined_init(void) {
     return message;
 }
 
-void mx_room_pined_free(t_room_pined_message *message) {
+void mx_room_pined_free(t_pined_message *message) {
     if (!message) {
         return;
     }

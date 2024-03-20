@@ -91,5 +91,5 @@ void mx_message_ctrl_get_readers(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_list_free(&reads, (t_func_void)mx_read_message_free);
+    mx_list_free(&reads, (t_func_free)mx_read_message_free);
 }

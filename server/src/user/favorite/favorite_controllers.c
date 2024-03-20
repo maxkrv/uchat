@@ -24,7 +24,6 @@ void mx_user_ctrl_add_favorite(t_connection *c, t_http_message *m) {
     mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
     mx_favorite_room_free(favs);
-}
 
 void mx_user_ctrl_get_favorites(t_connection *c, t_http_message *m) {
     t_user_id user_id = mx_auth(m);

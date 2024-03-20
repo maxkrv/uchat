@@ -42,7 +42,7 @@ static void ws_close_client(t_connection *conn) {
         }
     }
     mx_delete_node((t_list **)&server->clients, (t_list *)client,
-                   (t_func_void)mx_delete_client);
+                   (t_func_free)mx_delete_client);
 }
 
 static void ws_event_handler(t_connection *conn, int event, void *data) {

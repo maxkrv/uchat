@@ -39,7 +39,7 @@ cJSON *mx_members_to_cjson(t_list *members) {
     return members_array;
 }
 
-t_string mx_room_members_stringify(t_list *members) {
+t_string mx_members_stringify(t_list *members) {
     cJSON *obj = mx_members_to_cjson(members);
     t_string res = cJSON_PrintUnformatted(obj);
 

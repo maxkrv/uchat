@@ -1,5 +1,6 @@
-.vscode
 obj
+db/sqlite.db
+db/db.sqlite
 .*a
 .*o
 *.txt

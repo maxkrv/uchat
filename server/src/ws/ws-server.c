@@ -26,13 +26,13 @@ t_client *mx_create_client(t_connection *conne, t_user_id user_id,
 }
 
 void mx_delete_client(t_client *client) {
-    mx_list_free(&client->rooms, (t_func_void)mx_room_free);
+    mx_list_free(&client->rooms, (t_func_free)mx_room_free);
 
     free(client);
 }
 
 void mx_ws_server_free(t_ws_server *server) {
-    mx_list_free((t_list **)&server->clients, (t_func_void)mx_delete_client);
+    mx_list_free((t_list **)&server->clients, (t_func_free)mx_delete_client);
     free(server);
 }
 

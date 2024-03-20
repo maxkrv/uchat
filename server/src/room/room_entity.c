@@ -27,9 +27,9 @@ void mx_room_free(t_room *room) {
     mx_strdel(&room->description);
     mx_strdel(&room->type);
 
-    mx_list_free(&room->messages, (t_func_void)mx_message_free);
-    mx_list_free(&room->members, (t_func_void)mx_room_member_free);
-    mx_list_free(&room->pined_messages, (t_func_void)mx_room_pined_free);
+    mx_list_free(&room->messages, (t_func_free)mx_message_free);
+    mx_list_free(&room->members, (t_func_free)mx_room_member_free);
+    mx_list_free(&room->pined_messages, (t_func_free)mx_room_pined_free);
 
     mx_file_free(room->photo);
 

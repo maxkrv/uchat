@@ -1,7 +1,7 @@
 
 #include "utils.h"
 
-void mx_list_free(t_list **list, t_func_void func) {
+void mx_list_free(t_list **list, t_func_free func) {
     t_list *tmp = *list;
 
     while (tmp) {

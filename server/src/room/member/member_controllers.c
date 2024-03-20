@@ -38,11 +38,11 @@ void mx_room_ctrl_get_members(t_connection *c, t_http_message *m) {
                                 "Members does not exist");
         return;
     }
-    t_string json_string = mx_room_members_stringify(members);
+    t_string json_string = mx_members_stringify(members);
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_list_free(&members, (t_func_void)mx_room_member_free);
+    mx_list_free(&members, (t_func_free)mx_room_member_free);
 }
 
 void mx_room_ctrl_add_member(t_connection *c, t_http_message *m) {

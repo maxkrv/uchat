@@ -23,7 +23,8 @@ void mx_delete_client_room(int user_id, int room_id) {
         t_room *room = list->data;
 
         if (room->id == room_id) {
-            mx_delete_node(&client->rooms, list, (t_func_void)mx_room_free);
+            mx_delete_node(&client->rooms, list, (t_func_free)mx_room_free);
+
             return;
         }
     }
@@ -38,7 +39,7 @@ void mx_delete_clients_room(int room_id) {
 
             if (room->id == room_id) {
                 mx_delete_node(&client->rooms, list,
-                               (t_func_void)mx_room_free);
+                               (t_func_free)mx_room_free);
             }
         }
     }

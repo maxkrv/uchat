@@ -1,6 +1,6 @@
 #include "server.h"
 
-cJSON *mx_pined_message_to_cjson(t_room_pined_message *pined) {
+cJSON *mx_pined_message_to_cjson(t_pined_message *pined) {
     if (!pined) {
         return cJSON_CreateNull();
     }
@@ -19,7 +19,7 @@ cJSON *mx_pined_message_to_cjson(t_room_pined_message *pined) {
     return obj;
 }
 
-t_string mx_pined_message_stringify(t_room_pined_message *pined) {
+t_string mx_pined_message_stringify(t_pined_message *pined) {
     cJSON *obj = mx_pined_message_to_cjson(pined);
     t_string res = cJSON_PrintUnformatted(obj);
 

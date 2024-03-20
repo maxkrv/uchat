@@ -31,8 +31,8 @@ void mx_message_free(t_message *message) {
     mx_room_free(message->room);
     mx_message_free(message->reply);
 
-    mx_list_free(&message->readed_by, (t_func_void)mx_read_message_free);
-    mx_list_free(&message->files, (t_func_void)mx_file_free);
+    mx_list_free(&message->readed_by, (t_func_free)mx_read_message_free);
+    mx_list_free(&message->files, (t_func_free)mx_file_free);
 
     free(message);
 }

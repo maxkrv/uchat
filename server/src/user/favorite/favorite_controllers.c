@@ -11,7 +11,7 @@ void mx_user_ctrl_add_favorite(t_connection *c, t_http_message *m) {
         return;
     }
 
-    t_list *favs = mx_user_add_favorite(user_id, room_id);
+    t_favorite_room *favs = mx_user_add_favorite(user_id, room_id);
 
     if (!favs) {
         mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
@@ -19,11 +19,11 @@ void mx_user_ctrl_add_favorite(t_connection *c, t_http_message *m) {
         return;
     }
 
-    t_string json_string = mx_favorites_stringify(favs);
+    t_string json_string = mx_favorite_stringify(favs);
 
     mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_list_free(&favs, (t_func_void)mx_favorite_room_free);
+    mx_favorite_room_free(favs);
 }
 
 void mx_user_ctrl_get_favorites(t_connection *c, t_http_message *m) {
@@ -47,7 +47,7 @@ void mx_user_ctrl_get_favorites(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_list_free(&favs, (t_func_void)mx_favorite_room_free);
+    mx_list_free(&favs, (t_func_free)mx_favorite_room_free);
 }
 
 void mx_user_ctrl_delete_favorite(t_connection *c, t_http_message *m) {
@@ -60,16 +60,16 @@ void mx_user_ctrl_delete_favorite(t_connection *c, t_http_message *m) {
         return;
     }
 
-    t_list *favs = mx_user_delete_favorite(favorite_id);
+    t_favorite_room *favs = mx_user_delete_favorite(favorite_id);
 
     if (!favs) {
         mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND, "User not found");
         return;
     }
 
-    t_string json_string = mx_favorites_stringify(favs);
+    t_string json_string = mx_favorite_stringify(favs);
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_list_free(&favs, (t_func_void)mx_favorite_room_free);
+    mx_favorite_room_free(favs);
 }

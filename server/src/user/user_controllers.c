@@ -74,7 +74,7 @@ void mx_user_ctrl_get_my_rooms(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
-    mx_list_free(&rooms, (t_func_void)mx_room_free);
+    mx_list_free(&rooms, (t_func_free)mx_room_free);
 }
 
 void mx_user_ctrl_put_me(t_connection *c, t_http_message *m) {

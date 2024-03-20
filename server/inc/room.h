@@ -73,8 +73,8 @@ t_string mx_rooms_stringify(t_list *rooms);
 /////////////////////////////////////////////
 */
 // structure constructors and destructors
-t_room_pined_message *mx_room_pined_init(void);
-void mx_room_pined_free(t_room_pined_message *m);
+t_pined_message *mx_room_pined_init(void);
+void mx_room_pined_free(t_pined_message *m);
 
 // controllers
 void mx_room_ctrl_pine_message(t_connection *c, t_http_message *m);
@@ -83,18 +83,18 @@ void mx_room_ctrl_unpine(t_connection *c, t_http_message *m);
 
 // services
 t_list *mx_room_get_pined_messages(int room_id);
-t_room_pined_message *mx_room_pine_message(int message_id, int room_id);
-t_room_pined_message *mx_room_unpine(int id);
+t_pined_message *mx_room_pine_message(int message_id, int room_id);
+t_pined_message *mx_room_unpine(int id);
 
 // repositories
-t_room_pined_message *mx_pined_repo_get(int id);
+t_pined_message *mx_pined_repo_get(int id);
 t_list *mx_pined_repo_get_many(int room_id);
 int mx_pined_repo_create(int message_id, int room_id);
 bool mx_pined_repo_delete(int id);
 
 // json
-cJSON *mx_pined_message_to_cjson(t_room_pined_message *pined);
-t_string mx_pined_message_stringify(t_room_pined_message *pined);
+cJSON *mx_pined_message_to_cjson(t_pined_message *pined);
+t_string mx_pined_message_stringify(t_pined_message *pined);
 cJSON *mx_pined_messages_to_cjson(t_list *members);
 t_string mx_pined_messages_stringify(t_list *members);
 
@@ -143,6 +143,6 @@ bool mx_members_repo_delete(int id);
 cJSON *mx_member_to_cjson(t_room_member *room);
 t_string mx_member_stringify(t_room_member *member);
 cJSON *mx_members_to_cjson(t_list *rooms);
-t_string mx_room_members_stringify(t_list *members);
+t_string mx_members_stringify(t_list *members);
 
 #endif

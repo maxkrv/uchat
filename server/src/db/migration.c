@@ -3,10 +3,11 @@
 void mx_create_migration_table(sqlite3 *db) {
     char *message_error;
     char *sql = "CREATE TABLE IF NOT EXISTS migration ("
-                "id              INTEGER PRIMARY KEY,"
+                "id              INTEGER PRIMARY KEY AUTOINCREMENT,"
                 "name            TEXT NOT NULL UNIQUE,"
-                "was_run         INTEGER NOT NULL DEFAULT 1, "
-                "created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP);";
+                "was_run         INT NOT NULL DEFAULT 1, "
+                "created_at      INT DEFAULT(strftime('%s', 'now')) "
+                ");";
 
     mx_handle_sqlite_error(sqlite3_exec(db, sql, NULL, 0, &message_error),
                            message_error);
@@ -79,7 +80,7 @@ void mx_record_migration(sqlite3 *db, const char *migration_name) {
 
     if (sqlite3_prepare_v2(db, insert_sql, -1, &stmt, NULL) != SQLITE_OK) {
         fprintf(stderr, "Error: Failed to prepare SQL statement for "
-                        "recording rmigration\n");
+                        "recording migration\n");
         return;
     }
 

@@ -3,7 +3,7 @@
 
 #define MX_BUFFER_SIZE 8192
 #define MX_EMPTY ""
-#define MX_DEFAULT_DB_PATH "db/sqlite.db"
+#define MX_DEFAULT_DB_PATH "db/db.sqlite"
 #define MX_DEFAULT_ROOT_DIR "."
 #define MX_UPLOAD_DIR_PATH "assets/uploads"
 #define MX_STATIC_DIR "assets"

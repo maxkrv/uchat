@@ -62,6 +62,7 @@ void mx_message_ctrl_get_many(t_connection *c, t_http_message *m) {
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_strdel(&json_string);
     mx_list_free(&messages, (t_func_free)mx_message_free);
+}
 
 void mx_message_ctrl_post(t_connection *c, t_http_message *m) {
     t_user_id user_id = mx_auth(m);

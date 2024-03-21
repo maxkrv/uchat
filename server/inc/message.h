@@ -13,7 +13,11 @@
 #include "shared.h"
 #include "auth.h"
 
+/*
+ add author id 
+ */
 typedef struct {
+    int author_id;
     int room_id;
     int reply_id;
     t_list *file_ids;
@@ -115,11 +119,15 @@ t_message_file *mx_message_file_create(int file_id, char *type);
 
 // repositories
 t_message_file *mx_message_file_repo_get(int id);
+t_message *mx_message_repo_gets(int id, bool ignore);
 t_list *mx_message_file_repo_get_all(int user_id);
-int mx_message_file_repo_create(int file_id, char *type);
+//int mx_message_file_repo_create(int file_id, char *type);
+int mx_message_file_repo_create(int file_id, char *type, int message_id);
 bool mx_message_file_repo_update(int id, int file_id, char *type);
 bool mx_message_file_repo_delete(int id);
-
+void mx_free_message_file(t_message_file *file); // free message file memory
+void mx_free_read_message(t_read_message *message);
+void mx_free_message(t_message *message) ;
 // json
 cJSON *mx_message_file_to_cjson(t_message_file *message_file);
 t_string mx_message_file_stringify(t_message_file *message);

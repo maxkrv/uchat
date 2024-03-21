@@ -1,5 +1,5 @@
-#include "db.h"
-
+//#include "db.h"
+#include "../inc/db.h"
 void mx_create_migration_table(sqlite3 *db) {
     int rc = 0;
     char *message_error;
@@ -102,33 +102,68 @@ void mx_record_migration(sqlite3 *db, const char *migration_name) {
 //-------------------------------------------
 // Function to run migrations
 //-------------------------------------------
-void mx_run_migrations(sqlite3 *db) {
-    t_env_params *env = mx_get_env();
-    char *migration_dir = mx_path_join(env->root_dir, "db/migrations");
-    DIR *dir = opendir(migration_dir);
-    struct dirent *entry;
-
-    mx_create_migration_table(env->db_connection);
-
+void run_migrations(sqlite3 *db) {
+    DIR *dir = opendir("server/db/migrations");
     if (!dir) {
         printf("Error: Failed to open migration directory.\n");
         return;
     }
 
-    while ((entry = readdir(dir))) {
-        if (strstr(entry->d_name, ".sql") != NULL) {
-            char *filepath = mx_path_join(migration_dir, entry->d_name);
-
+    struct dirent *entry;
+    while ((entry = readdir(dir)) != NULL) {
+        // Check if the file is a regular file and has ".sql" extension
+        if (entry->d_type == DT_REG && strstr(entry->d_name, ".sql") != NULL) {
+            // Construct path to SQL file
+            char filepath[256];
+            snprintf(filepath, sizeof(filepath), "server/db/migrations/%s", entry->d_name);
+            
             // Check if migration is already in the database
-            if (is_migration_recorded(db, entry->d_name)) {
-                printf("Migration from file '%s' is already executed.\n",
-                       entry->d_name);
+            if (is_migration_recorded(db, filepath)) {
+                printf("Migration from file '%s' is already executed.\n", entry->d_name);
+                continue;  // go to next migration file
+            }
+            //printf(filepath);
+            FILE *file = fopen(filepath, "r");
+            if (!file) {
+                printf("Error: Failed to open SQL file '%s'\n", entry->d_name);
                 continue;
             }
-
+            // executes commands and write migration to database
             mx_execute_sql_from_file(db, filepath);
-            mx_record_migration(db, entry->d_name);
+            mx_record_migration(db, filepath);
         }
     }
     closedir(dir);
 }
+
+
+// void run_migrations(sqlite3 *db) {
+//     t_env_params *env = mx_get_env();
+//     char *migration_dir = mx_path_join(env->root_dir, "db/migrations");
+//     DIR *dir = opendir(migration_dir);
+//     struct dirent *entry;
+
+//     mx_create_migration_table(env->db_connection);
+
+//     if (!dir) {
+//         printf("Error: Failed to open migration directory.\n");
+//         return;
+//     }
+
+//     while ((entry = readdir(dir))) {
+//         if (strstr(entry->d_name, ".sql") != NULL) {
+//             char *filepath = mx_path_join(migration_dir, entry->d_name);
+
+//             // Check if migration is already in the database
+//             if (is_migration_recorded(db, entry->d_name)) {
+//                 printf("Migration from file '%s' is already executed.\n",
+//                        entry->d_name);
+//                 continue;
+//             }
+
+//             mx_execute_sql_from_file(db, filepath);
+//             mx_record_migration(db, entry->d_name);
+//         }
+//     }
+//     closedir(dir);
+// }

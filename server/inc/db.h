@@ -4,13 +4,13 @@
 #include "base.h"
 #include "utils.h"
 #include "shared.h"
-
+#include "sqlite3.h"
 #include <dirent.h>
 
-sqlite3 *mx_connect_to_database(const char *db_path);
+sqlite3 *connect_to_database(const char *db_path);
 void mx_handle_sqlite_error(int rc, char *message_error, char *name);
 
-void mx_run_migrations(sqlite3 *db); // mechanism of migration
+void run_migrations(sqlite3 *db); // mechanism of migration
 void mx_record_migration(sqlite3 *db, const char *migration_name);
 void mx_create_migration_table(sqlite3 *db);
 #endif

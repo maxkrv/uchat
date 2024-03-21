@@ -20,6 +20,7 @@ t_user *mx_user_get(int id) {
   User:
     descriptions(all exclude password);
  */
+// TODO
 t_user *mx_user_get_discription(int id) {
     t_user *user = mx_user_repo_get(id);
 
@@ -70,7 +71,7 @@ t_user *mx_user_create(t_user_create_dto *dto) {
     if (user_id < 0) {
         return NULL;
     }
-
+    
     return mx_user_get(user_id);
 }
 
@@ -80,7 +81,7 @@ t_user *mx_user_put(int id, t_user_update_dto *dto) {
     if (!ok) {
         return NULL;
     }
-
+    
     return mx_user_get(id);
 }
 
@@ -97,6 +98,7 @@ t_user *mx_user_change_password(int id, char *password) {
 }
 
 t_user *mx_user_delete(int id) {
+    
     t_user *user = mx_user_get(id);
     bool ok = mx_user_repo_delete(id);
 

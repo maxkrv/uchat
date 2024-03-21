@@ -1,9 +1,9 @@
-#include "db.h"
+#include "../inc/db.h"
 
 // ---------------------------------------------------------
 // this function implements the connection to the database
 // ---------------------------------------------------------
-sqlite3 *mx_connect_to_database(const char *dbname) {
+sqlite3 *connect_to_database(const char *dbname) {
     sqlite3 *db;
     int rc;
     // Open database connection

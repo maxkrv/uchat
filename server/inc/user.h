@@ -59,6 +59,7 @@ t_user *mx_user_delete(int id);
 
 // repositories
 t_user *mx_user_repo_get(int id);
+t_user *mx_only_user_repo_get(int id);
 t_user *mx_user_repo_get_by_name(char *name);
 t_user *mx_user_repo_get_by_tag(char *tag);
 bool mx_user_repo_change_password(int id, char *password);
@@ -98,6 +99,7 @@ t_favorite_room *mx_favorites_repo_get(int id);
 t_list *mx_favorites_repo_get_many(int user_id);
 int mx_favorites_repo_create(int user_id, int room_id);
 bool mx_favorites_repo_delete(int id);
+void mx_free_user(t_user *user); 
 
 // json
 cJSON *mx_favorite_to_cjson(t_favorite_room *fav);

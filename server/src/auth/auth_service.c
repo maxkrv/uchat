@@ -20,7 +20,7 @@ t_jwt_token mx_auth_login(t_login_dto *dto) {
 t_user *mx_auth_register(t_register_dto *dto) {
     return mx_user_create(dto);
 }
-
+// TODO:
 t_user *mx_auth_change_password(int id, t_change_password_dto *dto) {
     t_user *user = mx_user_repo_get(id);
 

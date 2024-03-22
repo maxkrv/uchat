@@ -1,4 +1,5 @@
--- Active: 1711027646487@@127.0.0.1@3306
+PRAGMA foreign_keys = ON;
+
 CREATE TABLE IF NOT EXISTS migration (
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     name       TEXT NOT NULL UNIQUE ,
@@ -6,4 +7,3 @@ CREATE TABLE IF NOT EXISTS migration (
     created_at INT DEFAULT(strftime('%s'))
 );
 
-PRAGMA foreign_keys = ON;

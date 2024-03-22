@@ -78,7 +78,8 @@ void mx_env_init(t_env_params *env, int argc, char *argv[]) {
         .extra_headers = MX_OPTIONS_HEADERS};
     env->static_dir_opt = opt;
     env->db_connection = mx_connect_to_database(env->db_path);
-
+    sqlite3_exec(env->db_connection, "PRAGMA foreign_keys = ON;", NULL, NULL,
+                 NULL);
     mx_create_path_if_not_exist(env->upload_dir);
 }
 

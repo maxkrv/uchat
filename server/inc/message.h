@@ -46,14 +46,14 @@ void mx_message_ctrl_delete(t_connection *c, t_http_message *m);
 // services
 t_message *mx_message_get(int id);
 t_list *mx_message_get_many(int room_id);
-t_message *mx_message_create(t_message_create_dto *dto);
+t_message *mx_message_create(int user_id, t_message_create_dto *dto);
 t_message *mx_message_put(int id, t_message_create_dto *dto);
 t_message *mx_message_delete(int id);
 
 // repositories
 t_message *mx_message_repo_get(int id);
 t_list *mx_message_repo_get_many(int room_id);
-int mx_message_repo_create(t_message_create_dto *dto);
+int mx_message_repo_create(int user_id, t_message_create_dto *dto);
 bool mx_message_repo_put(int id, t_message_create_dto *dto);
 bool mx_message_repo_delete(int id);
 
@@ -62,6 +62,8 @@ cJSON *mx_message_to_cjson(t_message *message);
 cJSON *mx_messages_to_cjson(t_list *messages);
 t_string mx_message_stringify(t_message *message);
 t_string mx_messages_stringify(t_list *messages);
+
+t_message *mx_sqlite_bind_columns_to_message(sqlite3_stmt *stmt, int from);
 
 /*
 /////////////////////////////////////////////

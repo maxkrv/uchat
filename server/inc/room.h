@@ -64,6 +64,8 @@ cJSON *mx_rooms_to_cjson(t_list *rooms);
 t_string mx_room_stringify(t_room *room);
 t_string mx_rooms_stringify(t_list *rooms);
 
+t_room *mx_sqlite_bind_columns_to_room(sqlite3_stmt *stmt, int from);
+
 /*
 /////////////////////////////////////////////
  Room.pined_messages

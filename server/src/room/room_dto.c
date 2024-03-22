@@ -23,8 +23,8 @@ void mx_room_create_dto_free(t_room_create_dto *dto) {
 }
 
 static t_room_create_dto *validate_room_create_dto(t_room_create_dto *dto) {
-    if (!dto->name || !dto->type || dto->photo_id < 0 ||
-        mx_strlen(dto->name) < 4 || mx_strlen(dto->type) < 4) {
+    if (!dto->name || !dto->type || mx_strlen(dto->name) < 4 ||
+        mx_strlen(dto->type) < 4) {
         mx_room_create_dto_free(dto);
         return NULL;
     }

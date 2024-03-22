@@ -85,7 +85,7 @@ void mx_message_ctrl_post(t_connection *c, t_http_message *m) {
         return;
     }
 
-    t_message *message = mx_message_create(dto);
+    t_message *message = mx_message_create(user_id, dto);
 
     mx_message_create_dto_free(dto);
     if (!message) {

@@ -31,4 +31,6 @@ t_string mx_file_stringify(t_file *file);
 cJSON *mx_files_to_cjson(t_list *file);
 t_string mx_files_stringify(t_list *files);
 
+t_file *mx_sqlite_bind_columns_to_file(sqlite3_stmt *stmt, int from);
+
 #endif

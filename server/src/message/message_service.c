@@ -3,9 +3,6 @@
 t_message *mx_message_get(int id) {
     t_message *m = mx_message_repo_get(id);
 
-    m->author = mx_user_get(m->author_id);
-    m->files = mx_message_file_get_files(m->id);
-
     return m;
 }
 
@@ -13,8 +10,8 @@ t_list *mx_message_get_many(int room_id) {
     return mx_message_repo_get_many(room_id);
 }
 
-t_message *mx_message_create(t_message_create_dto *dto) {
-    int message_id = mx_message_repo_create(dto);
+t_message *mx_message_create(int user_id, t_message_create_dto *dto) {
+    int message_id = mx_message_repo_create(user_id, dto);
     if (message_id <= 0) {
         return NULL;
     }

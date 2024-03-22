@@ -49,6 +49,7 @@ static t_user_update_dto *parse_user_update_dto(struct mg_str body) {
     dto->photo_id = mx_cjson_get_number(obj, "photo_id");
     dto->tag = mx_cjson_get_string(obj, "tag");
     dto->status = mx_cjson_get_string(obj, "status");
+    dto->description = mx_cjson_get_string(obj, "description");
 
     cJSON_Delete(obj);
 

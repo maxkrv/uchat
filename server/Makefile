@@ -38,7 +38,7 @@ install: $(TARGET)
 	@$(PRINT) "\r$(CLEAN_LINE)$(CYAN)$(BOLD)$(TARGET) $@ $(YELLOW)done$(CYAN)\n"
 
 server:
-	./$(TARGET) --root ..
+	./$(TARGET) --root .. --secret NOT_SECRET
 
 $(OBJ_FILES): $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(MKDIR) -p $(dir $@)

@@ -23,4 +23,6 @@ char *mx_cjson_get_string(cJSON *json, const char *key);
 int mx_cjson_get_number(cJSON *json, const char *key);
 bool mx_cjson_get_bool(cJSON *json, const char *key);
 
+char *mx_sqlite3_get_string(sqlite3_stmt *stmt, int col);
+void mx_sqlite3_bind_id(sqlite3_stmt *stmt, int col, int id);
 #endif

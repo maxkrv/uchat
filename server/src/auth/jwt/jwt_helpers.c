@@ -33,6 +33,4 @@ t_jwt_head mx_jwt_head_parse(char *header_json) {
 void mx_jwt_head_free(t_jwt_head *head) {
     mx_strdel(&head->alg);
     mx_strdel(&head->typ);
-
-    free(head);
 }

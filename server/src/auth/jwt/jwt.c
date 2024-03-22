@@ -15,7 +15,8 @@ static char *create_jwt_header(int expiration_time) {
 static bool verify_jwt_header(char *header) {
     time_t now = time(NULL);
     t_jwt_head head = mx_jwt_head_parse(header);
-    if (!mx_strcmp(head.alg, "HS256") || !mx_strcmp(head.typ, "JWT") ||
+
+    if (mx_strcmp(head.alg, "HS256") != 0 || mx_strcmp(head.typ, "JWT") != 0 ||
         head.iat < 0 || head.exp < now) {
         mx_jwt_head_free(&head);
         return false;

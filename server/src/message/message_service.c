@@ -3,7 +3,7 @@
 t_message *mx_message_get(int id) {
     t_message *m = mx_message_repo_get(id);
 
-    m->author = mx_user_get_discription(m->author_id);
+    m->author = mx_user_get(m->author_id);
     m->files = mx_message_file_get_files(m->id);
 
     return m;

@@ -6,30 +6,12 @@
     relations(photo;
  */
 t_user *mx_user_get(int id) {
-    t_user *user = mx_user_get_discription(id);
-
-    if (!user) {
-        return NULL;
-    }
-    user->password_hash = NULL;
-
-    return user;
-}
-
-/*
-  User:
-    descriptions(all exclude password);
- */
-t_user *mx_user_get_discription(int id) {
     t_user *user = mx_user_repo_get(id);
 
     if (!user) {
         return NULL;
     }
     user->password_hash = NULL;
-    user->favorites = NULL;
-    user->messages = NULL;
-    user->rooms = NULL;
 
     return user;
 }

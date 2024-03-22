@@ -51,7 +51,6 @@ void mx_user_ctrl_delete_me(t_connection *c, t_http_message *m);
 t_list *mx_user_get_rooms(int user_id);
 t_user *mx_user_get(int id);
 t_user *mx_user_get_by_tag(char *tag);
-t_user *mx_user_get_discription(int id);
 t_user *mx_user_create(t_user_create_dto *dto);
 t_user *mx_user_change_password(int id, char *password);
 t_user *mx_user_put(int id, t_user_update_dto *dto);

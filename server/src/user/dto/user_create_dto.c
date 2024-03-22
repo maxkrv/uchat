@@ -36,9 +36,9 @@ static t_user_create_dto *validate_user_create_dto(t_user_create_dto *dto) {
     }
 
     if (!dto->name || !dto->password || !dto->tag || !dto->status ||
-        dto->photo_id < 0 || mx_strlen(dto->name) < 4 ||
-        mx_strlen(dto->password) < 8 || mx_strlen(dto->status) < 2 ||
-        mx_strlen(dto->tag) < 4 || !mx_is_valid_password(dto->password)) {
+        mx_strlen(dto->name) < 4 || mx_strlen(dto->password) < 8 ||
+        mx_strlen(dto->status) < 2 || mx_strlen(dto->tag) < 4 ||
+        !mx_is_valid_password(dto->password)) {
         mx_user_create_dto_free(dto);
         return NULL;
     }
@@ -60,6 +60,7 @@ static t_user_create_dto *parse_user_create_dto(struct mg_str body) {
     dto->photo_id = mx_cjson_get_number(obj, "photo_id");
     dto->tag = mx_cjson_get_string(obj, "tag");
     dto->status = mx_cjson_get_string(obj, "status");
+    dto->description = mx_cjson_get_string(obj, "description");
 
     cJSON_Delete(obj);
 

@@ -1,16 +1,17 @@
 #include "utils.h"
 
-t_string mx_decode_uri_component(t_string str) {
+t_string mx_decode_uri_component(struct mg_str str) {
     if (!str.ptr) {
-        return mg_str(NULL);
+        return NULL;
     }
     char buf[MX_BUFFER_SIZE];
 
-    int status = mg_url_decode(str.ptr, str.len, buf, sizeof(buf), true);
+    int size = mg_url_decode(str.ptr, str.len, buf, sizeof(buf), true);
 
-    if (status == -1) {
-        return mg_str(NULL);
+    if (size == -1) {
+        return NULL;
     }
+    buf[size] = '\0';
 
-    return mg_str(buf);
+    return mx_strndup(buf, size);
 }

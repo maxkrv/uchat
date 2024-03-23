@@ -18,7 +18,7 @@ TARGET_SERVER = uchat_server
 all: install
 
 server: install
-	./$(TARGET_SERVER)
+	./$(TARGET_SERVER) --root server
 
 client: install
 	./$(TARGET_CLIENT)

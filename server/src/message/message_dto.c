@@ -11,17 +11,27 @@ static t_message_create_dto *init_message_create_dto() {
     return dto;
 }
 
+void mx_message_create_dto_free(t_message_create_dto *dto) {
+    if (!dto) {
+        return;
+    }
+    mx_strdel(&dto->text);
+    mx_list_free(&dto->file_ids, free);
+
+    free(dto);
+}
+
 static t_message_create_dto *
 validate_message_create_dto(t_message_create_dto *dto) {
     if (!dto->room_id || !dto->text) {
-        free(dto);
+        mx_message_create_dto_free(dto);
         return NULL;
     }
 
     return dto;
 }
 
-static t_message_create_dto *parse_message_create_dto(t_string body) {
+static t_message_create_dto *parse_message_create_dto(struct mg_str body) {
     t_message_create_dto *dto = init_message_create_dto();
     cJSON *obj = cJSON_ParseWithLength(body.ptr, body.len);
     cJSON *key;
@@ -31,21 +41,16 @@ static t_message_create_dto *parse_message_create_dto(t_string body) {
         return NULL;
     }
 
-    key = cJSON_GetObjectItemCaseSensitive(obj, "reply_id");
-    dto->reply_id = cJSON_GetNumberValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(obj, "room_id");
-    dto->room_id = cJSON_GetNumberValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(obj, "text");
-    dto->text = cJSON_GetStringValue(key);
+    dto->reply_id = mx_cjson_get_number(obj, "reply_id");
+    dto->room_id = mx_cjson_get_number(obj, "room_id");
+    dto->text = mx_cjson_get_string(obj, "text");
 
     key = cJSON_GetObjectItemCaseSensitive(obj, "file_ids");
     cJSON *arr_value = NULL;
 
     cJSON_ArrayForEach(arr_value, key) {
         if (cJSON_IsNumber(arr_value)) {
-            mx_push_back(&dto->file_ids, &arr_value->valuedouble);
+            mx_push_back(&dto->file_ids, mx_itoa(arr_value->valueint));
         }
     }
     cJSON_Delete(obj);
@@ -53,7 +58,7 @@ static t_message_create_dto *parse_message_create_dto(t_string body) {
     return dto;
 }
 
-t_message_create_dto *mx_get_message_create_dto(t_string body) {
+t_message_create_dto *mx_message_create_dto_get(struct mg_str body) {
     t_message_create_dto *dto = parse_message_create_dto(body);
 
     if (!dto) {

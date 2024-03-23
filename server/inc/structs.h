@@ -5,26 +5,13 @@
 
 typedef struct s_room_member t_room_member;
 typedef struct s_read_message t_read_message;
-typedef struct s_message_file t_message_file;
 typedef struct s_favorite_room t_favorite_room;
-typedef struct s_room_pined_message t_room_pined_message;
+typedef struct s_room_pined_message t_pined_message;
 
 typedef struct s_room t_room;
 typedef struct s_message t_message;
 typedef struct s_user t_user;
 typedef struct s_file t_file;
-
-struct s_message_file {
-    int id;
-    int file_id;
-    int message_id;
-    char *type;
-    int created_at;
-    int edited_at;
-
-    t_message *message;
-    t_file *file;
-};
 
 struct s_room_member {
     int id;
@@ -63,15 +50,14 @@ struct s_room {
     int id;
     char *name;
     char *type;
-    char *discription;
+    char *description;
     int photo_id;
     int created_at;
     int edited_at;
 
     t_list *members;
     t_list *messages;
-    t_list *users_favorite;
-    t_list *room_pined_message;
+    t_list *pined_messages;
     t_file *photo;
 };
 
@@ -87,9 +73,8 @@ struct s_user {
     int edited_at;
 
     t_list *messages;
-    t_list *rooms_member;
-    t_list *favorite_rooms;
-    t_list *read_messages;
+    t_list *rooms;
+    t_list *favorites;
     t_file *photo;
 };
 
@@ -106,7 +91,7 @@ struct s_message {
     t_user *author;
     t_room *room;
     t_message *reply;
-    t_list *message_files;
+    t_list *files;
 };
 
 struct s_read_message {

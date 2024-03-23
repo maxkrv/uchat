@@ -17,24 +17,20 @@ char *mx_jwt_head_stringify(t_jwt_head *head) {
 t_jwt_head mx_jwt_head_parse(char *header_json) {
     t_jwt_head head = {NULL, NULL, -1, -1};
     cJSON *header_obj = cJSON_Parse(header_json);
-    cJSON *key;
 
     if (header_obj == NULL) {
-        return head; // Failed to parse JSON
+        return head;
     }
 
-    key = cJSON_GetObjectItemCaseSensitive(header_obj, "alg");
-    head.alg = cJSON_GetStringValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(header_obj, "typ");
-    head.typ = cJSON_GetStringValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(header_obj, "iat");
-    head.iat = cJSON_GetNumberValue(key);
-
-    key = cJSON_GetObjectItemCaseSensitive(header_obj, "exp");
-    head.exp = cJSON_GetNumberValue(key);
+    head.alg = mx_cjson_get_string(header_obj, "alg");
+    head.typ = mx_cjson_get_string(header_obj, "typ");
+    head.iat = mx_cjson_get_number(header_obj, "iat");
+    head.exp = mx_cjson_get_number(header_obj, "exp");
 
     cJSON_Delete(header_obj);
     return head;
+}
+void mx_jwt_head_free(t_jwt_head *head) {
+    mx_strdel(&head->alg);
+    mx_strdel(&head->typ);
 }

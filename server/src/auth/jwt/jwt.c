@@ -15,10 +15,13 @@ static char *create_jwt_header(int expiration_time) {
 static bool verify_jwt_header(char *header) {
     time_t now = time(NULL);
     t_jwt_head head = mx_jwt_head_parse(header);
-    if (!mx_strcmp(head.alg, "HS256") || !mx_strcmp(head.typ, "JWT") ||
+
+    if (mx_strcmp(head.alg, "HS256") != 0 || mx_strcmp(head.typ, "JWT") != 0 ||
         head.iat < 0 || head.exp < now) {
+        mx_jwt_head_free(&head);
         return false;
     }
+    mx_jwt_head_free(&head);
 
     return true;
 }
@@ -43,7 +46,8 @@ static int get_str_arr_len(char **arr) {
     return i;
 }
 
-char *mx_create_jwt(char *payload_str, char *secret, int expiration_time) {
+t_jwt_token mx_create_jwt(char *payload_str, char *secret,
+                          int expiration_time) {
     char *header = create_jwt_header(expiration_time);
     char *payload =
         mx_base64_encode((unsigned char *)payload_str, strlen(payload_str));
@@ -53,7 +57,7 @@ char *mx_create_jwt(char *payload_str, char *secret, int expiration_time) {
     return concat_with_dot_and_free(header_and_payload, signature);
 }
 
-char *mx_verify_jwt(char *jwt, char *secret) {
+t_jwt_payload mx_verify_jwt(char *jwt, char *secret) {
     char **token = mx_strsplit(jwt, '.');
 
     if (get_str_arr_len(token) != 3) {

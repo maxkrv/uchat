@@ -13,6 +13,13 @@ typedef struct {
     int iat;
 } t_jwt_head;
 
+// string head.payload.signature
+typedef char *t_jwt_token;
+// json payload string
+typedef char *t_jwt_payload;
+// user id(-1 in case of error)
+typedef int t_user_id;
+
 char *mx_base64_encode(unsigned char *input, int size);
 char *mx_base64_decode(char *input);
 
@@ -25,6 +32,7 @@ char *mx_create_jwt(char *payload_str, char *secret, int expiration_time);
 
 char *mx_jwt_head_stringify(t_jwt_head *head);
 t_jwt_head mx_jwt_head_parse(char *header_json);
+void mx_jwt_head_free(t_jwt_head *head);
 
 char *mx_hash_string(char *string);
 bool mx_comp_hash(char *value, char *hash);

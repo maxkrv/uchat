@@ -8,6 +8,7 @@
 #include <curl/curl.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtk.h>
+#include "sdk/sdk.h"
 
 // auth
 void show_auth_container(GtkBuilder *builder, GtkWidget *window);

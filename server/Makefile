@@ -2,7 +2,7 @@ CC = clang
 RM = rm
 PRINT = printf
 MKDIR = mkdir
-CFLAGS = -std=c11 -Wall -Wextra -Wpedantic #-Werror #todo uncomment this please
+CFLAGS = -std=c11 -Wall -Wextra -Wpedantic -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Werror
 
 INC_DIR = inc
 SRC_DIR = src
@@ -32,11 +32,13 @@ CLEAN_LINE = \033[K
 
 .PHONY: all uninstall clean reinstall install
 
-all: reinstall
+all: install
 
 install: $(TARGET)
 	@$(PRINT) "\r$(CLEAN_LINE)$(CYAN)$(BOLD)$(TARGET) $@ $(YELLOW)done$(CYAN)\n"
 
+server:
+	./$(TARGET) --root .. --secret NOT_SECRET
 
 $(OBJ_FILES): $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@$(MKDIR) -p $(dir $@)

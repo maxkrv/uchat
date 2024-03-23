@@ -5,8 +5,8 @@
 #define MX_EMPTY ""
 #define MX_DEFAULT_DB_PATH "db/db.sqlite"
 #define MX_DEFAULT_ROOT_DIR "."
-#define MX_UPLOAD_DIR_PATH "assets/uploads"
-#define MX_STATIC_DIR "assets"
+#define MX_UPLOAD_DIR_PATH "server/assets/uploads"
+#define MX_STATIC_DIR "server/assets"
 
 typedef struct mg_mgr t_mg_manager;
 typedef struct mg_http_message t_http_message;

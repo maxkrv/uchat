@@ -14,9 +14,6 @@ void mx_message_free(t_message *u);
 t_read_message *mx_read_message_init(void);
 void mx_read_message_free(t_read_message *u);
 
-t_message_file *mx_message_file_init(void);
-void mx_message_file_free(t_message_file *u);
-
 t_room *mx_room_init(void);
 void mx_room_free(t_room *u);
 

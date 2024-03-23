@@ -9,9 +9,7 @@ static t_list *bind_columns_to_users(sqlite3_stmt *stmt) {
             last = mx_sqlite_bind_columns_to_user(stmt, 0);
             mx_push_back(&users, last);
         }
-        if (sqlite3_column_int(stmt, 9) > 0) {
-            last->photo = mx_sqlite_bind_columns_to_file(stmt, 9);
-        }
+        last->photo = mx_sqlite_bind_columns_to_file(stmt, 9);
     }
 
     return users;
@@ -31,9 +29,15 @@ t_user *mx_user_repo_get(int id) {
 
     mx_sqlite3_bind_id(stmt, 1, id);
 
-    t_list *users = bind_columns_to_users(stmt);
-    t_user *user = users ? users->data : NULL;
-    mx_clear_list(&users);
+    if (sqlite3_step(stmt) != SQLITE_ROW) {
+        sqlite3_finalize(stmt);
+        return NULL;
+    }
+    t_user *user = mx_sqlite_bind_columns_to_user(stmt, 0);
+
+    if (user) {
+        user->photo = mx_sqlite_bind_columns_to_file(stmt, 9);
+    }
     sqlite3_finalize(stmt);
 
     return user;
@@ -53,9 +57,15 @@ t_user *mx_user_repo_get_by_tag(char *tag) {
     }
     sqlite3_bind_text(stmt, 1, tag, -1, SQLITE_TRANSIENT);
 
-    t_list *users = bind_columns_to_users(stmt);
-    t_user *user = users ? users->data : NULL;
-    mx_clear_list(&users);
+    if (sqlite3_step(stmt) != SQLITE_ROW) {
+        sqlite3_finalize(stmt);
+        return NULL;
+    }
+    t_user *user = mx_sqlite_bind_columns_to_user(stmt, 0);
+
+    if (user) {
+        user->photo = mx_sqlite_bind_columns_to_file(stmt, 9);
+    }
     sqlite3_finalize(stmt);
 
     return user;
@@ -75,9 +85,15 @@ t_user *mx_user_repo_get_by_name(char *name) {
     }
     sqlite3_bind_text(stmt, 1, name, -1, SQLITE_TRANSIENT);
 
-    t_list *users = bind_columns_to_users(stmt);
-    t_user *user = users ? users->data : NULL;
-    mx_clear_list(&users);
+    if (sqlite3_step(stmt) != SQLITE_ROW) {
+        sqlite3_finalize(stmt);
+        return NULL;
+    }
+    t_user *user = mx_sqlite_bind_columns_to_user(stmt, 0);
+
+    if (user) {
+        user->photo = mx_sqlite_bind_columns_to_file(stmt, 9);
+    }
     sqlite3_finalize(stmt);
 
     return user;

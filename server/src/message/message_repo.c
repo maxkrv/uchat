@@ -7,17 +7,13 @@ static t_list *bind_columns_to_messages(sqlite3_stmt *stmt) {
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         if (!last || sqlite3_column_int(stmt, 0) != last->id) {
             last = mx_sqlite_bind_columns_to_message(stmt, 0);
+            last->author = mx_sqlite_bind_columns_to_user(stmt, 12);
+            last->author->photo = mx_sqlite_bind_columns_to_file(stmt, 21);
             mx_push_back(&messages, last);
         }
         if (sqlite3_column_int(stmt, 7) > 0) {
             mx_push_back(&last->files,
                          mx_sqlite_bind_columns_to_file(stmt, 7));
-        }
-        if (sqlite3_column_int(stmt, 12) > 0) {
-            last->author = mx_sqlite_bind_columns_to_user(stmt, 12);
-        }
-        if (sqlite3_column_int(stmt, 21) > 0) {
-            last->author->photo = mx_sqlite_bind_columns_to_file(stmt, 21);
         }
     }
 
@@ -38,7 +34,7 @@ t_message *mx_message_repo_get(int id) {
         return NULL;
     }
 
-    sqlite3_bind_int(stmt, 1, id);
+    mx_sqlite3_bind_id(stmt, 1, id);
 
     t_list *messages = bind_columns_to_messages(stmt);
     t_message *message = messages ? messages->data : NULL;
@@ -62,7 +58,7 @@ t_list *mx_message_repo_get_many(int room_id) {
         return NULL;
     }
 
-    sqlite3_bind_int(stmt, 1, room_id);
+    mx_sqlite3_bind_id(stmt, 1, room_id);
 
     t_list *list = bind_columns_to_messages(stmt);
 

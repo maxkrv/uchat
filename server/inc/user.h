@@ -107,4 +107,7 @@ t_string mx_favorite_stringify(t_favorite_room *fav);
 cJSON *mx_favorites_to_cjson(t_list *members);
 t_string mx_favorites_stringify(t_list *members);
 
+t_favorite_room *mx_sqlite_bind_columns_to_favorite(sqlite3_stmt *stmt,
+                                                    int from);
+
 #endif

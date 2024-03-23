@@ -1,5 +1,25 @@
 #include "server.h"
 
+static t_list *bind_columns_to_messages(sqlite3_stmt *stmt) {
+    t_list *messages = NULL;
+    t_message *last = NULL;
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        if (!last || sqlite3_column_int(stmt, 0) != last->id) {
+            last = mx_sqlite_bind_columns_to_message(stmt, 0);
+            last->author = mx_sqlite_bind_columns_to_user(stmt, 12);
+            last->author->photo = mx_sqlite_bind_columns_to_file(stmt, 21);
+            mx_push_back(&messages, last);
+        }
+        if (sqlite3_column_int(stmt, 7) > 0) {
+            mx_push_back(&last->files,
+                         mx_sqlite_bind_columns_to_file(stmt, 7));
+        }
+    }
+
+    return messages;
+}
+
 void mx_message_ctrl_read_message(t_connection *c, t_http_message *m) {
     t_user_id user_id = mx_auth(m);
 

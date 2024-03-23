@@ -9,13 +9,9 @@ t_room *mx_room_create(t_room_create_dto *dto, int user_id) {
     if (room_id < 0) {
         return NULL;
     }
-    t_room_member_create_dto *member =
-        mx_room_member_create_dto_constructor(room_id, user_id, true);
+    int member_id = mx_members_repo_create(user_id, room_id, true);
 
-    t_room_member *mem = mx_room_add_member(member);
-    mx_room_member_create_dto_free(member);
-
-    if (!mem) {
+    if (member_id <= 0) {
         mx_room_repo_delete(room_id);
         return NULL;
     }

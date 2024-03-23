@@ -7,10 +7,8 @@ static t_list *bind_columns_to_rooms(sqlite3_stmt *stmt) {
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         if (!last || sqlite3_column_int(stmt, 0) != last->id) {
             last = mx_sqlite_bind_columns_to_room(stmt, 0);
-            mx_push_back(&rooms, last);
-        }
-        if (sqlite3_column_int(stmt, 7) > 0) {
             last->photo = mx_sqlite_bind_columns_to_file(stmt, 7);
+            mx_push_back(&rooms, last);
         }
     }
 
@@ -28,14 +26,45 @@ t_room *mx_room_repo_get(int id) {
         return NULL;
     }
 
-    sqlite3_bind_int(stmt, 1, id);
+    mx_sqlite3_bind_id(stmt, 1, id);
 
-    t_list *rooms = bind_columns_to_rooms(stmt);
-    t_room *room = rooms ? rooms->data : NULL;
-    mx_clear_list(&rooms);
-    sqlite3_finalize(stmt);
+    if (sqlite3_step(stmt) != SQLITE_ROW) {
+        sqlite3_finalize(stmt);
+        return NULL;
+    }
+    t_room *room = mx_sqlite_bind_columns_to_room(stmt, 0);
+
+    if (room) {
+        room->photo = mx_sqlite_bind_columns_to_file(stmt, 7);
+        sqlite3_finalize(stmt);
+    }
 
     return room;
+}
+
+t_list *mx_room_repo_get_many(int user_id) {
+    sqlite3 *db = mx_env_get()->db_connection;
+    sqlite3_stmt *stmt;
+    const char *sql = "SELECT r.*, rf.* "
+                      "FROM room_member r_m "
+                      "LEFT JOIN room r ON r_m.room_id = r.id "
+                      "LEFT JOIN file rf ON r.photo_id = rf.id "
+                      "WHERE r_m.user_id = ? ;";
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        return NULL;
+    }
+
+    mx_sqlite3_bind_id(stmt, 1, user_id);
+
+    if (sqlite3_step(stmt) != SQLITE_ROW) {
+        sqlite3_finalize(stmt);
+        return NULL;
+    }
+
+    t_list *rooms = bind_columns_to_rooms(stmt);
+
+    sqlite3_finalize(stmt);
+    return rooms;
 }
 
 int mx_room_repo_create(t_room_create_dto *dto) {
@@ -111,7 +140,7 @@ bool mx_room_repo_delete(int id) {
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
         return false;
     }
-    sqlite3_bind_int(stmt, 2, id);
+    mx_sqlite3_bind_id(stmt, 1, id);
 
     bool res = sqlite3_step(stmt) == SQLITE_DONE;
 

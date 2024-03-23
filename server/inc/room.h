@@ -54,6 +54,7 @@ t_room *mx_room_delete(int id);
 
 // repositories
 t_room *mx_room_repo_get(int id);
+t_list *mx_room_repo_get_many(int user_id);
 int mx_room_repo_create(t_room_create_dto *dto);
 bool mx_room_repo_put(int id, t_room_create_dto *dto);
 bool mx_room_repo_delete(int id);
@@ -100,6 +101,8 @@ t_string mx_pined_message_stringify(t_pined_message *pined);
 cJSON *mx_pined_messages_to_cjson(t_list *members);
 t_string mx_pined_messages_stringify(t_list *members);
 
+t_pined_message *mx_sqlite_bind_columns_to_pine(sqlite3_stmt *stmt, int from);
+
 /*
 /////////////////////////////////////////////
  Room.members.
@@ -137,7 +140,6 @@ t_room_member *mx_members_repo_get(int id);
 t_room_member *mx_members_repo_get_by(int user_id, int room_id);
 int mx_members_repo_create(int user_id, int room_id, bool is_admin);
 bool mx_members_repo_update(int id, bool is_admin);
-t_list *mx_members_repo_get_many_rooms(int user_id);
 t_list *mx_members_repo_get_many(int room_id);
 bool mx_members_repo_delete(int id);
 
@@ -147,4 +149,5 @@ t_string mx_member_stringify(t_room_member *member);
 cJSON *mx_members_to_cjson(t_list *rooms);
 t_string mx_members_stringify(t_list *members);
 
+t_room_member *mx_sqlite_bind_columns_to_member(sqlite3_stmt *stmt, int from);
 #endif

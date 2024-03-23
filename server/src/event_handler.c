@@ -22,7 +22,7 @@ static void ws_create_client(t_connection *conn, t_http_message *req) {
                                 "Invalid token provided");
         return;
     }
-    t_list *rooms = mx_members_repo_get_many_rooms(user_id);
+    t_list *rooms = mx_room_repo_get_many(user_id);
     t_client *client = mx_create_client(conn, user_id, rooms);
 
     mx_push_back((t_list **)&server->clients, client);

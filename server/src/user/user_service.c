@@ -32,7 +32,7 @@ t_user *mx_user_get_by_tag(char *tag) {
 }
 
 t_list *mx_user_get_rooms(int user_id) {
-    t_list *rooms = mx_members_repo_get_many_rooms(user_id);
+    t_list *rooms = mx_room_repo_get_many(user_id);
 
     if (!rooms) {
         return NULL;
@@ -69,7 +69,7 @@ t_user *mx_user_put(int id, t_user_update_dto *dto) {
 t_user *mx_user_change_password(int id, char *password) {
     char *password_hash = mx_hash_string(password);
 
-    if (!mx_user_repo_change_password(id, password)) {
+    if (!mx_user_repo_change_password(id, password_hash)) {
         mx_strdel(&password_hash);
         return NULL;
     };

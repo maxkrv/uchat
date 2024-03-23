@@ -5,7 +5,6 @@
 
 typedef struct s_room_member t_room_member;
 typedef struct s_read_message t_read_message;
-typedef struct s_message_file t_message_file;
 typedef struct s_favorite_room t_favorite_room;
 typedef struct s_room_pined_message t_pined_message;
 
@@ -34,17 +33,6 @@ typedef struct {
     char *key;
     char *value;
 } t_header;
-
-struct s_message_file {
-    int id;
-    int file_id;
-    int message_id;
-    int created_at;
-    int edited_at;
-
-    t_message *message;
-    t_file *file;
-};
 
 struct s_room_member {
     int id;

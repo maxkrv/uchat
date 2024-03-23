@@ -16,9 +16,7 @@ t_message *mx_message_create(int user_id, t_message_create_dto *dto) {
         return NULL;
     }
     for (t_list *l = dto->file_ids; l; l = l->next) {
-        t_message_file *msg_fl =
-            mx_message_file_create(message_id, mx_atoi(l->data));
-        mx_message_file_free(msg_fl);
+        mx_message_file_repo_create(message_id, mx_atoi(l->data));
     }
 
     return mx_message_repo_get(message_id);
@@ -30,7 +28,12 @@ t_message *mx_message_put(int id, t_message_create_dto *dto) {
     if (!ok) {
         return NULL;
     }
+    for (t_list *l = dto->file_ids; l; l = l->next) {
+        int file_id = mx_atoi(l->data);
 
+        mx_message_file_repo_delete(file_id);
+        mx_message_file_repo_create(id, file_id);
+    }
     return mx_message_repo_get(id);
 }
 

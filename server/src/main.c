@@ -1,8 +1,6 @@
 #include "server.h"
 
 int main(int argc, char *argv[]) {
-    srand(time(NULL));
-
     t_env_params *env = mx_create_env();
 
     mx_env_init(env, argc, argv);

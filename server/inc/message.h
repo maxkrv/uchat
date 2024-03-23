@@ -97,6 +97,8 @@ cJSON *mx_read_messages_to_cjson(t_list *message);
 t_string mx_read_message_stringify(t_read_message *message);
 t_string mx_read_messages_stringify(t_list *messages);
 
+t_read_message *mx_sqlite_bind_columns_to_reader(sqlite3_stmt *stmt, int from);
+
 /*
 /////////////////////////////////////////////
  Message.message_files
@@ -104,18 +106,8 @@ t_string mx_read_messages_stringify(t_list *messages);
                 file }
 /////////////////////////////////////////////
 */
-// structure constructors and destructors
-t_message_file *mx_message_file_init(void);
-void mx_message_file_free(t_message_file *u);
-
-// services
-t_message_file *mx_message_file_get(int id);
-t_list *mx_message_file_get_files(int message_id);
-t_message_file *mx_message_file_delete(int id);
-t_message_file *mx_message_file_create(int message_id, int file_id);
 
 // repositories
-t_list *mx_message_file_repo_get_all(int user_id);
-int mx_message_file_repo_create(int file_id, char *type);
-bool mx_message_file_repo_delete(int id);
+int mx_message_file_repo_create(int message_id, int file_id);
+bool mx_message_file_repo_delete(int file_id);
 #endif

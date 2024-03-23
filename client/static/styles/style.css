@@ -27,6 +27,7 @@ button:active {
 .scroll {
     border: 0;
     outline: 0;
+    margin: 0px 0px -33px 0px;
 }
 /* end global */
 
@@ -118,6 +119,19 @@ button:active {
 }
 
 .pages {
-    margin: 3px -10px;
+    margin: 3px -8px;
 }
+
+.scrollbar slider {
+  background-color: @secondary_color;
+}
+
+scrollbar slider:hover {
+  background-color: @secondary_color-dark;
+}
+
+scrollbar slider:active {
+  background-color: @secondary_color-dark;
+}
+
 /* end chat */

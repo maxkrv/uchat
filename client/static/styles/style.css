@@ -99,4 +99,25 @@ button:active {
     min-width: 400px;
 }
 
+.message_entry {
+    background: transparent;
+    border-color: @border_color;
+    border-width: 2px;
+    border-radius: 20px;
+}
+
+.message_button {
+    border-radius: 50px;
+    background: @secondary_color; 
+}
+
+#chat_list_box {
+    border-top-color: @secondary_color;
+    border-width: 2px;
+    border-style: solid none none none;
+}
+
+.pages {
+    margin: 3px -10px;
+}
 /* end chat */

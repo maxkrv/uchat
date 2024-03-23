@@ -9,6 +9,9 @@ typedef struct {
 
 UserData *user_data = NULL;
 
+GtkBuilder *global_builder;
+GtkWidget *global_window;
+
 static void show_error_message(GtkLabel *label, const gchar *message) {
     gtk_label_set_text(label, message);
     gtk_widget_show(GTK_WIDGET(label));
@@ -70,7 +73,7 @@ static void on_confirm_password_entry_changed(GtkEntry *entry, gpointer data) {
     }
 }
 
-static void submit_log_clicked() {
+static void submit_login_clicked() {
     const gchar *login = user_data->username;
     const gchar *password = user_data->password;
     GtkLabel *label = user_data->err_label;
@@ -78,14 +81,26 @@ static void submit_log_clicked() {
     if (login != NULL && password != NULL &&
         (gtk_label_get_text(label) == NULL ||
          g_strcmp0(gtk_label_get_text(label), "") == 0)) {
-        printf("You have clicked submit\n");
+        t_response *response = mx_sdk_login(login, password);
+
+        if (mx_is_response_error(response)) {
+            show_error_message(label, response->exception->message);
+
+            mx_sdk_response_free(response, free);
+            return;
+        }
+
+        hide_auth_container(global_builder, global_window);
+        show_chat_container(global_builder, global_window);
+
+        mx_sdk_response_free(response, free);
     } else {
         show_error_message(
             label, "Fields cannot be empty.\n Errors must be corrected");
     }
 }
 
-static void submit_reg_clicked() {
+static void submit_register_clicked() {
     const gchar *login = user_data->username;
     const gchar *password = user_data->password;
     const gchar *confirm_p = user_data->confirm_password;
@@ -94,7 +109,34 @@ static void submit_reg_clicked() {
     if (login != NULL && password != NULL && confirm_p != NULL &&
         (gtk_label_get_text(label) == NULL ||
          g_strcmp0(gtk_label_get_text(label), "") == 0)) {
-        printf("You have clicked 'submit'");
+        t_user_create_dto *user_create_dto = mx_user_create_dto_init();
+
+        user_create_dto->name = mx_strdup(login);
+        user_create_dto->password = mx_strdup(password);
+
+        t_response *response = mx_sdk_register(user_create_dto);
+
+        if (mx_is_response_error(response)) {
+            show_error_message(label, response->exception->message);
+
+            mx_sdk_response_free(response, free);
+            return;
+        }
+
+        t_response *login_response = mx_sdk_login(login, password);
+
+        if (mx_is_response_error(login_response)) {
+            show_error_message(label, login_response->exception->message);
+
+            mx_sdk_response_free(login_response, free);
+            return;
+        }
+
+        hide_auth_container(global_builder, global_window);
+        show_chat_container(global_builder, global_window);
+
+        mx_sdk_response_free(response, free);
+        mx_sdk_response_free(login_response, free);
     } else {
         show_error_message(
             label, "Fields cannot be empty.\n Errors must be corrected");
@@ -110,8 +152,10 @@ static void on_password_entry_visibility(GtkEntry *entry,
 }
 
 void show_auth_container(GtkBuilder *builder, GtkWidget *window) {
+    global_builder = builder;
+    global_window = window;
     GtkWidget *auth_container =
-        GTK_WIDGET(gtk_builder_get_object(builder, "chat_container"));
+        GTK_WIDGET(gtk_builder_get_object(builder, "auth_container"));
 
     if (auth_container == NULL) {
         g_print("Error: %s\n", "Failed to load auth_container");
@@ -182,8 +226,25 @@ void show_auth_container(GtkBuilder *builder, GtkWidget *window) {
     GtkButton *submit_register =
         GTK_BUTTON(gtk_builder_get_object(builder, "submit_register"));
 
-    g_signal_connect(submit_login, "clicked", G_CALLBACK(submit_log_clicked),
+    g_signal_connect(submit_login, "clicked", G_CALLBACK(submit_login_clicked),
                      NULL);
     g_signal_connect(submit_register, "clicked",
-                     G_CALLBACK(submit_reg_clicked), NULL);
+                     G_CALLBACK(submit_register_clicked), NULL);
+}
+
+void hide_auth_container(GtkBuilder *builder, GtkWidget *window) {
+    GtkWidget *auth_container =
+        GTK_WIDGET(gtk_builder_get_object(builder, "auth_container"));
+
+    if (auth_container == NULL) {
+        g_print("Error: %s\n", "Failed to load auth_container");
+        return;
+    }
+
+    gtk_container_remove(GTK_CONTAINER(window), auth_container);
+    g_free(user_data->username);
+    g_free(user_data->password);
+    g_free(user_data->confirm_password);
+    g_free(user_data);
+    user_data = NULL;
 }

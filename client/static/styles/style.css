@@ -101,7 +101,7 @@ button:active {
 }
 
 .message_entry {
-    background: transparent;
+    background: white;
     border-color: @border_color;
     border-width: 2px;
     border-radius: 20px;
@@ -132,6 +132,10 @@ scrollbar slider:hover {
 
 scrollbar slider:active {
   background-color: @secondary_color-dark;
+}
+
+.chat_controlls {
+    background: @secondary_color-light;
 }
 
 /* end chat */

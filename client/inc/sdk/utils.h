@@ -22,4 +22,7 @@ t_list *mx_headers_push_back_token(t_list *headers);
 void mx_parse_server_response(t_response *response, t_func_parser parser);
 void mx_parse_array_server_response(t_response *response,
                                     t_func_parser parser);
+
+bool mx_is_response_ok(t_response *response);
+bool mx_is_response_error(t_response *response);
 #endif

@@ -12,6 +12,11 @@
 
 // auth
 void show_auth_container(GtkBuilder *builder, GtkWidget *window);
+void hide_auth_container(GtkBuilder *builder, GtkWidget *window);
+
+// chat
+void show_chat_container(GtkBuilder *builder, GtkWidget *window);
+void hide_chat_container();
 
 // utils
 GdkPixbuf *load_pixbuf_from_url(const char *url);

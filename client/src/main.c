@@ -2,6 +2,7 @@
 
 int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);
+    mx_sdk_init("http://localhost:3000");
 
     GtkBuilder *builder = gtk_builder_new();
 
@@ -31,6 +32,8 @@ int main(int argc, char *argv[]) {
     gtk_widget_show_all(window);
 
     gtk_main();
+
+    mx_sdk_free();
 
     return 0;
 }

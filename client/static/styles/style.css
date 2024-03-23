@@ -23,6 +23,12 @@ button label {
 button:active {
     background: @secondary_color-dark;
 }
+
+.scroll {
+    border: 0;
+    outline: 0;
+    margin: 0px 0px -33px 0px;
+}
 /* end global */
 
 /* auth start */
@@ -85,3 +91,51 @@ button:active {
 }
 
 /* end theme */
+
+
+/* start chat */
+
+.chat_sidebar {
+    background: @secondary_color-light;
+    min-width: 400px;
+}
+
+.message_entry {
+    background: white;
+    border-color: @border_color;
+    border-width: 2px;
+    border-radius: 20px;
+}
+
+.message_button {
+    border-radius: 50px;
+    background: @secondary_color; 
+}
+
+#chat_list_box {
+    border-top-color: @secondary_color;
+    border-width: 2px;
+    border-style: solid none none none;
+}
+
+.pages {
+    margin: 3px -8px;
+}
+
+.scrollbar slider {
+  background-color: @secondary_color;
+}
+
+scrollbar slider:hover {
+  background-color: @secondary_color-dark;
+}
+
+scrollbar slider:active {
+  background-color: @secondary_color-dark;
+}
+
+.chat_controlls {
+    background: @secondary_color-light;
+}
+
+/* end chat */

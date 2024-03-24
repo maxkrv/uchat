@@ -1,35 +1,37 @@
+#define DEFINE_GLOBALS
 #include "client.h"
+
 
 int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);
     mx_sdk_init("http://localhost:3000");
 
-    GtkBuilder *builder = gtk_builder_new();
+    global_builder = gtk_builder_new();
 
-    if (gtk_builder_add_from_file(builder, "client/static/uchat.glade",
+    if (gtk_builder_add_from_file(global_builder, "client/static/uchat.glade",
                                   NULL) == 0) {
         g_print("Error: %s\n", "Failed to load glade file");
         return 1;
     }
 
-    GtkWidget *window =
-        GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
+    global_window =
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "main_window"));
 
-    if (window == NULL) {
+    if (global_window == NULL) {
         g_print("Error: %s\n", "Failed to load auth_window");
         return 1;
     }
 
-    load_css(window, "client/static/styles/light.css");
-    load_css(window, "client/static/styles/style.css");
+    load_css(global_window, "client/static/styles/light.css");
+    load_css(global_window, "client/static/styles/style.css");
 
-    gtk_builder_connect_signals(builder, NULL);
-    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    init_theme_switcher(builder, window);
+    gtk_builder_connect_signals(global_builder, NULL);
+    g_signal_connect(global_window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    init_theme_switcher(global_builder, global_window, "theme_switcher");
 
-    show_auth_container(builder, window);
+    show_auth_container(global_builder, global_window);
 
-    gtk_widget_show_all(window);
+    gtk_widget_show_all(global_window);
 
     gtk_main();
 

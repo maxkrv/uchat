@@ -26,11 +26,11 @@ void mx_user_update_dto_free(t_user_update_dto *dto) {
 }
 
 static t_user_update_dto *validate_user_update_dto(t_user_update_dto *dto) {
-    if (!dto->name || !dto->status || mx_strlen(dto->name) < 4 ||
-        mx_strlen(dto->status) < 2 || !mx_is_valid_tag(dto->tag)) {
-        mx_user_update_dto_free(dto);
-        return NULL;
-    }
+    // if (!dto->name ||
+    //     mx_strlen(dto->name) < 4) {
+    //     mx_user_update_dto_free(dto);
+    //     return NULL;
+    // }
 
     return dto;
 }

@@ -27,6 +27,7 @@ typedef struct {
 t_sdk_env *mx_sdk_env_init(void);
 t_sdk_env *mx_sdk_env_get(void);
 void mx_sdk_env_free(t_sdk_env *);
+void mx_dk_free_jwt_token(void);
 void mx_sdk_env_set(t_sdk_env *);
 
 #endif

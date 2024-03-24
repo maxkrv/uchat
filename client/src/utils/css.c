@@ -21,8 +21,8 @@ static void on_theme_switch(GtkSwitch *G_GNUC_UNUSED theme_switch, gboolean stat
     g_free(css_path);
 }
 
-void init_theme_switcher(GtkBuilder *builder, GtkWidget *window) {
-    GtkWidget *switch_widget = GTK_WIDGET(gtk_builder_get_object(builder, "theme_switcher"));
+void init_theme_switcher(GtkBuilder *builder, GtkWidget *window, char *theme_switcher_widget_name) {
+    GtkWidget *switch_widget = GTK_WIDGET(gtk_builder_get_object(builder, (gchar *) theme_switcher_widget_name));
 
     g_signal_connect(switch_widget, "state-set", G_CALLBACK(on_theme_switch), window);
 }

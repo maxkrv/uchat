@@ -9,9 +9,6 @@ typedef struct {
 
 UserData *user_data = NULL;
 
-GtkBuilder *global_builder;
-GtkWidget *global_window;
-
 static void show_error_message(GtkLabel *label, const gchar *message) {
     gtk_label_set_text(label, message);
     gtk_widget_show(GTK_WIDGET(label));
@@ -90,8 +87,8 @@ static void submit_login_clicked() {
             return;
         }
 
-        hide_auth_container(global_builder, global_window);
-        show_chat_container(global_builder, global_window);
+        hide_auth_container();
+        show_chat_container();
 
         mx_sdk_response_free(response, free);
     } else {
@@ -132,8 +129,8 @@ static void submit_register_clicked() {
             return;
         }
 
-        hide_auth_container(global_builder, global_window);
-        show_chat_container(global_builder, global_window);
+        hide_auth_container();
+        show_chat_container();
 
         mx_sdk_response_free(response, free);
         mx_sdk_response_free(login_response, free);
@@ -151,18 +148,16 @@ static void on_password_entry_visibility(GtkEntry *entry,
     }
 }
 
-void show_auth_container(GtkBuilder *builder, GtkWidget *window) {
-    global_builder = builder;
-    global_window = window;
+void show_auth_container() {
     GtkWidget *auth_container =
-        GTK_WIDGET(gtk_builder_get_object(builder, "auth_container"));
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "auth_container"));
 
     if (auth_container == NULL) {
         g_print("Error: %s\n", "Failed to load auth_container");
         return;
     }
 
-    gtk_container_add(GTK_CONTAINER(window), auth_container);
+    gtk_container_add(GTK_CONTAINER(global_window), auth_container);
 
     user_data = g_new0(UserData, 1);
     if (user_data == NULL) {
@@ -175,9 +170,9 @@ void show_auth_container(GtkBuilder *builder, GtkWidget *window) {
     user_data->err_label = NULL;
 
     GtkLabel *err_label_log = GTK_LABEL(
-        gtk_builder_get_object(builder, "error_message_login_label"));
+        gtk_builder_get_object(global_builder, "error_message_login_label"));
     GtkLabel *err_label_reg = GTK_LABEL(
-        gtk_builder_get_object(builder, "error_message_registration_label"));
+        gtk_builder_get_object(global_builder, "error_message_registration_label"));
 
     if (err_label_log == NULL || err_label_reg == NULL) {
         g_print("Error: Failed to obtain error labels\n");
@@ -186,16 +181,16 @@ void show_auth_container(GtkBuilder *builder, GtkWidget *window) {
     }
 
     GtkWidget *login_entry =
-        GTK_WIDGET(gtk_builder_get_object(builder, "login_entry"));
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "login_entry"));
     GtkWidget *password_entry =
-        GTK_WIDGET(gtk_builder_get_object(builder, "password_entry"));
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "password_entry"));
 
     GtkWidget *new_login_entry =
-        GTK_WIDGET(gtk_builder_get_object(builder, "new_login_entry"));
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "new_login_entry"));
     GtkWidget *new_password_entry =
-        GTK_WIDGET(gtk_builder_get_object(builder, "new_password_entry"));
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "new_password_entry"));
     GtkWidget *confirm_password_entry =
-        GTK_WIDGET(gtk_builder_get_object(builder, "confirm_password_entry"));
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "confirm_password_entry"));
 
     if (is_empty_field(GTK_ENTRY(login_entry)) ||
         is_empty_field(GTK_ENTRY(new_login_entry)))
@@ -222,9 +217,9 @@ void show_auth_container(GtkBuilder *builder, GtkWidget *window) {
                      G_CALLBACK(on_password_entry_visibility), NULL);
 
     GtkButton *submit_login =
-        GTK_BUTTON(gtk_builder_get_object(builder, "submit_login"));
+        GTK_BUTTON(gtk_builder_get_object(global_builder, "submit_login"));
     GtkButton *submit_register =
-        GTK_BUTTON(gtk_builder_get_object(builder, "submit_register"));
+        GTK_BUTTON(gtk_builder_get_object(global_builder, "submit_register"));
 
     g_signal_connect(submit_login, "clicked", G_CALLBACK(submit_login_clicked),
                      NULL);
@@ -232,16 +227,16 @@ void show_auth_container(GtkBuilder *builder, GtkWidget *window) {
                      G_CALLBACK(submit_register_clicked), NULL);
 }
 
-void hide_auth_container(GtkBuilder *builder, GtkWidget *window) {
+void hide_auth_container() {
     GtkWidget *auth_container =
-        GTK_WIDGET(gtk_builder_get_object(builder, "auth_container"));
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "auth_container"));
 
     if (auth_container == NULL) {
         g_print("Error: %s\n", "Failed to load auth_container");
         return;
     }
 
-    gtk_container_remove(GTK_CONTAINER(window), auth_container);
+    gtk_container_remove(GTK_CONTAINER(global_window), auth_container);
     g_free(user_data->username);
     g_free(user_data->password);
     g_free(user_data->confirm_password);

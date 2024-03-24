@@ -27,7 +27,6 @@ button:active {
 .scroll {
     border: 0;
     outline: 0;
-    margin: 0px 0px -33px 0px;
 }
 /* end global */
 
@@ -139,3 +138,24 @@ scrollbar slider:active {
 }
 
 /* end chat */
+
+/* settings start */
+.page_header {
+    background: @secondary_color-light;
+    padding: 5px 10px;
+}
+
+.page_title {
+    font-weight: bold;
+}
+
+.group_name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.settings_container entry {
+    background: @input_bg_color;
+    border: 2px solid @border_color;
+}
+/* settings end */

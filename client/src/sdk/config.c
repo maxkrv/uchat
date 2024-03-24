@@ -22,6 +22,12 @@ void mx_sdk_env_free(t_sdk_env *env) {
     free(env);
 }
 
+void mx_dk_free_jwt_token(void) {
+    mx_strdel(&sdk_env->jwt_token);
+    mx_strdel(&sdk_env->username);
+    mx_strdel(&sdk_env->password);
+}
+
 t_sdk_env *mx_sdk_env_get(void) {
     return sdk_env;
 }

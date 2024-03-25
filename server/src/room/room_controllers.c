@@ -28,7 +28,7 @@ void mx_room_ctrl_post(t_connection *c, t_http_message *m) {
 
     if (user_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
-                                "Invalid token provided");
+                                "Invalid token");
         return;
     }
     t_room_create_dto *dto = mx_room_create_dto_get(m->body);
@@ -38,6 +38,8 @@ void mx_room_ctrl_post(t_connection *c, t_http_message *m) {
                                 "Invalid room data provided");
         return;
     }
+    dto->type = mx_strdup(MX_ROOM_TYPE_DIRECT);
+
     t_room *room = mx_room_create(dto, user_id);
 
     mx_room_create_dto_free(dto);
@@ -59,7 +61,7 @@ void mx_room_ctrl_put(t_connection *c, t_http_message *m) {
 
     if (user_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
-                                "Invalid token provided");
+                                "Invalid token");
         return;
     }
     int room_id = mx_extract_id_from_query(m->query, "room_id");
@@ -102,7 +104,7 @@ void mx_room_ctrl_delete(t_connection *c, t_http_message *m) {
 
     if (user_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
-                                "Invalid token provided");
+                                "Invalid token");
         return;
     }
     int room_id = mx_extract_id_from_query(m->query, "room_id");

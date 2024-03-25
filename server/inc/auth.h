@@ -1,7 +1,7 @@
 #ifndef BACKEND_AUTH_H
 #define BACKEND_AUTH_H
 
-#define MX_AUTH_JWT_EXP_TIME 3600
+#define MX_AUTH_JWT_EXP_TIME 2592000
 
 #include "base.h"
 #include "utils.h"

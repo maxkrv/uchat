@@ -74,8 +74,7 @@ void mx_env_init(t_env_params *env, int argc, char *argv[]) {
 
     env->upload_dir = mx_path_join(env->root_dir, MX_UPLOAD_DIR_PATH);
     struct mg_http_serve_opts opt = {
-        .root_dir = mg_mprintf("/%s=%s/%s", MX_STATIC_DIR, env->root_dir,
-                               MX_STATIC_DIR),
+        .root_dir = mg_mprintf("/assets=%s/%s", env->root_dir, MX_STATIC_DIR),
         .extra_headers = MX_OPTIONS_HEADERS};
     env->static_dir_opt = opt;
     env->db_connection = mx_connect_to_database(env->db_path);

@@ -26,9 +26,8 @@ void mx_user_update_dto_free(t_user_update_dto *dto) {
 }
 
 static t_user_update_dto *validate_user_update_dto(t_user_update_dto *dto) {
-    if (!dto->name || !dto->tag || !dto->status || dto->photo_id < 0 ||
-        mx_strlen(dto->name) < 4 || mx_strlen(dto->status) < 4 ||
-        mx_strlen(dto->tag) < 4) {
+    if (!dto->name || !dto->status || mx_strlen(dto->name) < 4 ||
+        mx_strlen(dto->status) < 2 || !mx_is_valid_tag(dto->tag)) {
         mx_user_update_dto_free(dto);
         return NULL;
     }

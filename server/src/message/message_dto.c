@@ -67,3 +67,16 @@ t_message_create_dto *mx_message_create_dto_get(struct mg_str body) {
 
     return validate_message_create_dto(dto);
 }
+
+t_message_create_dto *mx_message_update_dto_get(struct mg_str body) {
+    t_message_create_dto *dto = parse_message_create_dto(body);
+
+    if (!dto) {
+        return NULL;
+    }
+    if (!dto->text) {
+        mx_message_create_dto_free(dto);
+        return NULL;
+    }
+    return dto;
+}

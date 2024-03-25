@@ -34,10 +34,6 @@ t_room_member *mx_members_repo_get(int id) {
 
     mx_sqlite3_bind_id(stmt, 1, id);
 
-    if (sqlite3_step(stmt) != SQLITE_ROW) {
-        sqlite3_finalize(stmt);
-        return NULL;
-    }
     t_list *members = bind_columns_to_members(stmt);
     t_room_member *mem = members ? members->data : NULL;
 
@@ -54,18 +50,15 @@ t_room_member *mx_members_repo_get_by(int user_id, int room_id) {
                       "FROM room_member r_m "
                       "LEFT JOIN user u ON r_m.user_id = u.id "
                       "LEFT JOIN file uf ON u.photo_id = uf.id "
-                      "WHERE r_m.user_id = ? AND r_m.room_id = ?;";
+                      "WHERE r_m.user_id = ? AND r_m.room_id = ? "
+                      "LIMIT 1;";
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
         return NULL;
     }
 
     mx_sqlite3_bind_id(stmt, 1, user_id);
-    mx_sqlite3_bind_id(stmt, 1, room_id);
+    mx_sqlite3_bind_id(stmt, 2, room_id);
 
-    if (sqlite3_step(stmt) != SQLITE_ROW) {
-        sqlite3_finalize(stmt);
-        return NULL;
-    }
     t_list *members = bind_columns_to_members(stmt);
     t_room_member *mem = members ? members->data : NULL;
 
@@ -141,10 +134,6 @@ t_list *mx_members_repo_get_many(int room_id) {
 
     mx_sqlite3_bind_id(stmt, 1, room_id);
 
-    if (sqlite3_step(stmt) != SQLITE_ROW) {
-        sqlite3_finalize(stmt);
-        return NULL;
-    }
     t_list *members = bind_columns_to_members(stmt);
 
     sqlite3_finalize(stmt);

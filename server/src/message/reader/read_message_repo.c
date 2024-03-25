@@ -34,10 +34,6 @@ t_read_message *mx_read_message_repo_get(int id) {
 
     mx_sqlite3_bind_id(stmt, 1, id);
 
-    if (sqlite3_step(stmt) != SQLITE_ROW) {
-        sqlite3_finalize(stmt);
-        return NULL;
-    }
     t_list *reads = bind_columns_to_readers(stmt);
     t_read_message *reader = reads ? reads->data : NULL;
 
@@ -61,10 +57,6 @@ t_list *mx_read_messages_repo_get(int message_id) {
 
     mx_sqlite3_bind_id(stmt, 1, message_id);
 
-    if (sqlite3_step(stmt) != SQLITE_ROW) {
-        sqlite3_finalize(stmt);
-        return NULL;
-    }
     t_list *readers = bind_columns_to_readers(stmt);
     sqlite3_finalize(stmt);
 

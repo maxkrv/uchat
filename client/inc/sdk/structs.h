@@ -145,7 +145,6 @@ typedef struct {
     char *name;
     char *description;
     int photo_id;
-    char *type;
 } t_room_create_dto;
 
 typedef struct s_user_create_dto {

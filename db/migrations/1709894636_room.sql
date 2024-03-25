@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS room (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
     name            VARCHAR(255) NOT NULL UNIQUE,
-    photo_id        VARCHAR(255)  NULL,
+    photo_id        INT NULL,
     type            VARCHAR(30) DEFAULT 'direct',
     description     VARCHAR(255), 
     created_at      INT DEFAULT(strftime('%s', 'now')),
@@ -18,11 +18,12 @@ END;
 
 CREATE TABLE IF NOT EXISTS room_member (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id         INTEGER NOT NULL,
-    room_id         INTEGER NOT NULL,
-    is_admin        INTEGER DEFAULT 0,
+    user_id         INT NOT NULL,
+    room_id         INT NOT NULL,
+    is_admin        INT DEFAULT 0,
     created_at      INT DEFAULT(strftime('%s', 'now')),
     edited_at       INT DEFAULT(strftime('%s', 'now')),
+    UNIQUE (user_id, room_id),
     FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY(room_id) REFERENCES room(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -35,10 +36,11 @@ END;
 
 CREATE TABLE IF NOT EXISTS favourite_room (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    room_id         INTEGER NOT NULL,
-    user_id         INTEGER NOT NULL,
+    room_id         INT NOT NULL,
+    user_id         INT NOT NULL,
     created_at      INT DEFAULT(strftime('%s', 'now')), 
     edited_at       INT DEFAULT(strftime('%s', 'now')), 
+    UNIQUE (room_id, user_id),
     FOREIGN KEY(user_id) REFERENCES user(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY(room_id) REFERENCES room(id) ON DELETE CASCADE ON UPDATE CASCADE
 );

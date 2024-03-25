@@ -12,9 +12,9 @@ void mx_message_route(t_connection *conn, t_http_message *req) {
     } else if (mx_route(conn, req, "/api/v1/messages", MX_HTTP_METHOD_DELETE,
                         mx_message_ctrl_delete)) {
     } else if (mx_route(conn, req, "/api/v1/messages/readers",
-                        MX_HTTP_METHOD_GET, mx_message_ctrl_get_reader)) {
-    } else if (mx_route(conn, req, "/api/v1/messages/readers/find",
                         MX_HTTP_METHOD_GET, mx_message_ctrl_get_readers)) {
+    } else if (mx_route(conn, req, "/api/v1/messages/readers/find",
+                        MX_HTTP_METHOD_GET, mx_message_ctrl_get_reader)) {
     } else if (mx_route(conn, req, "/api/v1/messages/readers",
                         MX_HTTP_METHOD_POST, mx_message_ctrl_read_message)) {
     } else {

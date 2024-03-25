@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS message_reader (
     message_id      INT NOT NULL,
     created_at      INT DEFAULT(strftime('%s', 'now')), 
     edited_at       INT DEFAULT(strftime('%s', 'now')), 
+    UNIQUE (reader_id, message_id),
     FOREIGN KEY(reader_id) REFERENCES user(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY(message_id) REFERENCES message(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -40,6 +41,7 @@ CREATE TABLE IF NOT EXISTS message_file (
     message_id      INT,
     created_at      INT DEFAULT(strftime('%s', 'now')), 
     edited_at       INT DEFAULT(strftime('%s', 'now')), 
+    UNIQUE (file_id, message_id),
     FOREIGN KEY(file_id) REFERENCES file(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY(message_id) REFERENCES message(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -56,6 +58,7 @@ CREATE TABLE IF NOT EXISTS room_pinned_message (
     message_id      INT NOT NULL UNIQUE,
     created_at      INT DEFAULT(strftime('%s', 'now')), 
     edited_at       INT DEFAULT(strftime('%s', 'now')), 
+    UNIQUE (message_id, room_id),
     FOREIGN KEY(room_id) REFERENCES room(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY(message_id) REFERENCES message(id) ON DELETE CASCADE ON UPDATE CASCADE
 );

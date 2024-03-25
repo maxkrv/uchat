@@ -39,7 +39,9 @@ t_favorite_room *mx_favorites_repo_get(int id) {
     }
     t_favorite_room *fav = mx_sqlite_bind_columns_to_favorite(stmt, 0);
     fav->room = mx_sqlite_bind_columns_to_room(stmt, 5);
-    fav->room->photo = mx_sqlite_bind_columns_to_file(stmt, 12);
+    if (fav->room) {
+        fav->room->photo = mx_sqlite_bind_columns_to_file(stmt, 12);
+    }
 
     sqlite3_finalize(stmt);
 

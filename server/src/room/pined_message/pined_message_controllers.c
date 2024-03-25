@@ -2,10 +2,15 @@
 
 void mx_room_ctrl_pine_message(t_connection *c, t_http_message *m) {
     t_user_id user_id = mx_auth(m);
+    if (user_id < 0) {
+        mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
+                                "Invalid token");
+        return;
+    }
     int message_id = mx_extract_id_from_query(m->query, "message_id");
     int room_id = mx_extract_id_from_query(m->query, "room_id");
 
-    if (user_id <= 0 || message_id <= 0 || room_id <= 0) {
+    if (message_id <= 0 || room_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
                                 "Invalid data provided");
         return;
@@ -33,11 +38,16 @@ void mx_room_ctrl_pine_message(t_connection *c, t_http_message *m) {
 
 void mx_room_ctrl_get_pined(t_connection *c, t_http_message *m) {
     t_user_id user_id = mx_auth(m);
+    if (user_id < 0) {
+        mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
+                                "Invalid token");
+        return;
+    }
     int room_id = mx_extract_id_from_query(m->query, "room_id");
 
-    if (user_id <= 0 || room_id <= 0) {
+    if (room_id <= 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
-                                "Invalid token provided");
+                                "Invalid data provided");
         return;
     }
     if (!mx_is_user_member_of(room_id, user_id)) {
@@ -45,25 +55,24 @@ void mx_room_ctrl_get_pined(t_connection *c, t_http_message *m) {
         return;
     }
     t_list *pines = mx_room_get_pined_messages(user_id);
-
-    if (!pines) {
-        mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
-                                "Cant get pined messages");
-        return;
-    }
-
     t_string json_string = mx_pined_messages_stringify(pines);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON,
+                  json_string ? json_string : "[]");
     mx_strdel(&json_string);
     mx_list_free(&pines, (t_func_free)mx_room_pined_free);
 }
 
 void mx_room_ctrl_unpine(t_connection *c, t_http_message *m) {
     t_user_id user_id = mx_auth(m);
+    if (user_id < 0) {
+        mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
+                                "Invalid token");
+        return;
+    }
     int pined_id = mx_extract_id_from_query(m->query, "pined_id");
 
-    if (user_id < 0 || pined_id < 0) {
+    if (pined_id < 0) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
                                 "Invalid data provided");
         return;

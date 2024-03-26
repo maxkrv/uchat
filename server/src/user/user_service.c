@@ -72,6 +72,11 @@ t_user *mx_user_change_password(int id, char *password) {
 
 t_user *mx_user_delete(int id) {
     t_user *user = mx_user_get(id);
+
+    if (!user) {
+        return NULL;
+    }
+
     bool ok = mx_user_repo_delete(id);
 
     if (!ok) {

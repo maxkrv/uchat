@@ -31,6 +31,11 @@ t_room *mx_room_put(int id, t_room_create_dto *dto) {
 
 t_room *mx_room_delete(int id) {
     t_room *room = mx_room_repo_get(id);
+
+    if (!room || mx_strcmp(room->type, "notes") == 0) {
+        mx_room_free(room);
+        return NULL;
+    }
     bool ok = mx_room_repo_delete(id);
 
     if (!ok) {

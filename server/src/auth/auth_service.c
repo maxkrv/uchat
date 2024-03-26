@@ -1,5 +1,4 @@
-#include "user.h"
-#include "auth.h"
+#include "server.h"
 
 t_jwt_token mx_auth_login(t_login_dto *dto) {
     t_user *user = mx_user_repo_get_by_name(dto->name);
@@ -18,7 +17,27 @@ t_jwt_token mx_auth_login(t_login_dto *dto) {
 }
 
 t_user *mx_auth_register(t_register_dto *dto) {
-    return mx_user_create(dto);
+    t_user *user = mx_user_create(dto);
+
+    if (!user) {
+        return NULL;
+    }
+
+    t_room_create_dto *rc_dto = mx_room_create_dto_init();
+
+    rc_dto->name = mg_mprintf("Notes of user %d", user->id);
+    rc_dto->description =
+        mx_strdup("This is your private space.\n"
+                  "Noone has access to this room except you.\n"
+                  "Use it however you want\n");
+    rc_dto->type = mx_strdup("notes");
+
+    t_room *room = mx_room_create(rc_dto, user->id);
+
+    mx_room_create_dto_free(rc_dto);
+    mx_room_free(room);
+
+    return user;
 }
 
 t_user *mx_auth_change_password(int id, t_change_password_dto *dto) {

@@ -49,6 +49,22 @@ t_response *mx_sdk_login(const char *name, const char *password) {
     return response;
 }
 
+bool mx_sdk_logout(void) {
+    t_sdk_env *env = mx_sdk_env_get();
+
+    if (!env) {
+        return false;
+    }
+    free(env->jwt_token);
+    free(env->password);
+    free(env->username);
+    env->jwt_token = NULL;
+    env->password = NULL;
+    env->username = NULL;
+
+    return true;
+}
+
 t_response *mx_sdk_refresh_token(void) {
     t_sdk_env *env = mx_sdk_env_get();
 

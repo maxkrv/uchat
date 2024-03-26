@@ -3,6 +3,14 @@
 GtkBuilder *chat_global_builder;
 GtkWidget *chat_global_window;
 
+static void set_chat_scrollbar_to_bottom(GtkWidget *scrolled_chat_window) {
+    GtkAdjustment *adjustment = gtk_scrolled_window_get_vadjustment(
+        GTK_SCROLLED_WINDOW(scrolled_chat_window));
+    double upper = gtk_adjustment_get_upper(adjustment);
+    double page_size = gtk_adjustment_get_page_size(adjustment);
+    gtk_adjustment_set_value(adjustment, upper - page_size);
+}
+
 // could be moved for a better solution in the future
 static void populate_chat_side_bar(t_user *user) {
     GtkWidget *chat_side_bar = GTK_WIDGET(
@@ -46,6 +54,13 @@ void show_chat_container(GtkBuilder *builder, GtkWidget *window) {
                                           (t_func_parser)mx_user_parse_cjson);
 
     populate_chat_side_bar(user);
+
+    GtkWidget *scrolled_window = GTK_WIDGET(
+        gtk_builder_get_object(chat_global_builder, "scrolled_chat_window"));
+
+    set_chat_scrollbar_to_bottom(scrolled_window);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), 
+                                     GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 
     gtk_container_add(GTK_CONTAINER(window), chat_container);
     gtk_widget_show(chat_container);

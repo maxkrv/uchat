@@ -2,8 +2,6 @@ openapi: 3.0.3
 servers:
   - url: http://localhost:3000
 
-security: []
-
 info:
   title: 'API'
   version: '1.0.0'
@@ -14,6 +12,8 @@ info:
   contact:
     name: Mykhailo Kloz
     email: micha21cloz@gmail.com
+
+security: []
 
 paths:
   /assets/{path-to-file}:
@@ -31,20 +31,23 @@ paths:
       responses:
         200:
           description: Get static files
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
   /ws:
     get:
       operationId: ws
       summary: Websocket upgrade
       tags: ['An others']
+      security:
+        - JWT: []
       responses:
         101:
           description: Websocket upgrade
         200:
           description: Upgrade declined
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+
   /api/v1/auth/login:
     post:
       operationId: login
@@ -73,8 +76,8 @@ paths:
                   token:
                     type: string
                     example: rwfdsfwrasfd.sdfgerfsdasfrwd.weagvrwesafvd
-        400:
-          $ref: '#/components/responses/Exception'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/auth/register:
     post:
       operationId: register
@@ -97,23 +100,11 @@ paths:
                   type: string
                   nullable: true
                   example: cool-tag
-                photo_id:
-                  $ref: '#/components/schemas/ID'
-                  nullable: false
-                status:
-                  type: string
-                  nullable: true
-                  default: offline
-                  example: online
-                description:
-                  type: string
-                  nullable: true
-                  example: And I am filling gooood...
       responses:
-        201:
-          $ref: '#/components/responses/UserData'
-        400:
-          $ref: '#/components/responses/Exception'
+        200:
+          description: OK
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/auth/change/password:
     post:
       security:
@@ -137,8 +128,10 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/UserData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/users/find:
     get:
       operationId: get-user
@@ -164,8 +157,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-        400:
-          $ref: '#/components/responses/Exception'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/users/me:
     get:
       operationId: Get-me
@@ -176,8 +169,8 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/UserData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
     put:
       operationId: Put-me
       summary: Update user data
@@ -211,8 +204,10 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/UserData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
     delete:
       operationId: Delete-me
       summary: Delete user data
@@ -222,8 +217,10 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/UserData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/users/me/favorites:
     get:
       operationId: Get-favorites
@@ -240,8 +237,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Favorite'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
     post:
       operationId: Add-room-to-favorites
       summary: Add room to favorites
@@ -256,8 +253,10 @@ paths:
       responses:
         201:
           $ref: '#/components/responses/FavoritesData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
     delete:
       operationId: Delete-room-from-favorites
       summary: Delete room from favorites
@@ -273,8 +272,10 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/FavoritesData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/users/me/rooms:
     get:
       operationId: get-rooms
@@ -292,8 +293,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Room'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
   /api/v1/rooms/find:
     get:
       operationId: get-room
@@ -308,8 +309,8 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/RoomData'
-        400:
-          $ref: '#/components/responses/Exception'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/rooms:
     post:
       operationId: post-room
@@ -334,8 +335,10 @@ paths:
       responses:
         201:
           $ref: '#/components/responses/RoomData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
     put:
       operationId: put-room
       summary: 'Updates room info'
@@ -364,8 +367,10 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/RoomData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
     delete:
       operationId: delete-room
       summary: 'Deletes room'
@@ -381,8 +386,10 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/RoomData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/rooms/members/find:
     get:
       operationId: get-member
@@ -398,8 +405,10 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/MemberData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/rooms/members:
     get:
       operationId: get-members
@@ -421,8 +430,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Member'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
 
     post:
       operationId: create-room-member
@@ -445,8 +456,10 @@ paths:
       responses:
         201:
           $ref: '#/components/responses/MemberData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
     put:
       operationId: put-room-member
       summary: 'Updates room member info'
@@ -469,8 +482,10 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/MemberData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
     delete:
       operationId: delete-room-member
       summary: 'Deletes room memeber'
@@ -486,8 +501,10 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/MemberData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/rooms/pined:
     get:
       operationId: get-pined
@@ -510,8 +527,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PinedMessage'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
 
     post:
       operationId: create-room-pined-message
@@ -531,8 +550,10 @@ paths:
       responses:
         201:
           $ref: '#/components/responses/PinnedMessageData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
     delete:
       operationId: unpine-room-message
       summary: 'Unpines room message'
@@ -552,8 +573,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PinedMessage'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/messages/find:
     get:
       operationId: find-message
@@ -569,8 +592,10 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/MessageData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/messages:
     get:
       operationId: get-messages
@@ -592,8 +617,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Message'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
     post:
       operationId: post-message
       summary: 'Creates a message'
@@ -620,8 +647,10 @@ paths:
       responses:
         201:
           $ref: '#/components/responses/MessageData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
     put:
       operationId: put-message
       summary: 'Updates message info'
@@ -651,8 +680,10 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/MessageData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
     delete:
       operationId: delete-message
       summary: 'Deletes message'
@@ -668,8 +699,10 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/MessageData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/messages/readers/find:
     get:
       operationId: get-message-reader
@@ -685,8 +718,10 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/ReaderData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/messages/readers:
     post:
       operationId: post-message-reader
@@ -702,8 +737,10 @@ paths:
       responses:
         201:
           $ref: '#/components/responses/ReaderData'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
     get:
       operationId: get-message-readers
       summary: 'Gets message reader info'
@@ -724,8 +761,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Reader'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/files/upload:
     post:
       operationId: file-upload
@@ -749,8 +788,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/File'
-        400:
-          $ref: '#/components/responses/Exception'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/files/find:
     get:
       operationId: get-file-data
@@ -764,8 +805,8 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/ReaderData'
-        400:
-          $ref: '#/components/responses/Exception'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
 components:
   securitySchemes:
     JWT:
@@ -978,6 +1019,7 @@ components:
           type: string
           example: 'Something went wrong'
           description: Error message
+
   responses:
     Exception:
       description: 4xx and 5xx codes response
@@ -985,6 +1027,30 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Exception'
+    UnauthorizedException:
+      description: Unauthorized exception response
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Exception'
+              - type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Invalid token'
+    InvalidDataException:
+      description: Invalid data exception response
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Exception'
+              - type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Invalid data provided'
     UserData:
       description: User data
       content:

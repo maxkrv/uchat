@@ -331,5 +331,26 @@ t_response *mx_sdk_user_favorites_post(int room_id);
     @return t_responce *(data == t_favorite_room *)
  */
 t_response *mx_sdk_user_favorites_delete(int favorite_id);
+/*
+    to free response:
+    mx_list_free((t_list **)&resp->data, (t_func_free)mx_file_free);
+    mx_sdk_response_free(resp, NULL);
 
+    @return t_responce *(data == t_list *(list of t_file))
+ */
+t_response *mx_sdk_user_stickers_get(void);
+/*
+    to free response:
+    mx_sdk_response_free(resp, (t_func_free)mx_file_free);
+
+    @return t_responce *(data == t_file *)
+ */
+t_response *mx_sdk_user_stickers_post(int file_id);
+/*
+    to free response:
+    mx_sdk_response_free(resp, (t_func_free)mx_file_free);
+
+    @return t_responce *(data == t_file *)
+ */
+t_response *mx_sdk_user_stickers_delete(int favorite_id);
 #endif

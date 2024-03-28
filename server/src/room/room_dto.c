@@ -23,8 +23,7 @@ void mx_room_create_dto_free(t_room_create_dto *dto) {
 }
 
 static t_room_create_dto *validate_room_create_dto(t_room_create_dto *dto) {
-    if (!dto->name || !dto->type || mx_strlen(dto->name) < 4 ||
-        mx_strlen(dto->type) < 4) {
+    if (!dto->name || mx_strlen(dto->name) < 4) {
         mx_room_create_dto_free(dto);
         return NULL;
     }
@@ -42,7 +41,6 @@ static t_room_create_dto *parse_room_create_dto(struct mg_str body) {
     }
 
     dto->name = mx_cjson_get_string(obj, "name");
-    dto->type = mx_cjson_get_string(obj, "type");
     dto->description = mx_cjson_get_string(obj, "description");
     dto->photo_id = mx_cjson_get_number(obj, "photo_id");
 

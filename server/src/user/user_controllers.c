@@ -34,8 +34,8 @@ void mx_user_ctrl_get_me(t_connection *c, t_http_message *m) {
     t_user_id user_id = mx_auth(m);
 
     if (user_id < 0) {
-        mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
-                                "Invalid token provided");
+        mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
+                                "Invalid token");
         return;
     }
 
@@ -57,19 +57,12 @@ void mx_user_ctrl_get_my_rooms(t_connection *c, t_http_message *m) {
     t_user_id user_id = mx_auth(m);
 
     if (user_id < 0) {
-        mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
-                                "Invalid token provided");
+        mx_http_reply_exception(c, m, HTTP_STATUS_UNAUTHORIZED,
+                                "Invalid token");
         return;
     }
 
     t_list *rooms = mx_user_get_rooms(user_id);
-
-    if (!rooms) {
-        mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
-                                "Rooms not found");
-        return;
-    }
-
     t_string json_string = mx_rooms_stringify(rooms);
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);

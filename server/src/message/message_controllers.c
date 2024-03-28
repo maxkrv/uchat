@@ -51,15 +51,10 @@ void mx_message_ctrl_get_many(t_connection *c, t_http_message *m) {
         return;
     }
     t_list *messages = mx_message_get_many(room_id);
-
-    if (!messages) {
-        mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
-                                "Messages not found");
-        return;
-    }
     t_string json_string = mx_messages_stringify(messages);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON,
+                  json_string ? json_string : "[]");
     mx_strdel(&json_string);
     mx_list_free(&messages, (t_func_free)mx_message_free);
 }
@@ -118,7 +113,8 @@ void mx_message_ctrl_put(t_connection *c, t_http_message *m) {
                                 "Invalid message id provided");
         return;
     }
-    t_message_create_dto *dto = mx_message_create_dto_get(m->body);
+
+    t_message_create_dto *dto = mx_message_update_dto_get(m->body);
 
     if (!dto) {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,

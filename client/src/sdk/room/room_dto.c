@@ -6,7 +6,6 @@ t_room_create_dto *mx_room_create_dto_init(void) {
     dto->name = NULL;
     dto->description = NULL;
     dto->photo_id = 0;
-    dto->type = NULL;
 
     return dto;
 }
@@ -17,7 +16,6 @@ void mx_room_create_dto_free(t_room_create_dto *dto) {
     }
     mx_strdel(&dto->name);
     mx_strdel(&dto->description);
-    mx_strdel(&dto->type);
 
     free(dto);
 }
@@ -29,7 +27,6 @@ t_string mx_room_create_dto_stringify(t_room_create_dto *dto) {
 
     cJSON_AddStringToObject(obj, "name", dto->name);
     cJSON_AddStringToObject(obj, "description", dto->description);
-    cJSON_AddStringToObject(obj, "type", dto->type);
     cJSON_AddNumberToObject(obj, "photo_id", dto->photo_id);
 
     t_string str = cJSON_PrintUnformatted(obj);

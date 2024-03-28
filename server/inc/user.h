@@ -70,6 +70,7 @@ cJSON *mx_user_to_cjson(t_user *user);
 t_string mx_user_stringify(t_user *user);
 cJSON *mx_users_to_cjson(t_list *users);
 
+bool mx_is_valid_tag(char *tag);
 t_user *mx_sqlite_bind_columns_to_user(sqlite3_stmt *stmt, int from);
 
 /*

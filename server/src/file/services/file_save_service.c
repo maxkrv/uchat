@@ -2,8 +2,8 @@
 
 static t_string form_url(char *filename) {
     t_env_params *params = mx_env_get();
-    t_string url = mg_mprintf("http://%s:%d/%s/%s", params->domain,
-                              params->port, MX_UPLOAD_DIR_PATH, filename);
+    t_string url = mg_mprintf("http://%s:%d/assets/uploads/%s", params->domain,
+                              params->port, filename);
 
     return url;
 }

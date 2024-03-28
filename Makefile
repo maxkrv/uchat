@@ -18,9 +18,12 @@ TARGET_SERVER = uchat_server
 all: install
 
 server: install
-	./$(TARGET_SERVER) --root server
-
+	@$(MAKE) -sC $(dir $(SERVER)) install
+	@$(MV) $(SERVER) ./$(TARGET_SERVER)
+	./$(TARGET_SERVER) --secret SECRET 
 client: install
+	@$(MAKE) -sC $(dir $(CLIENT))
+	@$(MV) $(CLIENT) ./$(TARGET_CLIENT)
 	./$(TARGET_CLIENT)
 
 install: $(LIBMX) $(LIBMONGOOSE) $(LIBCJSON) $(LIBSQLITE3) $(TARGET_SERVER) $(TARGET_CLIENT)

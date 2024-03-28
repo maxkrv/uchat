@@ -42,10 +42,6 @@ t_pined_message *mx_pined_repo_get(int id) {
 
     mx_sqlite3_bind_id(stmt, 1, id);
 
-    if (sqlite3_step(stmt) != SQLITE_ROW) {
-        sqlite3_finalize(stmt);
-        return NULL;
-    }
     t_list *pines = bind_columns_to_pines(stmt);
     t_pined_message *pine = pines ? pines->data : NULL;
 
@@ -72,10 +68,6 @@ t_list *mx_pined_repo_get_many(int room_id) {
 
     mx_sqlite3_bind_id(stmt, 1, room_id);
 
-    if (sqlite3_step(stmt) != SQLITE_ROW) {
-        sqlite3_finalize(stmt);
-        return NULL;
-    }
     t_list *pines = bind_columns_to_pines(stmt);
 
     sqlite3_finalize(stmt);

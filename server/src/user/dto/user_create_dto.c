@@ -26,6 +26,21 @@ void mx_user_create_dto_free(t_user_create_dto *dto) {
 
     free(dto);
 }
+bool mx_is_valid_tag(char *tag) {
+    int size = mx_strlen(tag);
+
+    if (size < 4 || size >= 40) {
+        return false;
+    }
+
+    for (char *s = tag; *s != '\0'; s++) {
+        if (mx_isspace(*s)) {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 static t_user_create_dto *validate_user_create_dto(t_user_create_dto *dto) {
     if (!dto->tag) {
@@ -34,11 +49,8 @@ static t_user_create_dto *validate_user_create_dto(t_user_create_dto *dto) {
     if (!dto->status) {
         dto->status = mx_strdup("offline");
     }
-
-    if (!dto->name || !dto->password || !dto->tag || !dto->status ||
-        mx_strlen(dto->name) < 4 || mx_strlen(dto->password) < 8 ||
-        mx_strlen(dto->status) < 2 || mx_strlen(dto->tag) < 4 ||
-        !mx_is_valid_password(dto->password)) {
+    if (!dto->name || !dto->password || mx_strlen(dto->name) < 4 ||
+        !mx_is_valid_password(dto->password) || !mx_is_valid_tag(dto->tag)) {
         mx_user_create_dto_free(dto);
         return NULL;
     }

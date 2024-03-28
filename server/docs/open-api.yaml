@@ -57,7 +57,7 @@ paths:
               properties:
                 name:
                   type: string
-                  example: Mykhailo Kloz
+                  example: Name
                   nullable: false
                 password:
                   type: string
@@ -88,15 +88,15 @@ paths:
                 name:
                   type: string
                   nullable: false
-                  example: Mykhailo Kloz
+                  example: Name
                 password:
                   type: string
                   nullable: false
-                  example: <PASSWORD>
+                  example: Pass123$
                 tag:
                   type: string
                   nullable: true
-                  example: mkloz
+                  example: cool-tag
                 photo_id:
                   $ref: '#/components/schemas/ID'
                   nullable: false
@@ -129,7 +129,7 @@ paths:
                 old_password:
                   type: string
                   nullable: false
-                  example: wefs£30Xc
+                  example: Pass123$
                 new_password:
                   type: string
                   nullable: false
@@ -157,8 +157,6 @@ paths:
             type: string
             example: mkloz
 
-      security:
-        - JWT: []
       responses:
         200:
           description: User description
@@ -194,11 +192,11 @@ paths:
                 name:
                   type: string
                   nullable: false
-                  example: Mykhailo Kloz
+                  example: Name
                 tag:
                   type: string
                   nullable: false
-                  example: mkloz
+                  example: cool-tag
                 photo_id:
                   nullable: false
                   $ref: '#/components/schemas/ID'
@@ -332,9 +330,6 @@ paths:
                   example: 'We are cool guys!'
                 photo_id:
                   $ref: '#/components/schemas/ID'
-                type:
-                  type: string
-                  example: direct
 
       responses:
         201:
@@ -365,9 +360,6 @@ paths:
                   example: 'We are cool guys!'
                 photo_id:
                   $ref: '#/components/schemas/ID'
-                type:
-                  type: string
-                  example: direct
 
       responses:
         200:
@@ -646,8 +638,6 @@ paths:
           application/json:
             schema:
               properties:
-                room_id:
-                  $ref: '#/components/schemas/ID'
                 reply_id:
                   $ref: '#/components/schemas/ID'
                 file_ids:
@@ -836,10 +826,10 @@ components:
           $ref: '#/components/schemas/ID'
         name:
           type: string
-          example: Mykhailo Kloz
+          example: Name
         tag:
           type: string
-          example: mkloz
+          example: cool-tag
         photo_id:
           $ref: '#/components/schemas/ID'
         status:

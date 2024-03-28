@@ -33,7 +33,7 @@ void mx_room_member_create_dto_free(t_room_member_create_dto *dto) {
 static t_room_member_create_dto *
 validate_room_member_create_dto(t_room_member_create_dto *dto) {
     if (dto->room_id <= 0 || dto->user_id <= 0) {
-        free(dto);
+        mx_room_member_create_dto_free(dto);
         return NULL;
     }
 

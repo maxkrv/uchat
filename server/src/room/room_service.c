@@ -34,6 +34,7 @@ t_room *mx_room_delete(int id) {
     bool ok = mx_room_repo_delete(id);
 
     if (!ok) {
+        mx_room_free(room);
         return NULL;
     }
 

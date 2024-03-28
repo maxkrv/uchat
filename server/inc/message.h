@@ -34,6 +34,7 @@ void mx_message_route(t_connection *conn, t_http_message *req);
 t_message *mx_message_init(void);
 void mx_message_free(t_message *u);
 t_message_create_dto *mx_message_create_dto_get(struct mg_str body);
+t_message_create_dto *mx_message_update_dto_get(struct mg_str body);
 void mx_message_create_dto_free(t_message_create_dto *dto);
 
 // controllers

@@ -1,8 +1,8 @@
 #ifndef UCHAT_ROOM
 #define UCHAT_ROOM
 
-#define MX_ROOM_TYPE_GROUP "group";
-#define MX_ROOM_TYPE_DIRECT "direct";
+#define MX_ROOM_TYPE_GROUP "group"
+#define MX_ROOM_TYPE_DIRECT "direct"
 
 #include "base.h"
 #include "utils.h"

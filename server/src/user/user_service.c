@@ -1,10 +1,5 @@
 #include "server.h"
 
-/*
-  User:
-    descriptions(all exclude password);
-    relations(photo;
- */
 t_user *mx_user_get(int id) {
     t_user *user = mx_user_repo_get(id);
 
@@ -24,9 +19,6 @@ t_user *mx_user_get_by_tag(char *tag) {
     }
 
     user->password_hash = NULL;
-    user->favorites = NULL;
-    user->messages = NULL;
-    user->rooms = NULL;
 
     return user;
 }
@@ -82,7 +74,8 @@ t_user *mx_user_delete(int id) {
     t_user *user = mx_user_get(id);
     bool ok = mx_user_repo_delete(id);
 
-    if (!user || !ok) {
+    if (!ok) {
+        mx_user_free(user);
         return NULL;
     }
 

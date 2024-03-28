@@ -14,7 +14,7 @@ t_file *mx_file_service_upload(char *file, int file_len, char *filename) {
         mx_strdel(&uuid_filename);
         return NULL;
     }
-    t_file *file_ent = mx_file_save_to_db((char *)uuid_filename);
+    t_file *file_ent = mx_file_save_to_db((char *)filename);
 
     if (!file_ent) {
         mx_file_delete_uploaded(uuid_filename);

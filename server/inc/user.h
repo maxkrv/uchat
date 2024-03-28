@@ -111,4 +111,18 @@ t_string mx_favorites_stringify(t_list *members);
 t_favorite_room *mx_sqlite_bind_columns_to_favorite(sqlite3_stmt *stmt,
                                                     int from);
 
+/* Stickers */
+void mx_user_ctrl_get_stickers(t_connection *c, t_http_message *m);
+void mx_user_ctrl_post_sticker(t_connection *c, t_http_message *m);
+void mx_user_ctrl_delete_sticker(t_connection *c, t_http_message *m);
+
+t_file *mx_sticker_delete(int user_id, int file_id);
+t_file *mx_sticker_add(int user_id, int file_id);
+t_file *mx_sticker_get(int user_id, int file_id);
+t_list *mx_stickers_get(int user_id);
+
+bool mx_sticker_repo_delete(int user_id, int file_id);
+int mx_sticker_repo_create(int user_id, int file_id);
+t_file *mx_sticker_repo_get(int user_id, int file_id);
+t_list *mx_sticker_repo_get_many(int user_id);
 #endif

@@ -65,7 +65,8 @@ void mx_user_ctrl_get_my_rooms(t_connection *c, t_http_message *m) {
     t_list *rooms = mx_user_get_rooms(user_id);
     t_string json_string = mx_rooms_stringify(rooms);
 
-    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
+    mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON,
+                  json_string ? json_string : "[]");
     mx_strdel(&json_string);
     mx_list_free(&rooms, (t_func_free)mx_room_free);
 }

@@ -1,6 +1,6 @@
 #include "room.h"
 
-static t_room_create_dto *init_room_create_dto() {
+t_room_create_dto *mx_room_create_dto_init(void) {
     t_room_create_dto *dto =
         (t_room_create_dto *)malloc(sizeof(t_room_create_dto));
     dto->name = NULL;
@@ -32,7 +32,7 @@ static t_room_create_dto *validate_room_create_dto(t_room_create_dto *dto) {
 }
 
 static t_room_create_dto *parse_room_create_dto(struct mg_str body) {
-    t_room_create_dto *dto = init_room_create_dto();
+    t_room_create_dto *dto = mx_room_create_dto_init();
     cJSON *obj = cJSON_ParseWithLength(body.ptr, body.len);
 
     if (!obj) {

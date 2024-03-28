@@ -43,6 +43,25 @@ t_room_member *mx_members_repo_get(int id) {
     return mem;
 }
 
+int mx_members_repo_count(int room_id) {
+    sqlite3 *db = mx_env_get()->db_connection;
+    sqlite3_stmt *stmt;
+    const char *sql = "SELECT COUNT(r_m.id) "
+                      "FROM room_member r_m "
+                      "WHERE r_m.room_id = ?;";
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        return -1;
+    }
+
+    mx_sqlite3_bind_id(stmt, 1, room_id);
+
+    int count = sqlite3_column_int(stmt, 0);
+
+    sqlite3_finalize(stmt);
+
+    return count;
+}
+
 t_room_member *mx_members_repo_get_by(int user_id, int room_id) {
     sqlite3 *db = mx_env_get()->db_connection;
     sqlite3_stmt *stmt;

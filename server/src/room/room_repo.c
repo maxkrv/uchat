@@ -56,11 +56,6 @@ t_list *mx_room_repo_get_many(int user_id) {
 
     mx_sqlite3_bind_id(stmt, 1, user_id);
 
-    if (sqlite3_step(stmt) != SQLITE_ROW) {
-        sqlite3_finalize(stmt);
-        return NULL;
-    }
-
     t_list *rooms = bind_columns_to_rooms(stmt);
 
     sqlite3_finalize(stmt);

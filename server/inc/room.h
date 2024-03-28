@@ -38,6 +38,7 @@ void mx_room_route(t_connection *conn, t_http_message *req);
 t_room *mx_room_init(void);
 void mx_room_free(t_room *u);
 t_room_create_dto *mx_room_create_dto_get(struct mg_str body);
+t_room_create_dto *mx_room_create_dto_init(void);
 void mx_room_create_dto_free(t_room_create_dto *d);
 
 // constrollers
@@ -55,6 +56,7 @@ t_room *mx_room_delete(int id);
 // repositories
 t_room *mx_room_repo_get(int id);
 t_list *mx_room_repo_get_many(int user_id);
+int mx_members_repo_count(int room_id);
 int mx_room_repo_create(t_room_create_dto *dto);
 bool mx_room_repo_put(int id, t_room_create_dto *dto);
 bool mx_room_repo_delete(int id);

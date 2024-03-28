@@ -74,6 +74,12 @@ t_response *mx_fetch_multipart(const char *url, const char *method,
  */
 t_response *mx_sdk_login(const char *name, const char *password);
 /*
+     deletes credentials from memory
+
+     @return bool true if successful
+  */
+bool mx_sdk_logout(void);
+/*
     to free response:
     mx_sdk_response_free(response, free);
 

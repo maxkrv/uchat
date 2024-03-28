@@ -276,6 +276,69 @@ paths:
           $ref: '#/components/responses/UnauthorizedException'
         422:
           $ref: '#/components/responses/InvalidDataException'
+  /api/v1/users/me/stickers:
+    get:
+      operationId: Get-stickers
+      summary: Get user stickers
+      tags: ['Stickers']
+      security:
+        - JWT: []
+      responses:
+        200:
+          description: User stickers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/File'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+    post:
+      operationId: Add-file-to-stickers
+      summary: Add file to stickers
+      tags: ['Stickers']
+      parameters:
+        - in: query
+          name: file_id
+          schema:
+            $ref: '#/components/schemas/ID'
+      security:
+        - JWT: []
+      responses:
+        201:
+          description: Created sticker
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/File'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
+    delete:
+      operationId: Delete-sticker-from-user
+      summary: Delete sticker from user
+      tags: ['Stickers']
+      parameters:
+        - in: query
+          name: file_id
+          schema:
+            nullable: false
+            $ref: '#/components/schemas/ID'
+      security:
+        - JWT: []
+      responses:
+        200:
+          description: Deleted sticker
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/File'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/users/me/rooms:
     get:
       operationId: get-rooms

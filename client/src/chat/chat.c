@@ -1,4 +1,4 @@
-#include "../../inc/client.h"
+#include "client.h"
 
 static void show_settings_container_cb() {
     hide_chat_container();
@@ -15,8 +15,8 @@ static void set_chat_scrollbar_to_bottom(GtkWidget *scrolled_chat_window) {
 
 // could be moved for a better solution in the future
 static void populate_chat_side_bar(t_user *user) {
-    GtkWidget *chat_side_bar = GTK_WIDGET(
-        gtk_builder_get_object(global_builder, "chat_sidebar"));
+    GtkWidget *chat_side_bar =
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_sidebar"));
 
     if (chat_side_bar == NULL) {
         g_print("Error: %s\n", "Failed to load chat_side_bar");
@@ -54,13 +54,13 @@ void show_chat_container() {
                                           (t_func_parser)mx_user_parse_cjson);
 
     populate_chat_side_bar(user);
-
+    mx_sdk_response_free(response, (t_func_free)mx_user_free);
     GtkWidget *scrolled_window = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "scrolled_chat_window"));
 
     set_chat_scrollbar_to_bottom(scrolled_window);
-    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), 
-                                     GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),
+                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 
     GtkWidget *user_settings_button = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "user_settings_button"));
@@ -76,8 +76,8 @@ void show_chat_container() {
 }
 
 void hide_chat_container() {
-    GtkWidget *chat_container = GTK_WIDGET(
-        gtk_builder_get_object(global_builder, "chat_container"));
+    GtkWidget *chat_container =
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_container"));
 
     if (chat_container == NULL) {
         g_print("Error: %s\n", "Failed to load chat_container");

@@ -1,7 +1,6 @@
 #define DEFINE_GLOBALS
 #include "client.h"
 
-
 int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);
     mx_sdk_init("http://localhost:3000");

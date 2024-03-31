@@ -1,7 +1,7 @@
 -- Active: 1711025793902@@127.0.0.1@3306
 CREATE TABLE IF NOT EXISTS room (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    name            VARCHAR(255) NOT NULL UNIQUE,
+    name            VARCHAR(255) NOT NULL,
     photo_id        INT NULL,
     type            VARCHAR(30) DEFAULT 'direct',
     description     VARCHAR(255), 

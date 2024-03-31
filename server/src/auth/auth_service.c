@@ -25,11 +25,11 @@ t_user *mx_auth_register(t_register_dto *dto) {
 
     t_room_create_dto *rc_dto = mx_room_create_dto_init();
 
-    rc_dto->name = mg_mprintf("Notes of user %d", user->id);
+    rc_dto->name = mx_strdup("Notes");
     rc_dto->description =
-        mx_strdup("This is your private space.\n"
-                  "Noone has access to this room except you.\n"
-                  "Use it however you want\n");
+        mx_strdup("This is your private space. "
+                  "Noone has access to this room except you. "
+                  "Use it however you want.");
     rc_dto->type = mx_strdup("notes");
 
     t_room *room = mx_room_create(rc_dto, user->id);

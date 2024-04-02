@@ -33,6 +33,9 @@ void hide_settings_container();
 void init_update_user_form_field();
 void init_update_password_form();
 
+// room
+void init_create_room(void);
+
 // utils
 GdkPixbuf *load_pixbuf_from_url(const char *url);
 void load_css(GtkWidget *window, const gchar *css_path);

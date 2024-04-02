@@ -119,10 +119,10 @@ static void submit_register_clicked() {
         if (mx_is_response_error(response)) {
             show_error_message(label, response->exception->message);
 
-            mx_sdk_response_free(response, free);
+            mx_sdk_response_free(response, (t_func_free)mx_user_free);
             return;
         }
-        mx_sdk_response_free(response, free);
+        mx_sdk_response_free(response, (t_func_free)mx_user_free);
 
         login(username, password);
     } else {

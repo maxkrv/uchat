@@ -57,20 +57,16 @@ void show_chat_container() {
     mx_sdk_response_free(response, (t_func_free)mx_user_free);
     GtkWidget *scrolled_window = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "scrolled_chat_window"));
+    GtkWidget *user_settings_button = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "user_settings_button"));
+
+    g_signal_connect(user_settings_button, "clicked",
+                     G_CALLBACK(show_settings_container_cb), global_builder);
 
     set_chat_scrollbar_to_bottom(scrolled_window);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),
                                    GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-
-    GtkWidget *user_settings_button = GTK_WIDGET(
-        gtk_builder_get_object(global_builder, "user_settings_button"));
-
-    if (user_settings_button == NULL) {
-        g_print("Error: %s\n", "Failed to load user_settings_button");
-    }
-
-    g_signal_connect(user_settings_button, "clicked",
-                     G_CALLBACK(show_settings_container_cb), global_builder);
+    init_create_room();
 
     gtk_container_add(GTK_CONTAINER(global_window), chat_container);
 }

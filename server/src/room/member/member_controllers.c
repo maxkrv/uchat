@@ -85,7 +85,7 @@ void mx_room_ctrl_add_member(t_connection *c, t_http_message *m) {
     t_string json_string = mx_member_stringify(mem);
 
     mg_http_reply(c, HTTP_STATUS_CREATED, MX_HEADERS_JSON, json_string);
-    mx_push_client_room(user_id, mx_room_get(mem->room_id));
+    mx_push_client_room(mem->user_id, mx_room_get(mem->room_id));
     mx_ws_emit("member-joined", mem->room_id, mx_member_to_cjson(mem));
     mx_strdel(&json_string);
     mx_room_member_free(mem);
@@ -186,7 +186,7 @@ void mx_room_ctrl_delete_member(t_connection *c, t_http_message *m) {
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
     mx_ws_emit("member-left", mem->room_id, mx_member_to_cjson(mem));
-    mx_delete_client_room(user_id, mem->room_id);
+    mx_delete_client_room(mem->user_id, mem->room_id);
     mx_strdel(&json_string);
     mx_room_member_free(mem);
 }

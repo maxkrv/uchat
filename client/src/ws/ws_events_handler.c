@@ -154,4 +154,5 @@ void mx_ws_event_handler(struct mg_connection *conn, t_string event,
     } else if (mx_streq(event, "message-was-read")) {
         handle_message_was_readed(data);
     }
+    (void)conn;
 }

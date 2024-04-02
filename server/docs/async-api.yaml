@@ -58,37 +58,37 @@ channels:
               type: object
               description: payload from server
               $ref: '#/components/schemas/Message'
-      user-joined:
+      member-joined:
         payload:
           type: object
           properties:
             event:
               type: string
-              example: user-joined
+              example: member-joined
               description: event from server
             payload:
               type: object
               description: payload from server
               $ref: '#/components/schemas/Member'
-      user-left:
+      member-left:
         payload:
           type: object
           properties:
             event:
               type: string
-              example: user-left
+              example: member-left
               description: event from server
             payload:
               type: object
               description: payload from server
               $ref: '#/components/schemas/Member'
-      user-updated:
+      member-updated:
         payload:
           type: object
           properties:
             event:
               type: string
-              example: user-updated
+              example: member-updated
               description: event from server
             payload:
               type: object
@@ -142,13 +142,13 @@ channels:
               type: object
               description: payload from server
               $ref: '#/components/schemas/Room'
-      message-was-readed:
+      message-was-read:
         payload:
           type: object
           properties:
             event:
               type: string
-              example: message-was-readed
+              example: message-was-read
               description: event from server
             payload:
               type: object
@@ -200,7 +200,7 @@ operations:
       Informs about deleting message in the room
     messages:
       - $ref: '#/channels/root/messages/message-deleted'
-  user-joined:
+  member-joined:
     action: receive
     tags:
       - $ref: '#/components/tags/event'
@@ -209,13 +209,13 @@ operations:
       $ref: '#/channels/root'
     description: >-
       ##
-      Event: <font color='red'>user-joined</font>
+      Event: <font color='red'>member-joined</font>
 
       ###
       Informs about user joining to the room
     messages:
-      - $ref: '#/channels/root/messages/user-joined'
-  user-left:
+      - $ref: '#/channels/root/messages/member-joined'
+  member-left:
     action: receive
     tags:
       - $ref: '#/components/tags/event'
@@ -224,13 +224,13 @@ operations:
       $ref: '#/channels/root'
     description: >-
       ##
-      Event: <font color='red'>user-left</font>
+      Event: <font color='red'>member-left</font>
 
       ###
       Informs about user lefting the room
     messages:
-      - $ref: '#/channels/root/messages/user-left'
-  user-updated:
+      - $ref: '#/channels/root/messages/member-left'
+  member-updated:
     action: receive
     tags:
       - $ref: '#/components/tags/event'
@@ -239,12 +239,12 @@ operations:
       $ref: '#/channels/root'
     description: >-
       ##
-      Event: <font color='red'>user-updated</font>
+      Event: <font color='red'>member-updated</font>
 
       ###
       Informs about updating room member
     messages:
-      - $ref: '#/channels/root/messages/user-updated'
+      - $ref: '#/channels/root/messages/member-updated'
   message-pinned:
     action: receive
     tags:
@@ -305,7 +305,7 @@ operations:
       Informs about deleting room
     messages:
       - $ref: '#/channels/root/messages/room-deleted'
-  message-was-readed:
+  message-was-read:
     action: receive
     tags:
       - $ref: '#/components/tags/event'
@@ -314,12 +314,12 @@ operations:
       $ref: '#/channels/root'
     description: >-
       ##
-      Event: <font color='red'>message-was-readed</font>
+      Event: <font color='red'>message-was-read</font>
 
       ###
       Informs about reading message
     messages:
-      - $ref: '#/channels/root/messages/message-was-readed'
+      - $ref: '#/channels/root/messages/message-was-read'
 components:
   securitySchemes:
     JWT:

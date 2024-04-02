@@ -26,7 +26,7 @@ void mx_message_ctrl_read_message(t_connection *c, t_http_message *m) {
     t_string json_string = mx_read_message_stringify(read);
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON, json_string);
-    mx_ws_emit("message-was-readed", read->message->room_id,
+    mx_ws_emit("message-was-read", read->message->room_id,
                mx_read_message_to_cjson(read));
     mx_strdel(&json_string);
     mx_read_message_free(read);

@@ -9,6 +9,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gtk/gtk.h>
 #include "sdk/sdk.h"
+#include "ws.h"
 
 #ifdef DEFINE_GLOBALS
 GtkBuilder *global_builder;
@@ -35,6 +36,8 @@ void init_update_password_form();
 // utils
 GdkPixbuf *load_pixbuf_from_url(const char *url);
 void load_css(GtkWidget *window, const gchar *css_path);
-void init_theme_switcher(GtkBuilder *builder, GtkWidget *window, char *theme_switcher_widget_name);
+void init_theme_switcher(GtkBuilder *builder, GtkWidget *window,
+                         char *theme_switcher_widget_name);
 gboolean is_empty_field(GtkEntry *entry);
 
+gboolean websocket_server_push_events(gpointer user_data);

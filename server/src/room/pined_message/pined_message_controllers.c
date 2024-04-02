@@ -78,7 +78,11 @@ void mx_room_ctrl_unpine(t_connection *c, t_http_message *m) {
         return;
     }
     t_pined_message *message = mx_pined_repo_get(pined_id);
-
+    if (!message) {
+        mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
+                                "Message not found");
+        return;
+    }
     if (!mx_is_user_member_of(message->room_id, user_id)) {
         mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN, "No permissions");
         mx_room_pined_free(message);

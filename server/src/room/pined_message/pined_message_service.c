@@ -16,7 +16,9 @@ t_pined_message *mx_room_pine_message(int message_id, int room_id) {
 
 t_pined_message *mx_room_unpine(int id) {
     t_pined_message *pin = mx_pined_repo_get(id);
-
+    if (!pin) {
+        return NULL;
+    }
     if (!mx_pined_repo_delete(id)) {
         mx_room_pined_free(pin);
         return NULL;

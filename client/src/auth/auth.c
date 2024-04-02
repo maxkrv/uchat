@@ -70,27 +70,30 @@ static void on_confirm_password_entry_changed(GtkEntry *entry, gpointer data) {
     }
 }
 
+static void login(const char *username, const char *password) {
+    t_response *response = mx_sdk_login(username, password);
+
+    if (mx_is_response_error(response)) {
+        show_error_message(user_data->err_label, response->exception->message);
+
+        mx_sdk_response_free(response, free);
+        return;
+    }
+
+    hide_auth_container();
+    show_chat_container();
+    mx_sdk_response_free(response, free);
+}
+
 static void submit_login_clicked() {
-    const gchar *login = user_data->username;
+    const gchar *username = user_data->username;
     const gchar *password = user_data->password;
     GtkLabel *label = user_data->err_label;
 
-    if (login != NULL && password != NULL &&
+    if (username != NULL && password != NULL &&
         (gtk_label_get_text(label) == NULL ||
          g_strcmp0(gtk_label_get_text(label), "") == 0)) {
-        t_response *response = mx_sdk_login(login, password);
-
-        if (mx_is_response_error(response)) {
-            show_error_message(label, response->exception->message);
-
-            mx_sdk_response_free(response, free);
-            return;
-        }
-
-        hide_auth_container();
-        show_chat_container();
-
-        mx_sdk_response_free(response, free);
+        login(username, password);
     } else {
         show_error_message(
             label, "Fields cannot be empty.\n Errors must be corrected");
@@ -98,17 +101,17 @@ static void submit_login_clicked() {
 }
 
 static void submit_register_clicked() {
-    const gchar *login = user_data->username;
+    const gchar *username = user_data->username;
     const gchar *password = user_data->password;
     const gchar *confirm_p = user_data->confirm_password;
     GtkLabel *label = user_data->err_label;
 
-    if (login != NULL && password != NULL && confirm_p != NULL &&
+    if (username != NULL && password != NULL && confirm_p != NULL &&
         (gtk_label_get_text(label) == NULL ||
          g_strcmp0(gtk_label_get_text(label), "") == 0)) {
         t_user_create_dto *user_create_dto = mx_user_create_dto_init();
 
-        user_create_dto->name = mx_strdup(login);
+        user_create_dto->name = mx_strdup(username);
         user_create_dto->password = mx_strdup(password);
 
         t_response *response = mx_sdk_register(user_create_dto);
@@ -119,21 +122,9 @@ static void submit_register_clicked() {
             mx_sdk_response_free(response, free);
             return;
         }
-
-        t_response *login_response = mx_sdk_login(login, password);
-
-        if (mx_is_response_error(login_response)) {
-            show_error_message(label, login_response->exception->message);
-
-            mx_sdk_response_free(login_response, free);
-            return;
-        }
-
-        hide_auth_container();
-        show_chat_container();
-
         mx_sdk_response_free(response, free);
-        mx_sdk_response_free(login_response, free);
+
+        login(username, password);
     } else {
         show_error_message(
             label, "Fields cannot be empty.\n Errors must be corrected");
@@ -171,8 +162,8 @@ void show_auth_container() {
 
     GtkLabel *err_label_log = GTK_LABEL(
         gtk_builder_get_object(global_builder, "error_message_login_label"));
-    GtkLabel *err_label_reg = GTK_LABEL(
-        gtk_builder_get_object(global_builder, "error_message_registration_label"));
+    GtkLabel *err_label_reg = GTK_LABEL(gtk_builder_get_object(
+        global_builder, "error_message_registration_label"));
 
     if (err_label_log == NULL || err_label_reg == NULL) {
         g_print("Error: Failed to obtain error labels\n");
@@ -187,10 +178,10 @@ void show_auth_container() {
 
     GtkWidget *new_login_entry =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "new_login_entry"));
-    GtkWidget *new_password_entry =
-        GTK_WIDGET(gtk_builder_get_object(global_builder, "new_password_entry"));
-    GtkWidget *confirm_password_entry =
-        GTK_WIDGET(gtk_builder_get_object(global_builder, "confirm_password_entry"));
+    GtkWidget *new_password_entry = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "new_password_entry"));
+    GtkWidget *confirm_password_entry = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "confirm_password_entry"));
 
     if (is_empty_field(GTK_ENTRY(login_entry)) ||
         is_empty_field(GTK_ENTRY(new_login_entry)))

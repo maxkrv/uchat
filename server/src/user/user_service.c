@@ -23,6 +23,18 @@ t_user *mx_user_get_by_tag(char *tag) {
     return user;
 }
 
+t_user *mx_user_get_by_name(char *name) {
+    t_user *user = mx_user_repo_get_by_name(name);
+
+    if (!user) {
+        return NULL;
+    }
+
+    user->password_hash = NULL;
+
+    return user;
+}
+
 t_list *mx_user_get_rooms(int user_id) {
     t_list *rooms = mx_room_repo_get_many(user_id);
 

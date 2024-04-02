@@ -5,11 +5,14 @@ void mx_user_ctrl_get(t_connection *c, t_http_message *m) {
     int user_id = mx_extract_id_from_query(m->query, "user_id");
     t_string tag =
         mx_decode_uri_component(mg_http_var(m->query, mg_str_s("tag")));
-
+    t_string name =
+        mx_decode_uri_component(mg_http_var(m->query, mg_str_s("name")));
     if (user_id > 0) {
         user = mx_user_get(user_id);
     } else if (tag) {
         user = mx_user_get_by_tag(tag);
+    } else if (name) {
+        user = mx_user_get_by_name(name);
     } else {
         mx_http_reply_exception(c, m, HTTP_STATUS_UNPROCESSABLE_ENTITY,
                                 "Invalid user data provided");
@@ -17,6 +20,7 @@ void mx_user_ctrl_get(t_connection *c, t_http_message *m) {
     }
 
     mx_strdel(&tag);
+    mx_strdel(&name);
 
     if (!user) {
         mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND, "User not found");

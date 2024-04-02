@@ -135,7 +135,7 @@ paths:
   /api/v1/users/find:
     get:
       operationId: get-user
-      summary: Get user data by tag or id
+      summary: Get user data by tag or id or name
       tags: ['User']
       parameters:
         - name: user_id
@@ -149,6 +149,12 @@ paths:
             nullable: true
             type: string
             example: mkloz
+        - name: name
+          in: query
+          schema:
+            nullable: true
+            type: string
+            example: Name
 
       responses:
         200:

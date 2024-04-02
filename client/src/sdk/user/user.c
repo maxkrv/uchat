@@ -27,6 +27,22 @@ t_response *mx_sdk_user_find_by_tag(t_string tag) {
 
     return response;
 }
+
+t_response *mx_sdk_user_find_by_name(t_string name) {
+    t_sdk_env *env = mx_sdk_env_get();
+    t_string encoded_name = mx_encode_uri_component(mg_str(name));
+    char *url = mg_mprintf("%s/api/v1/users/find?name=%s", env->backend_url,
+                           encoded_name);
+    t_response *response = mx_fetch(url, MX_HTTP_METHOD_GET,
+                                    mx_headers_push_back_token(NULL), NULL);
+
+    mx_parse_server_response(response, (t_func_parser)mx_user_parse_cjson);
+    mx_strdel(&url);
+    mx_strdel(&encoded_name);
+
+    return response;
+}
+
 t_response *mx_sdk_user_get_me(void) {
     t_sdk_env *env = mx_sdk_env_get();
     char *url = mg_mprintf("%s/api/v1/users/me", env->backend_url);

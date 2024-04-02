@@ -288,6 +288,13 @@ t_response *mx_sdk_user_find_by_id(int user_id);
  */
 t_response *mx_sdk_user_find_by_tag(t_string tag);
 /*
+    to free response:
+    mx_sdk_response_free(resp, (t_func_free)mx_user_free);
+
+    @return t_responce *(data == t_user *)
+ */
+t_response *mx_sdk_user_find_by_name(t_string name);
+/*
      to free response:
      mx_sdk_response_free(resp, (t_func_free)mx_user_free);
 

@@ -33,6 +33,9 @@ void hide_settings_container();
 void init_update_user_form_field();
 void init_update_password_form();
 
+// room settings
+void show_room_settings_dialog(GtkButton *button, gpointer user_data);
+
 // room
 void init_create_room(void);
 

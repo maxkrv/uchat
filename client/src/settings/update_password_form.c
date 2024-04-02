@@ -31,7 +31,6 @@ static void on_update_password_button_clicked() {
         return;
     }
 
-    mx_sdk_response_print(response);
     mx_sdk_response_free(response, (t_func_free)mx_user_free);
 }
 

@@ -14,9 +14,7 @@ void on_options_button_clicked() {
 }
 
 void on_logout_button_clicked() {
-
-    mx_dk_free_jwt_token();
-
+    mx_sdk_logout();
     hide_settings_container();
     show_auth_container();
 }

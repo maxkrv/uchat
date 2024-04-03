@@ -1560,7 +1560,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes">Usernmae:</property>
+                    <property name="label" translatable="yes">Username:</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -1575,7 +1575,7 @@
                     <property name="can-focus">True</property>
                     <property name="margin-top">5</property>
                     <property name="margin-bottom">10</property>
-                    <property name="placeholder-text" translatable="yes">New usernmae</property>
+                    <property name="placeholder-text" translatable="yes">New username</property>
                     <style>
                       <class name="username_entry"/>
                     </style>
@@ -1645,6 +1645,33 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Select a file to change avatar:</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkFileChooserButton" id="avatar_button">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-top">5</property>
+                    <property name="margin-bottom">10</property>
+                    <property name="title" translatable="yes">Change avatar</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">7</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkButton" id="update_user_button">
                     <property name="label" translatable="yes">Update</property>
                     <property name="name">update_user_button</property>
@@ -1656,7 +1683,8 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="position">6</property>
+                    <property name="padding">6</property>
+                    <property name="position">8</property>
                   </packing>
                 </child>
                 <style>

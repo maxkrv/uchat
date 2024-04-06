@@ -74,7 +74,8 @@ static void login(const char *username, const char *password) {
     t_response *response = mx_sdk_login(username, password);
 
     if (mx_is_response_error(response)) {
-        show_error_message(user_data->err_label, response->exception->message);
+        show_error_message(user_data->err_label,
+                           mx_sdk_exception_get_message(response));
 
         mx_sdk_response_free(response, free);
         return;
@@ -117,7 +118,7 @@ static void submit_register_clicked() {
         t_response *response = mx_sdk_register(user_create_dto);
 
         if (mx_is_response_error(response)) {
-            show_error_message(label, response->exception->message);
+            show_error_message(label, mx_sdk_exception_get_message(response));
 
             mx_sdk_response_free(response, (t_func_free)mx_user_free);
             return;

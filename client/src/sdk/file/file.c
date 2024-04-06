@@ -4,9 +4,9 @@ t_response *mx_sdk_file_upload(const char *filepath, const char *filename) {
     FILE *fd = fopen(filepath, "r");
 
     if (!fd) {
-        fclose(fd);
         return mx_sdk_responce_init();
     }
+    fclose(fd);
 
     t_sdk_env *env = mx_sdk_env_get();
     char *url = mg_mprintf("%s/api/v1/files/upload", env->backend_url);

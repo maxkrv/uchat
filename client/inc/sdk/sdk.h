@@ -47,6 +47,8 @@ void mx_sdk_free(void);
 t_response *mx_sdk_responce_init(void);
 /* Prints sdk responce struct(t_responce) */
 void mx_sdk_response_print(t_response *resp);
+/* Returns exception message from sdk responce struct(t_responce) */
+t_string mx_sdk_exception_get_message(t_response *resp);
 /* Frees sdk responce struct(t_responce) in dynamic memory */
 void mx_sdk_response_free(t_response *resp, t_func_free data_free);
 

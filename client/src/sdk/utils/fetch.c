@@ -50,6 +50,14 @@ void mx_sdk_response_print(t_response *resp) {
     printf("==============================================\n");
 }
 
+t_string mx_sdk_exception_get_message(t_response *resp) {
+    if (!resp || !resp->exception) {
+        return NULL;
+    }
+
+    return resp->exception->message;
+}
+
 // Callback function to write response body
 static size_t write_body_cb(char *ptr, size_t size, size_t nmemb,
                             t_response *response) {

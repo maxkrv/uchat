@@ -42,11 +42,10 @@ void on_submit_create_room(GtkButton *button, gpointer user_data) {
     t_response *response = mx_sdk_room_post(dto);
 
     if (mx_is_response_error(response)) {
-        g_print("Error: %s\n", response->exception->message);
+        g_print("Error: %s\n", mx_sdk_exception_get_message(response));
         mx_sdk_response_free(response, (t_func_free)mx_room_free);
         return;
     }
-
 
     mx_sdk_response_free(response, (t_func_free)mx_room_free);
     gtk_widget_hide(dialog);
@@ -55,8 +54,8 @@ void on_submit_create_room(GtkButton *button, gpointer user_data) {
 
 void on_submit_create_contact(GtkButton *button, gpointer user_data) {
     GtkWidget *dialog = GTK_WIDGET(user_data);
-    GtkWidget *create_contact_name =
-        GTK_WIDGET(gtk_builder_get_object(global_builder, "create_contact_name"));
+    GtkWidget *create_contact_name = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "create_contact_name"));
 
     if (is_empty_field(GTK_ENTRY(create_contact_name))) {
         g_print("Contact name is empty\n");
@@ -73,18 +72,18 @@ void on_submit_create_contact(GtkButton *button, gpointer user_data) {
     t_response *response = mx_sdk_room_post(dto);
 
     if (mx_is_response_error(response)) {
-        g_print("Error: %s\n", response->exception->message);
+        g_print("Error: %s\n", mx_sdk_exception_get_message(response));
         mx_sdk_response_free(response, (t_func_free)mx_room_free);
         return;
     }
 
     t_room *room = mx_entity_parse_string(response->body,
                                           (t_func_parser)mx_room_parse_cjson);
-    
+
     t_response *user_response = mx_sdk_user_find_by_name(new_contact_name);
 
     if (mx_is_response_error(user_response)) {
-        g_print("Error: %s\n", user_response->exception->message);
+        g_print("Error: %s\n", mx_sdk_exception_get_message(response));
         mx_sdk_response_free(user_response, (t_func_free)mx_user_free);
         return;
     }
@@ -92,17 +91,20 @@ void on_submit_create_contact(GtkButton *button, gpointer user_data) {
     t_user *user = mx_entity_parse_string(user_response->body,
                                           (t_func_parser)mx_user_parse_cjson);
 
-    t_response *add_member_response = mx_sdk_room_member_post(room->id, user->id, true);
+    t_response *add_member_response =
+        mx_sdk_room_member_post(room->id, user->id, true);
 
     if (mx_is_response_error(add_member_response)) {
-        g_print("Error: %s\n", add_member_response->exception->message);
-        mx_sdk_response_free(add_member_response, (t_func_free)mx_room_member_free);
+        g_print("Error: %s\n", mx_sdk_exception_get_message(response));
+        mx_sdk_response_free(add_member_response,
+                             (t_func_free)mx_room_member_free);
         return;
     }
 
     mx_sdk_response_free(response, (t_func_free)mx_room_free);
     mx_sdk_response_free(user_response, (t_func_free)mx_user_free);
-    mx_sdk_response_free(add_member_response, (t_func_free)mx_room_member_free);
+    mx_sdk_response_free(add_member_response,
+                         (t_func_free)mx_room_member_free);
     gtk_widget_hide(dialog);
     (void)button;
 }
@@ -120,8 +122,8 @@ static void show_create_room_dialog(GtkButton *button, gpointer user_data) {
         GTK_WIDGET(gtk_builder_get_object(global_builder, "create_room_name"));
     GtkWidget *entry_description = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "create_room_description"));
-    GtkWidget *create_contact_name =
-        GTK_WIDGET(gtk_builder_get_object(global_builder, "create_contact_name"));
+    GtkWidget *create_contact_name = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "create_contact_name"));
 
     gtk_window_set_transient_for(
         GTK_WINDOW(dialog),
@@ -133,13 +135,13 @@ static void show_create_room_dialog(GtkButton *button, gpointer user_data) {
     g_signal_connect(accept_button, "clicked",
                      G_CALLBACK(on_submit_create_room), dialog);
     g_signal_connect(create_contact_button, "clicked",
-                        G_CALLBACK(on_submit_create_contact), dialog);
-    g_signal_connect(create_room_name, "changed", G_CALLBACK(on_room_name_entry_changed),
-                     NULL);
+                     G_CALLBACK(on_submit_create_contact), dialog);
+    g_signal_connect(create_room_name, "changed",
+                     G_CALLBACK(on_room_name_entry_changed), NULL);
     g_signal_connect(entry_description, "changed",
                      G_CALLBACK(on_room_description_entry_changed), NULL);
     g_signal_connect(create_contact_name, "changed",
-                        G_CALLBACK(on_contact_name_entry_changed), NULL);
+                     G_CALLBACK(on_contact_name_entry_changed), NULL);
     gint response = gtk_dialog_run(GTK_DIALOG(dialog));
 
     if (response == GTK_RESPONSE_ACCEPT) {

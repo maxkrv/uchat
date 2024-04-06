@@ -1,25 +1,25 @@
 #include "../../inc/client.h"
 
-static void back_to_chat_cb() {
+static void back_to_chat_cb(void) {
     hide_settings_container();
 
-    show_chat_container();
+    show_chat_container(false);
 }
 
-void on_options_button_clicked() {
+void on_options_button_clicked(void) {
     GtkWidget *popover =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "logoout_popover"));
 
     gtk_popover_popup(GTK_POPOVER(popover));
 }
 
-void on_logout_button_clicked() {
+void on_logout_button_clicked(void) {
     mx_sdk_logout();
     hide_settings_container();
     show_auth_container();
 }
 
-void hide_settings_container() {
+void hide_settings_container(void) {
     GtkWidget *settings_container = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "user_settings_container"));
 
@@ -31,7 +31,7 @@ void hide_settings_container() {
     gtk_container_remove(GTK_CONTAINER(global_window), settings_container);
 }
 
-void show_settings_container() {
+void show_settings_container(void) {
     GtkWidget *settings_container = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "user_settings_container"));
 

@@ -14,9 +14,13 @@
 #ifdef DEFINE_GLOBALS
 GtkBuilder *global_builder;
 GtkWidget *global_window;
+t_list *global_rooms;
+t_user *global_user;
 #else
 extern GtkBuilder *global_builder;
 extern GtkWidget *global_window;
+extern t_list *global_rooms;
+extern t_user *global_user;
 #endif
 
 // auth
@@ -24,8 +28,9 @@ void show_auth_container();
 void hide_auth_container();
 
 // chat
-void show_chat_container();
+void show_chat_container(bool should_load_rooms);
 void hide_chat_container();
+void show_selected_room(t_room *room);
 
 // user settings
 void show_settings_container();
@@ -38,6 +43,7 @@ void show_room_settings_dialog(GtkButton *button, gpointer user_data);
 
 // room
 void init_create_room(void);
+void append_room_to_list(t_room *room);
 
 // utils
 GdkPixbuf *load_pixbuf_from_url(const char *url);

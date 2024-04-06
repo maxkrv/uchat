@@ -25,6 +25,7 @@
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkBox">
+            <property name="height-request">50</property>
             <property name="visible">True</property>
             <property name="app-paintable">True</property>
             <property name="can-focus">False</property>
@@ -34,9 +35,9 @@
                 <property name="name">user_avatar</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">../../../Downloads/1176_oooo.plus(1).png</property>
+                <property name="pixbuf">images/avatar.png</property>
                 <style>
-                  <class name="img"/>
+                  <class name="user_avatar"/>
                 </style>
               </object>
               <packing>
@@ -76,6 +77,8 @@
                   <object class="GtkImage">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="margin-left">5</property>
+                    <property name="margin-right">5</property>
                     <property name="pixbuf">images/icons/settings-icon.svg</property>
                   </object>
                 </child>
@@ -726,6 +729,7 @@
         <child>
           <object class="GtkBox" id="chat_header">
             <property name="name">chat_header</property>
+            <property name="height-request">50</property>
             <property name="visible">True</property>
             <property name="app-paintable">True</property>
             <property name="can-focus">False</property>
@@ -795,12 +799,12 @@
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
                 <property name="margin-right">2</property>
-                <property name="margin-top">2</property>
-                <property name="margin-bottom">1</property>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="margin-left">5</property>
+                    <property name="margin-right">5</property>
                     <property name="pixbuf">images/icons/settings-icon.svg</property>
                   </object>
                 </child>

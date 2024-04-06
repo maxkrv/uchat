@@ -13,19 +13,28 @@ static void set_chat_scrollbar_to_bottom(GtkWidget *scrolled_chat_window) {
     gtk_adjustment_set_value(adjustment, upper - page_size);
 }
 
-// static void show_room_cb(
-
-static void populate_chat_side_bar(t_user *user, t_list *rooms) {
-    // GtkWidget *rooms_list =
-    //     GTK_WIDGET(gtk_builder_get_object(global_builder, "rooms_list"));
+static void populate_chat_side_bar(t_user *user, bool should_load_rooms) {
+    GtkWidget *rooms_list =
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "rooms_list"));
     GtkWidget *user_name =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "user_name"));
 
     gtk_label_set_text(GTK_LABEL(user_name), user->name);
-    (void)rooms;
+
+    for (t_list *current = global_rooms; current; current = current->next) {
+        if (!should_load_rooms) {
+            break;
+        }
+
+        t_room *room = current->data;
+
+        append_room_to_list(room);
+    }
+
+    gtk_widget_show_all(rooms_list);
 }
 
-void show_chat_container() {
+void show_chat_container(bool should_load_rooms) {
     GtkWidget *chat_container =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_container"));
 
@@ -41,9 +50,8 @@ void show_chat_container() {
         mx_sdk_response_free(response, (t_func_free)mx_user_free);
         return;
     }
-    t_user *user = mx_entity_parse_string(response->body,
-                                          (t_func_parser)mx_user_parse_cjson);
-
+    t_user *user = response->data;
+    global_user = user;
     t_response *rooms_response = mx_sdk_rooms_get();
 
     if (mx_is_response_error(rooms_response)) {
@@ -52,18 +60,10 @@ void show_chat_container() {
         return;
     }
 
-    mx_sdk_response_print(rooms_response);
-
     t_list *rooms = rooms_response->data;
+    global_rooms = rooms;
 
-    for (t_list *current = rooms; current; current = current->next) {
-        t_room *room = current->data;
-
-        g_print("Room id: %d\n", room->id);
-        g_print("Room name: %s\n", room->name);
-    }
-
-    populate_chat_side_bar(user, rooms);
+    populate_chat_side_bar(user, should_load_rooms);
     mx_sdk_response_free(response, (t_func_free)mx_user_free);
     GtkWidget *scrolled_window = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "scrolled_chat_window"));

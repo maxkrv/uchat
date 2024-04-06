@@ -32,22 +32,23 @@ static void handle_message_deleted(t_string data) {
 
 static void handle_member_joined(t_string data) {
     t_ws_message *message =
-        mx_ws_message_parse(data, (t_func_parser)mx_user_parse_cjson);
-    t_user *payload = message->payload;
-    // Handle message event
-    MG_INFO(("Member joined: %d", payload->id));
+        mx_ws_message_parse(data, (t_func_parser)mx_member_parse_cjson);
+    t_room_member *payload = message->payload;
 
-    mx_ws_message_free(message, (t_func_free)mx_user_free);
+    t_response *response = mx_sdk_room_find(payload->room_id);
+    mx_sdk_response_print(response);
+    append_room_to_list(response->data);
+    mx_ws_message_free(message, (t_func_free)mx_room_member_free);
 }
 
 static void handle_member_left(t_string data) {
     t_ws_message *message =
-        mx_ws_message_parse(data, (t_func_parser)mx_user_parse_cjson);
-    t_user *payload = message->payload;
+        mx_ws_message_parse(data, (t_func_parser)mx_member_parse_cjson);
+    t_room_member *payload = message->payload;
     // Handle message event
     MG_INFO(("Member left: %d", payload->id));
 
-    mx_ws_message_free(message, (t_func_free)mx_user_free);
+    mx_ws_message_free(message, (t_func_free)mx_room_member_free);
 }
 
 static void handle_member_updated(t_string data) {

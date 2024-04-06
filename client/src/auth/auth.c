@@ -82,7 +82,7 @@ static void login(const char *username, const char *password) {
     }
 
     hide_auth_container();
-    show_chat_container();
+    show_chat_container(true);
     mx_sdk_response_free(response, free);
 }
 

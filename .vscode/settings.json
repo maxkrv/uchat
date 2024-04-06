@@ -25,6 +25,7 @@
     "ranges": "c",
     "system_error": "c",
     "random": "c",
-    "db.h": "c"
+    "db.h": "c",
+    "stdbool.h": "c"
   }
 }

@@ -34,7 +34,10 @@
                 <property name="name">user_avatar</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">images/icons/profile-circle-icon.svg</property>
+                <property name="pixbuf">../../../Downloads/1176_oooo.plus(1).png</property>
+                <style>
+                  <class name="img"/>
+                </style>
               </object>
               <packing>
                 <property name="expand">False</property>

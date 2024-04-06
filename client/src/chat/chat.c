@@ -37,6 +37,27 @@ static void populate_chat_side_bar(t_user *user, bool should_load_rooms) {
     }
 
     gtk_widget_show_all(rooms_list);
+
+    GtkWidget *user_avatar = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "user_avatar"));
+
+    t_response * file_resp = mx_sdk_file_find(user->photo_id);
+    if (mx_is_response_error(file_resp)) {
+        g_print("Error: %s\n", file_resp->exception->message);
+        return;
+    }
+    t_file *file = (t_file *)file_resp->data;
+    if (file != NULL) {
+        GdkPixbuf *pixbuf = load_pixbuf_from_url(file->url);
+        if (pixbuf != NULL) {
+            gtk_image_set_from_pixbuf(GTK_IMAGE(user_avatar), pixbuf);
+            g_object_unref(pixbuf);
+        }
+    }
+    else
+       g_print("Error!");
+    printf("%s\n", file->url);
+    mx_sdk_response_free(file_resp, (t_func_free)mx_file_free);
 }
 
 void show_chat_container(bool should_load_rooms) {

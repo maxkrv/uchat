@@ -36,7 +36,7 @@ static void on_update_user_button_clicked(void) {
     t_response *response = mx_sdk_user_put_me(dto);
 
     if (mx_is_response_error(response)) {
-        g_print("Error: %s\n", response->exception->message);
+        g_print("Error: %s\n", mx_sdk_exception_get_message(response));
 
         mx_sdk_response_free(response, (t_func_free)mx_user_free);
         return;
@@ -58,7 +58,7 @@ void init_update_user_form_field(void) {
     t_response *response = mx_sdk_user_get_me();
 
     if (mx_is_response_error(response)) {
-        g_print("Error: %s\n", response->exception->message);
+        g_print("Error: %s\n", mx_sdk_exception_get_message(response));
         return;
     }
 

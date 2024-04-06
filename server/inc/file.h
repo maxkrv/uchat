@@ -19,7 +19,7 @@ t_file *mx_file_service_delete(int file_id);
 
 bool mx_file_delete_uploaded(char *filename);
 bool mx_file_upload(const char *file, int file_len, const char *filename);
-t_file *mx_file_save_to_db(char *filename);
+t_file *mx_file_save_to_db(char *filename, char *url);
 t_file *mx_file_delete_from_db(int file_id);
 
 t_file *mx_file_repo_get(int id);

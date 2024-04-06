@@ -25,7 +25,7 @@ static void on_update_password_button_clicked() {
     t_response *response = mx_sdk_change_password(old_password, new_password);
 
     if (mx_is_response_error(response)) {
-        g_print("Error: %s\n", response->exception->message);
+        g_print("Error: %s\n", mx_sdk_exception_get_message(response));
 
         mx_sdk_response_free(response, free);
         return;
@@ -35,14 +35,21 @@ static void on_update_password_button_clicked() {
 }
 
 void init_update_password_form() {
-    GtkWidget *old_password_entry = GTK_WIDGET(gtk_builder_get_object(global_builder, "old_password_entry"));
-    GtkWidget *new_password_entry = GTK_WIDGET(gtk_builder_get_object(global_builder, "new_update_password_entry"));
-    GtkWidget *update_password_button = GTK_WIDGET(gtk_builder_get_object(global_builder, "update_password_button"));
+    GtkWidget *old_password_entry = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "old_password_entry"));
+    GtkWidget *new_password_entry = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "new_update_password_entry"));
+    GtkWidget *update_password_button = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "update_password_button"));
 
-    g_signal_connect(old_password_entry, "changed", G_CALLBACK(on_old_password_entry_changed), NULL);
-    g_signal_connect(new_password_entry, "changed", G_CALLBACK(on_new_password_entry_changed), NULL);
-    g_signal_connect(update_password_button, "clicked", G_CALLBACK(on_update_password_button_clicked), NULL);
-    g_signal_connect(old_password_entry, "icon-press", G_CALLBACK(on_password_entry_visibility), NULL);
-    g_signal_connect(new_password_entry, "icon-press", G_CALLBACK(on_password_entry_visibility), NULL);
+    g_signal_connect(old_password_entry, "changed",
+                     G_CALLBACK(on_old_password_entry_changed), NULL);
+    g_signal_connect(new_password_entry, "changed",
+                     G_CALLBACK(on_new_password_entry_changed), NULL);
+    g_signal_connect(update_password_button, "clicked",
+                     G_CALLBACK(on_update_password_button_clicked), NULL);
+    g_signal_connect(old_password_entry, "icon-press",
+                     G_CALLBACK(on_password_entry_visibility), NULL);
+    g_signal_connect(new_password_entry, "icon-press",
+                     G_CALLBACK(on_password_entry_visibility), NULL);
 }
-

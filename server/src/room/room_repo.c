@@ -42,6 +42,31 @@ t_room *mx_room_repo_get(int id) {
     return room;
 }
 
+bool mx_room_repo_direct_exist(t_user_id first_id, t_user_id second_id) {
+    sqlite3 *db = mx_env_get()->db_connection;
+    sqlite3_stmt *stmt;
+    const char *sql = "SELECT r.*, u.* "
+                      "FROM room r "
+                      "LEFT JOIN room_member r_m ON r_m.room_id = r.id "
+                      "LEFT JOIN user u ON r_m.user_id = u.id "
+                      "WHERE u.id = ? OR u.id = ?;";
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        return NULL;
+    }
+
+    mx_sqlite3_bind_id(stmt, 1, first_id);
+    mx_sqlite3_bind_id(stmt, 2, second_id);
+
+    int count = 0;
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        count++;
+    }
+    sqlite3_finalize(stmt);
+
+    return count == 2;
+}
+
 t_list *mx_room_repo_get_many(int user_id) {
     sqlite3 *db = mx_env_get()->db_connection;
     sqlite3_stmt *stmt;

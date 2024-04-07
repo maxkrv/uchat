@@ -36,6 +36,23 @@ t_response *mx_sdk_room_post(t_room_create_dto *room) {
 
     return response;
 }
+t_response *mx_sdk_room_direct_post(t_room_create_dto *room,
+                                    t_string username) {
+    t_sdk_env *env = mx_sdk_env_get();
+    t_string encoded_username = mx_encode_uri_component(mg_str(username));
+    char *url = mg_mprintf("%s/api/v1/rooms/direct?username=%s",
+                           env->backend_url, encoded_username);
+    char *body = mx_room_create_dto_stringify(room);
+    t_response *response = mx_fetch(url, MX_HTTP_METHOD_POST,
+                                    mx_headers_push_back_token(NULL), body);
+
+    mx_room_create_dto_free(room);
+    mx_parse_server_response(response, (t_func_parser)mx_room_parse_cjson);
+    mx_strdel(&url);
+    mx_strdel(&encoded_username);
+
+    return response;
+}
 t_response *mx_sdk_room_put(int room_id, t_room_create_dto *room) {
     t_sdk_env *env = mx_sdk_env_get();
     char *url =

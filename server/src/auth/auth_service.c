@@ -30,7 +30,7 @@ t_user *mx_auth_register(t_register_dto *dto) {
         mx_strdup("This is your private space. "
                   "Noone has access to this room except you. "
                   "Use it however you want.");
-    rc_dto->type = mx_strdup("notes");
+    rc_dto->type = mx_strdup(MX_ROOM_TYPE_NOTES);
 
     t_room *room = mx_room_create(rc_dto, user->id);
 

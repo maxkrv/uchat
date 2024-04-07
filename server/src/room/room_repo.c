@@ -49,9 +49,17 @@ bool mx_room_repo_direct_exist(t_user_id first_id, t_user_id second_id) {
                       "FROM room r "
                       "LEFT JOIN room_member r_m ON r_m.room_id = r.id "
                       "LEFT JOIN user u ON r_m.user_id = u.id "
-                      "WHERE u.id = ? OR u.id = ?;";
+                      "WHERE r.type =  'direct' "
+                      "AND EXISTS( "
+                      "SELECT 1 "
+                      "FROM room_member rm_inner "
+                      "WHERE rm_inner.room_id = r.id "
+                      "AND rm_inner.user_id IN(?, ?)"
+                      "GROUP BY rm_inner.room_id "
+                      "HAVING COUNT( "
+                      "DISTINCT rm_inner.user_id) = 2) LIMIT 2;";
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
-        return NULL;
+        return false;
     }
 
     mx_sqlite3_bind_id(stmt, 1, first_id);

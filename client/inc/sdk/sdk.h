@@ -209,6 +209,15 @@ t_response *mx_sdk_room_post(t_room_create_dto *room);
     dto will be freed
     @return t_responce *(data == t_room *)
  */
+t_response *mx_sdk_room_direct_post(t_room_create_dto *room,
+                                    t_string username);
+/*
+    to free response:
+    mx_sdk_response_free(resp, (t_func_free)mx_room_free);
+
+    dto will be freed
+    @return t_responce *(data == t_room *)
+ */
 t_response *mx_sdk_room_put(int room_id, t_room_create_dto *room);
 /*
     to free response:

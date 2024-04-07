@@ -3,6 +3,7 @@
 
 #define MX_ROOM_TYPE_GROUP "group"
 #define MX_ROOM_TYPE_DIRECT "direct"
+#define MX_ROOM_TYPE_NOTES "notes"
 
 #include "base.h"
 #include "utils.h"
@@ -44,6 +45,7 @@ void mx_room_create_dto_free(t_room_create_dto *d);
 // constrollers
 void mx_room_ctrl_get(t_connection *c, t_http_message *m);
 void mx_room_ctrl_post(t_connection *c, t_http_message *m);
+void mx_room_direct_ctrl_post(t_connection *c, t_http_message *m);
 void mx_room_ctrl_put(t_connection *c, t_http_message *m);
 void mx_room_ctrl_delete(t_connection *c, t_http_message *m);
 
@@ -52,10 +54,13 @@ t_room *mx_room_get(int id);
 t_room *mx_room_create(t_room_create_dto *dto, int user_id);
 t_room *mx_room_put(int id, t_room_create_dto *dto);
 t_room *mx_room_delete(int id);
+t_room *mx_room_create_direct(t_room_create_dto *dto, t_user_id first_id,
+                              t_user_id second_id);
 
 // repositories
 t_room *mx_room_repo_get(int id);
 t_list *mx_room_repo_get_many(int user_id);
+bool mx_room_repo_direct_exist(t_user_id first_id, t_user_id second_id);
 int mx_members_repo_count(int room_id);
 int mx_room_repo_create(t_room_create_dto *dto);
 bool mx_room_repo_put(int id, t_room_create_dto *dto);

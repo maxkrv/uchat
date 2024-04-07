@@ -380,6 +380,40 @@ paths:
           $ref: '#/components/responses/RoomData'
         422:
           $ref: '#/components/responses/InvalidDataException'
+  /api/v1/rooms/direct:
+    post:
+      operationId: post-direct-room
+      summary: 'Creates a direct room and sets users as admin of room'
+      tags: ['Room']
+      security:
+        - JWT: []
+      parameters:
+        - in: query
+          name: username
+          schema:
+            type: string
+            example: Name
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  example: Uchat
+                description:
+                  type: string
+                  example: 'We are cool guys!'
+                photo_id:
+                  $ref: '#/components/schemas/ID'
+
+      responses:
+        201:
+          $ref: '#/components/responses/RoomData'
+        401:
+          $ref: '#/components/responses/UnauthorizedException'
+        422:
+          $ref: '#/components/responses/InvalidDataException'
   /api/v1/rooms:
     post:
       operationId: post-room

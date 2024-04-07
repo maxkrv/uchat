@@ -11,7 +11,8 @@ t_room_member *mx_room_get_member(int id) {
 t_room_member *mx_room_add_member(t_room_member_create_dto *dto) {
     t_room *room = mx_room_get(dto->room_id);
 
-    if (!room || mx_strcmp(room->type, "notes") == 0) {
+    if (!room || mx_strcmp(room->type, MX_ROOM_TYPE_NOTES) == 0 ||
+        mx_strcmp(room->type, MX_ROOM_TYPE_DIRECT) == 0) {
         mx_room_free(room);
         return NULL;
     }
@@ -31,7 +32,8 @@ t_room_member *mx_room_update_member(int id, t_room_member_update_dto *dto) {
     member->room = mx_room_get(member->room_id);
 
     if (!member || !member->room ||
-        mx_strcmp(member->room->type, "notes") == 0) {
+        mx_strcmp(member->room->type, MX_ROOM_TYPE_NOTES) == 0 ||
+        mx_strcmp(member->room->type, MX_ROOM_TYPE_DIRECT) == 0) {
         mx_room_member_free(member);
         return NULL;
     }
@@ -51,7 +53,7 @@ t_room_member *mx_room_delete_member(int id) {
     member->room = mx_room_get(member->room_id);
 
     if (!member || !member->room ||
-        mx_strcmp(member->room->type, "notes") == 0) {
+        mx_strcmp(member->room->type, MX_ROOM_TYPE_NOTES) == 0) {
         mx_room_member_free(member);
         return NULL;
     }

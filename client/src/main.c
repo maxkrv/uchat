@@ -6,6 +6,7 @@ int main(int argc, char *argv[]) {
     mx_sdk_init("http://localhost:3000");
 
     global_rooms = NULL;
+    global_messages = NULL;
     global_user = NULL;
     global_builder = gtk_builder_new();
 

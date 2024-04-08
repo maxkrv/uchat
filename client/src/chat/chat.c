@@ -18,6 +18,11 @@ static void populate_chat_side_bar(t_user *user, bool should_load_rooms) {
         GTK_WIDGET(gtk_builder_get_object(global_builder, "rooms_list"));
     GtkWidget *user_name =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "user_name"));
+    GtkWidget *chat_scroll = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "chat_scroll"));
+
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(chat_scroll),
+                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 
     gtk_label_set_text(GTK_LABEL(user_name), user->name);
 

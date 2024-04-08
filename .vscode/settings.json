@@ -26,6 +26,7 @@
     "system_error": "c",
     "random": "c",
     "db.h": "c",
-    "stdbool.h": "c"
+    "stdbool.h": "c",
+    "time.h": "c"
   }
 }

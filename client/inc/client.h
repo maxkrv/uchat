@@ -10,16 +10,19 @@
 #include <gtk/gtk.h>
 #include "sdk/sdk.h"
 #include "ws.h"
+#include <time.h>
 
 #ifdef DEFINE_GLOBALS
 GtkBuilder *global_builder;
 GtkWidget *global_window;
 t_list *global_rooms;
+t_list *global_messages;
 t_user *global_user;
 #else
 extern GtkBuilder *global_builder;
 extern GtkWidget *global_window;
 extern t_list *global_rooms;
+extern t_list *global_messages;
 extern t_user *global_user;
 #endif
 
@@ -51,5 +54,6 @@ void load_css(GtkWidget *window, const gchar *css_path);
 void init_theme_switcher(GtkBuilder *builder, GtkWidget *window,
                          char *theme_switcher_widget_name);
 gboolean is_empty_field(GtkEntry *entry);
+void unixTimeToHoursMinutes(time_t unixTime, int *hours, int *minutes);
 
 gboolean websocket_server_push_events(gpointer user_data);

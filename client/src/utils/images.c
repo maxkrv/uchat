@@ -39,7 +39,17 @@ GdkPixbuf *load_pixbuf_from_url(const char *url) {
                                     buffer->len, NULL);
             gdk_pixbuf_loader_close(loader, NULL);
             g_byte_array_unref(buffer);
-            return gdk_pixbuf_loader_get_pixbuf(loader);
+            
+            GdkPixbuf *pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
+
+            if (pixbuf != NULL) {
+                GdkPixbuf *scaled_pixbuf = gdk_pixbuf_scale_simple(pixbuf, 50, 50, GDK_INTERP_BILINEAR);
+                g_object_unref(pixbuf);
+		return scaled_pixbuf;
+            } else {
+                g_object_unref(loader);
+                return NULL;
+            }
         } else {
             g_byte_array_unref(buffer);
             g_printerr("Error loading image from URL: %s\n",
@@ -49,3 +59,4 @@ GdkPixbuf *load_pixbuf_from_url(const char *url) {
 
     return NULL;
 }
+

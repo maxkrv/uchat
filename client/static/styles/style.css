@@ -195,4 +195,8 @@ scrollbar slider:active {
     background: @input_bg_color;
     border: 2px solid @border_color;
 }
+
+.img {
+  border-radius: 100%;
+}
 /* settings end */

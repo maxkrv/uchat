@@ -22,7 +22,7 @@ void append_room_to_list(t_room *room) {
     } else {
         gtk_image_set_from_file(
             GTK_IMAGE(image),
-            "client/static/images/icons/profile-circle-icon.svg");
+            "client/static/images/avatar.png");
     }
 
     GtkWidget *room_info = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 2);

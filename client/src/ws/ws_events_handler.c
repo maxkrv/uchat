@@ -7,6 +7,8 @@ static void handle_message_created(t_string data) {
     // Handle message event
     MG_INFO(("Message created: %d", payload->id));
 
+    render_messages(payload->room_id);
+
     mx_ws_message_free(message, (t_func_free)mx_message_free);
 }
 
@@ -36,8 +38,9 @@ static void handle_member_joined(t_string data) {
     t_room_member *payload = message->payload;
 
     t_response *response = mx_sdk_room_find(payload->room_id);
-    mx_sdk_response_print(response);
+
     append_room_to_list(response->data);
+    
     mx_ws_message_free(message, (t_func_free)mx_room_member_free);
 }
 

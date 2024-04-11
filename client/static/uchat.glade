@@ -738,7 +738,7 @@
                 <property name="name">user_avatar</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">images/icons/profile-circle-icon.svg</property>
+                <property name="pixbuf">images/avatar.png</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -846,8 +846,8 @@
                   <object class="GtkBox" id="messages_list_box">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="valign">end</property>
                     <property name="orientation">vertical</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <placeholder/>
                     </child>
@@ -898,7 +898,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry">
+              <object class="GtkEntry" id="message_entry">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="margin-left">8</property>
@@ -942,7 +942,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="send_message_button">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
@@ -1629,7 +1629,7 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="label" translatable="yes">Descrption:</property>
+                    <property name="label" translatable="yes">Description:</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>

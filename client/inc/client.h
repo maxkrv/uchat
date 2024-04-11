@@ -16,13 +16,11 @@
 GtkBuilder *global_builder;
 GtkWidget *global_window;
 t_list *global_rooms;
-t_list *global_messages;
 t_user *global_user;
 #else
 extern GtkBuilder *global_builder;
 extern GtkWidget *global_window;
 extern t_list *global_rooms;
-extern t_list *global_messages;
 extern t_user *global_user;
 #endif
 
@@ -47,6 +45,10 @@ void show_room_settings_dialog(GtkButton *button, gpointer user_data);
 // room
 void init_create_room(void);
 void append_room_to_list(t_room *room);
+
+// message
+void render_messages(int room_id);
+void init_message_form(int chat_id);
 
 // utils
 GdkPixbuf *load_pixbuf_from_url(const char *url);

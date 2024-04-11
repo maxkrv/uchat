@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS message (
     author_id       INT NOT NULL,
     room_id         INT NOT NULL,
     reply_id        INT NULL,
-    data            VARCHAR(5000) NOT NULL,
+    data            VARCHAR(5000) NULL,
     created_at      INT DEFAULT(strftime('%s', 'now')), 
     edited_at       INT DEFAULT(strftime('%s', 'now')), 
     FOREIGN KEY(author_id) REFERENCES user(id) ON DELETE SET NULL ON UPDATE CASCADE,

@@ -23,7 +23,7 @@ void mx_message_create_dto_free(t_message_create_dto *dto) {
 
 static t_message_create_dto *
 validate_message_create_dto(t_message_create_dto *dto) {
-    if (!dto->room_id || !dto->text) {
+    if (!dto->room_id || !(dto->text || dto->file_ids)) {
         mx_message_create_dto_free(dto);
         return NULL;
     }
@@ -74,7 +74,7 @@ t_message_create_dto *mx_message_update_dto_get(struct mg_str body) {
     if (!dto) {
         return NULL;
     }
-    if (!dto->text) {
+    if (!(dto->text || dto->file_ids)) {
         mx_message_create_dto_free(dto);
         return NULL;
     }

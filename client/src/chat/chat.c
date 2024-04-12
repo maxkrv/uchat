@@ -5,13 +5,6 @@ static void show_settings_container_cb(void) {
     show_settings_container();
 }
 
-static void set_chat_scrollbar_to_bottom(GtkWidget *scrolled_chat_window) {
-    GtkAdjustment *adjustment = gtk_scrolled_window_get_vadjustment(
-        GTK_SCROLLED_WINDOW(scrolled_chat_window));
-    double upper = gtk_adjustment_get_upper(adjustment);
-    double page_size = gtk_adjustment_get_page_size(adjustment);
-    gtk_adjustment_set_value(adjustment, upper - page_size);
-}
 
 static void populate_chat_side_bar(t_user *user, bool should_load_rooms) {
     GtkWidget *rooms_list =
@@ -91,17 +84,13 @@ void show_chat_container(bool should_load_rooms) {
 
     populate_chat_side_bar(user, should_load_rooms);
     mx_sdk_response_free(response, (t_func_free)mx_user_free);
-    GtkWidget *scrolled_window = GTK_WIDGET(
-        gtk_builder_get_object(global_builder, "scrolled_chat_window"));
+
     GtkWidget *user_settings_button = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "user_settings_button"));
 
     g_signal_connect(user_settings_button, "clicked",
                      G_CALLBACK(show_settings_container_cb), global_builder);
 
-    set_chat_scrollbar_to_bottom(scrolled_window);
-    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),
-                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
     init_create_room();
 
     GtkWidget *room_settings_button = GTK_WIDGET(

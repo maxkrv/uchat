@@ -45,6 +45,8 @@ void show_room_settings_dialog(GtkButton *button, gpointer user_data);
 // room
 void init_create_room(void);
 void append_room_to_list(t_room *room);
+void set_room_name(t_room *room, GtkWidget *room_user_name);
+void render_rooms();
 
 // message
 void render_messages(int room_id);

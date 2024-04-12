@@ -23,20 +23,25 @@ void show_selected_room(t_room *room) {
         GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_empty"));
 
     gtk_widget_hide(empty_state_widget);
+
     gtk_widget_hide(chat_stack);
 
     gtk_box_pack_start(GTK_BOX(chat_container), chat_stack, TRUE, TRUE, 0);
+
     gtk_widget_show(chat_stack);
 
     GtkWidget *room_user_name = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "chat_room_username"));
+
     GtkWidget *room_description =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "room_description"));
 
-    gtk_label_set_text(GTK_LABEL(room_user_name), room->name);
+    set_room_name(room, room_user_name);
+
     gtk_label_set_text(GTK_LABEL(room_description), room->description);
 
     render_messages(room->id);
+
     init_message_form(room->id);
 
     GtkWidget *scrolled_window = GTK_WIDGET(
@@ -44,6 +49,7 @@ void show_selected_room(t_room *room) {
 
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),
                                    GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-    g_timeout_add_full(G_PRIORITY_DEFAULT, 21,
-                       call_scrollbar_once, scrolled_window, NULL);
+
+    g_timeout_add_full(G_PRIORITY_DEFAULT, 21, call_scrollbar_once,
+                       scrolled_window, NULL);
 }

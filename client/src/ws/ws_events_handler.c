@@ -36,12 +36,10 @@ static void handle_member_joined(t_string data) {
     t_ws_message *message =
         mx_ws_message_parse(data, (t_func_parser)mx_member_parse_cjson);
     t_room_member *payload = message->payload;
+    // Handle message event
+    MG_INFO(("Member joined: %d", payload->id));
 
-    t_response *response = mx_sdk_room_find(payload->room_id);
-
-    append_room_to_list(response->data);
-    
-    mx_ws_message_free(message, (t_func_free)mx_room_member_free);
+    render_rooms();
 }
 
 static void handle_member_left(t_string data) {

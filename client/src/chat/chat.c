@@ -19,14 +19,8 @@ static void populate_chat_side_bar(t_user *user, bool should_load_rooms) {
 
     gtk_label_set_text(GTK_LABEL(user_name), user->name);
 
-    for (t_list *current = global_rooms; current; current = current->next) {
-        if (!should_load_rooms) {
-            break;
-        }
-
-        t_room *room = current->data;
-
-        append_room_to_list(room);
+    if (should_load_rooms) {
+        render_rooms();
     }
 
     gtk_widget_show_all(rooms_list);

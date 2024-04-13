@@ -19,6 +19,8 @@ static void handle_message_updated(t_string data) {
     // Handle message event
     MG_INFO(("Message updated: %d", payload->id));
 
+    render_messages(payload->room_id);
+
     mx_ws_message_free(message, (t_func_free)mx_message_free);
 }
 
@@ -28,6 +30,8 @@ static void handle_message_deleted(t_string data) {
     t_message *payload = message->payload;
     // Handle message event
     MG_INFO(("Message deleted: %d", payload->id));
+
+    render_messages(payload->room_id);
 
     mx_ws_message_free(message, (t_func_free)mx_message_free);
 }

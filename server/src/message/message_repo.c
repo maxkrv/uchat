@@ -109,17 +109,17 @@ bool mx_message_repo_put(int id, t_message_create_dto *dto) {
     if (!dto || id <= 0) {
         return false;
     }
-    const char *sql = "UPDATE messaage "
-                      "SET room_id = ?, reply_id = ?, data = ? "
+    const char *sql = "UPDATE message "
+                      "SET reply_id = ?, data = ? "
                       "WHERE id = ?;";
 
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
         return -1;
     }
-    mx_sqlite3_bind_id(stmt, 1, dto->room_id);
-    mx_sqlite3_bind_id(stmt, 2, dto->reply_id);
-    sqlite3_bind_text(stmt, 3, dto->text, -1, SQLITE_TRANSIENT);
-    mx_sqlite3_bind_id(stmt, 4, id);
+    // mx_sqlite3_bind_id(stmt, 1, dto->room_id);
+    mx_sqlite3_bind_id(stmt, 1, dto->reply_id);
+    sqlite3_bind_text(stmt, 2, dto->text, -1, SQLITE_TRANSIENT);
+    mx_sqlite3_bind_id(stmt, 3, id);
 
     bool res = sqlite3_step(stmt) == SQLITE_DONE;
 

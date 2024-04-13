@@ -1,8 +1,6 @@
 #include "client.h"
 
 static void on_room_button_clicked(GtkWidget *widget, t_room *room) {
-    g_print("Room id: %d\n", room->id);
-
     show_selected_room(room);
     (void)widget;
 }

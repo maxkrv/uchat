@@ -34,8 +34,8 @@ void hide_chat_container();
 void show_selected_room(t_room *room);
 
 // user settings
-void show_settings_container();
-void hide_settings_container();
+void show_settings_dialog(GtkButton *button, gpointer user_data);
+void hide_settings_dialog();
 void init_update_user_form_field();
 void init_update_password_form();
 

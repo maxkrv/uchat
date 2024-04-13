@@ -1,18 +1,12 @@
 #include "client.h"
 
-static void show_settings_container_cb(void) {
-    hide_chat_container();
-    show_settings_container();
-}
-
-
 static void populate_chat_side_bar(t_user *user, bool should_load_rooms) {
     GtkWidget *rooms_list =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "rooms_list"));
     GtkWidget *user_name =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "user_name"));
-    GtkWidget *chat_scroll = GTK_WIDGET(
-        gtk_builder_get_object(global_builder, "chat_scroll"));
+    GtkWidget *chat_scroll =
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_scroll"));
 
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(chat_scroll),
                                    GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
@@ -83,7 +77,7 @@ void show_chat_container(bool should_load_rooms) {
         gtk_builder_get_object(global_builder, "user_settings_button"));
 
     g_signal_connect(user_settings_button, "clicked",
-                     G_CALLBACK(show_settings_container_cb), global_builder);
+                     G_CALLBACK(show_settings_dialog), global_builder);
 
     init_create_room();
 

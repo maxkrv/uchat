@@ -1,7 +1,6 @@
 #include "client.h"
 
 void clean_up_settings() {
-    printf("clean_up_settings\n");
     hide_settings_dialog();
 
     GtkWidget *username_entry =

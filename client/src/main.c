@@ -5,8 +5,6 @@ int main(int argc, char *argv[]) {
     gtk_init(&argc, &argv);
     mx_sdk_init("http://localhost:3000");
 
-    global_rooms = NULL;
-    global_user = NULL;
     global_builder = gtk_builder_new();
 
     if (gtk_builder_add_from_file(global_builder, "client/static/uchat.glade",

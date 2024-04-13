@@ -15,16 +15,6 @@ void show_chat_container(bool should_load_rooms) {
     GtkWidget *chat_container =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_container"));
 
-    t_response *rooms_response = mx_sdk_rooms_get();
-
-    if (mx_is_response_error(rooms_response)) {
-        g_print("Error: %s\n", mx_sdk_exception_get_message(rooms_response));
-        mx_sdk_response_free(rooms_response, (t_func_free)mx_room_free);
-        return;
-    }
-
-    global_rooms = rooms_response->data;
-
     populate_chat_side_bar(should_load_rooms);
 
     GtkWidget *user_settings_button = GTK_WIDGET(

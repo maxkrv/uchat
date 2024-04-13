@@ -47,14 +47,14 @@ void on_submit_create_room(GtkButton *button, gpointer user_data) {
         return;
     }
 
-    t_room *room = response->data;
-
-    mx_push_front(&global_rooms, room);
-
-    append_room_to_list(room);
+    render_rooms();
 
     mx_sdk_response_free(response, (t_func_free)mx_room_free);
     gtk_widget_hide(dialog);
+    clean_up_room_creation();
+    new_room_name = NULL;
+    new_room_description = NULL;
+    new_contact_name = NULL;
     (void)button;
 }
 
@@ -83,12 +83,12 @@ void on_submit_create_contact(GtkButton *button, gpointer user_data) {
         return;
     }
 
-    t_room *room = response->data;
-
-    mx_push_front(&global_rooms, room);
-
     mx_sdk_response_free(response, (t_func_free)mx_room_free);
     gtk_widget_hide(dialog);
+    clean_up_room_creation();
+    new_room_name = NULL;
+    new_room_description = NULL;
+    new_contact_name = NULL;
     (void)button;
 }
 
@@ -136,6 +136,10 @@ static void show_create_room_dialog(GtkButton *button, gpointer user_data) {
     }
 
     gtk_widget_hide(dialog);
+    clean_up_room_creation();
+    new_room_name = NULL;
+    new_room_description = NULL;
+    new_contact_name = NULL;
     (void)button;
 }
 

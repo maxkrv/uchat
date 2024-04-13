@@ -15,13 +15,9 @@
 #ifdef DEFINE_GLOBALS
 GtkBuilder *global_builder;
 GtkWidget *global_window;
-t_list *global_rooms;
-t_user *global_user;
 #else
 extern GtkBuilder *global_builder;
 extern GtkWidget *global_window;
-extern t_list *global_rooms;
-extern t_user *global_user;
 #endif
 
 // auth
@@ -50,6 +46,7 @@ void init_create_room(void);
 void append_room_to_list(t_room *room);
 void set_room_name(t_room *room, GtkWidget *room_user_name);
 void render_rooms();
+void clean_up_room_creation();
 
 // message
 void render_messages(int room_id);

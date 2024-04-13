@@ -25,12 +25,6 @@ void show_chat_container(bool should_load_rooms) {
 
     init_create_room();
 
-    GtkWidget *room_settings_button = GTK_WIDGET(
-        gtk_builder_get_object(global_builder, "room_settings_button"));
-
-    g_signal_connect(room_settings_button, "clicked",
-                     G_CALLBACK(show_room_settings_dialog), global_builder);
-
     render_user();
 
     gtk_container_add(GTK_CONTAINER(global_window), chat_container);

@@ -12,12 +12,6 @@ void show_room_settings_dialog(GtkButton *button, gpointer user_data) {
         gtk_builder_get_object(builder, "room_settings_dialog"));
     GtkWidget *cancel_button = GTK_WIDGET(
         gtk_builder_get_object(builder, "room_settings_cancel"));
-    // GtkWidget *submit_button = GTK_WIDGET(
-    //     gtk_builder_get_object(global_builder, "room_settings_submit"));
-    // GtkWidget *entry_username = GTK_WIDGET(
-    //     gtk_builder_get_object(global_builder, "room_settings_entry_room_name"));
-    // GtkWidget *entry_description = GTK_WIDGET(
-    //     gtk_builder_get_object(global_builder, "room_settings_entry_description"));
 
     gtk_window_set_transient_for(
         GTK_WINDOW(dialog),

@@ -29,7 +29,7 @@ void render_user();
 
 // chat
 void show_chat_container(bool should_load_rooms);
-void show_selected_room(t_room *room);
+void show_selected_room(t_room *room, bool should_render_messages);
 
 // user settings
 void show_settings_dialog(GtkButton *button, gpointer user_data);
@@ -47,6 +47,7 @@ void append_room_to_list(t_room *room);
 void set_room_name(t_room *room, GtkWidget *room_user_name);
 void render_rooms();
 void clean_up_room_creation();
+void init_edit_room_form(t_room *room);
 
 // message
 void render_messages(int room_id);

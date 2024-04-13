@@ -14,7 +14,7 @@ gboolean call_scrollbar_once(gpointer data) {
     return G_SOURCE_REMOVE;
 }
 
-void show_selected_room(t_room *room) {
+void show_selected_room(t_room *room, bool should_render_messages) {
     GtkWidget *chat_container =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_container"));
     GtkWidget *chat_stack =
@@ -23,13 +23,21 @@ void show_selected_room(t_room *room) {
         GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_empty"));
     GtkWidget *edit_message_box =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "edit_message_box"));
+    GtkWidget *room_settings_button = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "room_settings_button"));
 
     gtk_widget_hide(empty_state_widget);
     gtk_widget_hide(edit_message_box);
+    gtk_widget_hide(room_settings_button);
 
     gtk_widget_hide(chat_stack);
 
     gtk_box_pack_start(GTK_BOX(chat_container), chat_stack, TRUE, TRUE, 0);
+
+    if (g_strcmp0(room->type, "notes") != 0 &&
+        g_strcmp0(room->type, "direct") != 0) {
+        gtk_widget_show(room_settings_button);
+    }
 
     gtk_widget_show(chat_stack);
 
@@ -43,9 +51,15 @@ void show_selected_room(t_room *room) {
 
     gtk_label_set_text(GTK_LABEL(room_description), room->description);
 
-    render_messages(room->id);
+    if (should_render_messages) {
+        render_messages(room->id);
+    }
 
     init_message_form(room->id);
+
+    g_signal_connect(room_settings_button, "clicked",
+                     G_CALLBACK(show_room_settings_dialog), global_builder);
+    init_edit_room_form(room);
 
     GtkWidget *scrolled_window = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "scrolled_chat_window"));

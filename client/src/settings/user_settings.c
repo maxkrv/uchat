@@ -62,6 +62,8 @@ void show_settings_dialog(GtkButton *button, gpointer user_data) {
                      G_CALLBACK(on_options_button_clicked), NULL);
     g_signal_connect(logout_button, "clicked",
                      G_CALLBACK(on_logout_button_clicked), NULL);
+    init_update_user_form_field();
+    init_update_password_form();
 
     gint response = gtk_dialog_run(GTK_DIALOG(settings_dialog));
 
@@ -72,7 +74,4 @@ void show_settings_dialog(GtkButton *button, gpointer user_data) {
         g_print("Cancel\n");
         // Perform actions for Cancel button
     }
-
-    init_update_user_form_field();
-    init_update_password_form();
 }

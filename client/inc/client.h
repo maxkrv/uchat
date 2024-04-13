@@ -28,9 +28,11 @@ extern t_user *global_user;
 void show_auth_container();
 void hide_auth_container();
 
+// user
+void render_user();
+
 // chat
 void show_chat_container(bool should_load_rooms);
-void hide_chat_container();
 void show_selected_room(t_room *room);
 
 // user settings
@@ -41,6 +43,7 @@ void init_update_password_form();
 
 // room settings
 void show_room_settings_dialog(GtkButton *button, gpointer user_data);
+void clean_up_settings();
 
 // room
 void init_create_room(void);

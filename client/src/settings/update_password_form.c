@@ -32,6 +32,9 @@ static void on_update_password_button_clicked() {
     }
 
     mx_sdk_response_free(response, (t_func_free)mx_user_free);
+    clean_up_settings();
+    new_password = NULL;
+    old_password = NULL;
 }
 
 void init_update_password_form() {

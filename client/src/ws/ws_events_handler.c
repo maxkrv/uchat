@@ -93,6 +93,8 @@ static void handle_room_updated(t_string data) {
     // Handle message event
     MG_INFO(("Room updated: %d", payload->id));
 
+    render_rooms();
+
     mx_ws_message_free(message, (t_func_free)mx_room_free);
 }
 

@@ -1,7 +1,7 @@
 #include "client.h"
 
 static void on_room_button_clicked(GtkWidget *widget, t_room *room) {
-    show_selected_room(room);
+    show_selected_room(room, true);
     (void)widget;
 }
 
@@ -22,7 +22,7 @@ static void delete_room(GtkWidget *widget, t_room *room) {
 
 static gboolean on_right_button_clicked(GtkWidget *widget,
                                         GdkEventButton *event, t_room *room) {
-    if (event->button == 3) { // Right mouse button
+    if (event->button == 3) {
         GtkWidget *popover =
             GTK_WIDGET(gtk_builder_get_object(global_builder, "room_popover"));
         GtkWidget *delete_room_button = GTK_WIDGET(
@@ -80,13 +80,13 @@ void append_room_to_list(t_room *room) {
 }
 
 void render_rooms() {
-    t_response *rooms_respone = mx_sdk_rooms_get();
+    t_response *rooms_response = mx_sdk_rooms_get();
 
-    if (mx_is_response_error(rooms_respone)) {
-        g_print("Error: %s\n", mx_sdk_exception_get_message(rooms_respone));
-        mx_list_free((t_list **)&rooms_respone->data,
+    if (mx_is_response_error(rooms_response)) {
+        g_print("Error: %s\n", mx_sdk_exception_get_message(rooms_response));
+        mx_list_free((t_list **)&rooms_response->data,
                      (t_func_free)mx_room_free);
-        mx_sdk_response_free(rooms_respone, NULL);
+        mx_sdk_response_free(rooms_response, NULL);
         return;
     }
 
@@ -100,11 +100,10 @@ void render_rooms() {
         gtk_widget_destroy(GTK_WIDGET(iter->data));
     }
 
-    for (t_list *current = rooms_respone->data; current;
+    for (t_list *current = rooms_response->data; current;
          current = current->next) {
         append_room_to_list(current->data);
     }
 
-    // mx_list_free((t_list **)&rooms_respone->data,
-    // (t_func_free)mx_room_free); mx_sdk_response_free(rooms_respone, NULL);
+    mx_sdk_response_free(rooms_response, NULL);
 }

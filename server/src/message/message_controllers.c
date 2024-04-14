@@ -160,8 +160,13 @@ void mx_message_ctrl_delete(t_connection *c, t_http_message *m) {
                                 "Invalid message id provided");
         return;
     }
-    t_message *mess = mx_message_get(user_id);
+    t_message *mess = mx_message_get(message_id);
 
+    if (!mess) {
+        mx_http_reply_exception(c, m, HTTP_STATUS_NOT_FOUND,
+                                "Message not found");
+        return;
+    }
     if (!mx_is_message_author(user_id, message_id) &&
         !mx_is_room_admin(mess->room_id, user_id)) {
         mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN, "No permissions");

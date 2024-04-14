@@ -37,14 +37,9 @@ gboolean ws_reconect(gpointer user_data) {
     }
 
     (void)user_data;
-    if (ws_connect(ws_url, mx_sdk_env_get()->jwt_token)) {
-        MG_INFO(("Reconnecting to %s", ws_url));
-        return G_SOURCE_REMOVE;
-    }
+    ws_connect(ws_url, mx_sdk_env_get()->jwt_token);
 
-    MG_INFO(("Failed to reconnect to %s", ws_url));
-
-    return G_SOURCE_CONTINUE;
+    return G_SOURCE_REMOVE;
 }
 
 static void websocket_event_handler(struct mg_connection *conn, int event_type,
@@ -53,9 +48,11 @@ static void websocket_event_handler(struct mg_connection *conn, int event_type,
         MG_INFO(("WebSocket connection opened"));
         ws_conn = conn;
     } else if (event_type == MG_EV_CLOSE) {
-        MG_INFO(("WebSocket connection closed"));
+        if (conn == ws_conn) {
+            MG_INFO(("WebSocket connection closed"));
+        }
         ws_conn = NULL;
-        g_timeout_add_seconds(5, ws_reconect, NULL);
+        g_timeout_add_seconds(1, ws_reconect, NULL);
     } else if (event_type == MG_EV_WS_MSG) {
         struct mg_ws_message *wm = (struct mg_ws_message *)event_data;
 
@@ -92,7 +89,7 @@ void ws_client_init(const char *url) {
     ws_url = mx_strdup(url);
 
     g_timeout_add_seconds(1, websocket_server_push_events, NULL);
-    g_timeout_add_seconds(5, ws_reconect, NULL);
+    g_timeout_add_seconds(1, ws_reconect, NULL);
 }
 
 void ws_client_free(void) {

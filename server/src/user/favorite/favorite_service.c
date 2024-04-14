@@ -13,9 +13,11 @@ t_favorite_room *mx_user_add_favorite(int user_id, int room_id) {
         return NULL;
     }
     int id = mx_favorites_repo_create(user_id, room_id);
+
     if (id <= 0) {
         return NULL;
     }
+
     return mx_user_get_favorite(id);
 }
 

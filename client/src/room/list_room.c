@@ -40,7 +40,7 @@ static gboolean on_right_button_clicked(GtkWidget *widget,
     return FALSE;
 }
 
-void append_room_to_list(t_room *room, bool is_favorite) {
+void append_room_to_list(t_room *room) {
     GtkWidget *rooms_list =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "rooms_list"));
     GtkWidget *room_button = gtk_button_new();
@@ -59,7 +59,7 @@ void append_room_to_list(t_room *room, bool is_favorite) {
         gtk_image_set_from_file(GTK_IMAGE(image),
                                 "client/static/images/avatar.png");
     }
-    (void)is_favorite;
+
     GtkWidget *room_info = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 2);
 
     gtk_box_pack_start(GTK_BOX(room_info), image, FALSE, FALSE, 2);
@@ -79,77 +79,14 @@ void append_room_to_list(t_room *room, bool is_favorite) {
     }
 }
 
-static t_room *get_notes_room(t_list *rooms) {
-    for (t_list *current = rooms; current; current = current->next) {
-        t_room *room = current->data;
-
-        if (room && mx_strcmp(room->type, "notes") == 0) {
-            return room;
-        }
-    }
-    return NULL;
-}
-
-static t_list *get_other_rooms(t_list *rooms, t_list *favorites) {
-    t_list *other_rooms = NULL;
-
-    for (t_list *current = rooms; current; current = current->next) {
-        t_room *room = current->data;
-
-        if (g_strcmp0(room->type, "notes") == 0) {
-            continue;
-        }
-        bool is_favorite = false;
-
-        for (t_list *current = favorites; current; current = current->next) {
-            t_room *favorite = current->data;
-
-            if (favorite->id == room->id) {
-                is_favorite = true;
-                break;
-            }
-        }
-        if (!is_favorite) {
-            mx_push_back(&other_rooms, room);
-        }
-    }
-
-    return other_rooms;
-}
-
-static t_list *get_favorite_rooms(void) {
-    t_response *favorites_response = mx_sdk_user_favorites_get();
-
-    if (mx_is_response_error(favorites_response)) {
-        g_print("Error: %s\n",
-                mx_sdk_exception_get_message(favorites_response));
-        mx_list_free((t_list **)&favorites_response->data,
-                     (t_func_free)mx_favorite_room_free);
-        mx_sdk_response_free(favorites_response, NULL);
-        return NULL;
-    }
-
-    t_list *list = NULL;
-
-    for (t_list *current = favorites_response->data; current;
-         current = current->next) {
-        t_favorite_room *favorite = current->data;
-
-        mx_push_back(&list, favorite->room);
-    }
-    mx_list_free((t_list **)&favorites_response->data, free);
-    mx_sdk_response_free(favorites_response, NULL);
-    return list;
-}
-
 void render_rooms() {
-    t_response *rooms_respone = mx_sdk_rooms_get();
+    t_response *rooms_response = mx_sdk_rooms_get();
 
-    if (mx_is_response_error(rooms_respone)) {
-        g_print("Error: %s\n", mx_sdk_exception_get_message(rooms_respone));
-        mx_list_free((t_list **)&rooms_respone->data,
+    if (mx_is_response_error(rooms_response)) {
+        g_print("Error: %s\n", mx_sdk_exception_get_message(rooms_response));
+        mx_list_free((t_list **)&rooms_response->data,
                      (t_func_free)mx_room_free);
-        mx_sdk_response_free(rooms_respone, NULL);
+        mx_sdk_response_free(rooms_response, NULL);
         return;
     }
 
@@ -163,18 +100,10 @@ void render_rooms() {
         gtk_widget_destroy(GTK_WIDGET(iter->data));
     }
 
-    t_room *notes_room = get_notes_room(rooms_respone->data);
-    append_room_to_list(notes_room, false);
-
-    t_list *favorite_rooms = get_favorite_rooms();
-
-    for (t_list *current = favorite_rooms; current; current = current->next) {
-        append_room_to_list(current->data, true);
+    for (t_list *current = rooms_response->data; current;
+         current = current->next) {
+        append_room_to_list(current->data);
     }
-    t_list *other_rooms = get_other_rooms(rooms_respone->data, favorite_rooms);
 
-    for (t_list *current = other_rooms; current; current = current->next) {
-        append_room_to_list(current->data, false);
-    }
-    mx_sdk_response_free(rooms_respone, NULL);
+    mx_sdk_response_free(rooms_response, NULL);
 }

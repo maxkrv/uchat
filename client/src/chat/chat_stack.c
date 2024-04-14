@@ -23,11 +23,14 @@ void show_selected_room(t_room *room, bool should_render_messages) {
         GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_empty"));
     GtkWidget *edit_message_box =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "edit_message_box"));
+    GtkWidget *reply_box =
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "reply_box"));
     GtkWidget *room_settings_button = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "room_settings_button"));
 
     gtk_widget_hide(empty_state_widget);
     gtk_widget_hide(edit_message_box);
+    gtk_widget_hide(reply_box);
     gtk_widget_hide(room_settings_button);
 
     gtk_widget_hide(chat_stack);

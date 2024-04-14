@@ -1,6 +1,9 @@
 #include "client.h"
 
+static int user_id = -1;
+
 static void handle_delete_message(GtkButton *button, t_message *message) {
+
     GtkWidget *popover =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "message_popover"));
 
@@ -17,26 +20,43 @@ static void handle_delete_message(GtkButton *button, t_message *message) {
 }
 
 void on_message_click(GtkWidget *widget, t_message *message) {
+    bool is_mine = message->author_id == user_id;
+
     GtkWidget *popover =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "message_popover"));
+
+    GtkWidget *reply_button = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "reply_message_button"));
     GtkWidget *delete_button = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "delete_message_button"));
     GtkWidget *edit_button = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "edit_message_button"));
 
+    gtk_widget_hide(delete_button);
+    gtk_widget_hide(edit_button);
+
     gtk_popover_set_relative_to(GTK_POPOVER(popover), widget);
-    gtk_popover_set_position(GTK_POPOVER(popover), GTK_POS_LEFT);
+    gtk_popover_set_position(GTK_POPOVER(popover), GTK_POS_TOP);
 
     gtk_popover_popup(GTK_POPOVER(popover));
 
     g_signal_connect(delete_button, "clicked",
                      G_CALLBACK(handle_delete_message), message);
-    g_signal_connect(edit_button, "clicked", G_CALLBACK(handle_edit_message), message);
+    g_signal_connect(edit_button, "clicked", G_CALLBACK(handle_edit_message),
+                     message);
+    g_signal_connect(reply_button, "clicked", G_CALLBACK(handle_reply_message),
+                     message);
+
+    if (is_mine) {
+        gtk_widget_show(delete_button);
+        gtk_widget_show(edit_button);
+    }
 }
 
 static void append_message(t_message *message, t_user *user,
                            GtkWidget *message_list_box) {
     bool is_mine = message->author_id == user->id;
+    user_id = user->id;
 
     GtkWidget *message_button = gtk_button_new();
     GtkWidget *message_widget = gtk_button_box_new(GTK_ORIENTATION_VERTICAL);
@@ -85,10 +105,8 @@ static void append_message(t_message *message, t_user *user,
     context = gtk_widget_get_style_context(message_button);
     gtk_style_context_add_class(context, "message_bubble");
 
-    if (is_mine) {
-        g_signal_connect(message_button, "clicked",
-                         G_CALLBACK(on_message_click), message);
-    }
+    g_signal_connect(message_button, "clicked", G_CALLBACK(on_message_click),
+                     message);
 
     gtk_widget_show_all(message_button);
 }

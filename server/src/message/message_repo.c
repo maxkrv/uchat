@@ -116,7 +116,6 @@ bool mx_message_repo_put(int id, t_message_create_dto *dto) {
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
         return -1;
     }
-    // mx_sqlite3_bind_id(stmt, 1, dto->room_id);
     mx_sqlite3_bind_id(stmt, 1, dto->reply_id);
     sqlite3_bind_text(stmt, 2, dto->text, -1, SQLITE_TRANSIENT);
     mx_sqlite3_bind_id(stmt, 3, id);

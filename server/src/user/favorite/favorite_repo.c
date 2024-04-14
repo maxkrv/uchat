@@ -23,7 +23,7 @@ t_favorite_room *mx_favorites_repo_get(int id) {
     sqlite3 *db = mx_env_get()->db_connection;
     sqlite3_stmt *stmt;
     const char *sql = "SELECT f_r.*, r.*, rf.* "
-                      "FROM favourite_room f_r "
+                      "FROM favorite_room f_r "
                       "LEFT JOIN room r ON f_r.room_id = r.id "
                       "LEFT JOIN file rf ON r.photo_id = rf.id "
                       "WHERE f_r.id = ? ;";
@@ -52,7 +52,7 @@ t_list *mx_favorites_repo_get_many(int user_id) {
     sqlite3 *db = mx_env_get()->db_connection;
     sqlite3_stmt *stmt;
     const char *sql = "SELECT f_r.*, r.*, rf.* "
-                      "FROM favourite_room f_r "
+                      "FROM favorite_room f_r "
                       "LEFT JOIN room r ON f_r.room_id = r.id "
                       "LEFT JOIN file rf ON r.photo_id = rf.id "
                       "WHERE f_r.user_id = ? ;";
@@ -74,7 +74,7 @@ int mx_favorites_repo_create(int user_id, int room_id) {
     int fav_id = -1;
     sqlite3_stmt *stmt;
 
-    const char *sql = "INSERT INTO favourite_room "
+    const char *sql = "INSERT INTO favorite_room "
                       "(user_id, room_id) "
                       "VALUES (?, ?);";
 
@@ -104,7 +104,7 @@ bool mx_favorites_repo_delete(int id) {
         return false;
     }
 
-    const char *sql = "DELETE FROM favourite_room "
+    const char *sql = "DELETE FROM favorite_room "
                       "WHERE id = ?;";
 
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {

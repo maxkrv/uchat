@@ -3,6 +3,7 @@
 char *message = NULL;
 int global_chat_id = -1;
 int edit_message_id = -1;
+int reply_message_id = -1;
 t_message *global_message = NULL;
 
 static void on_close_edit_button_clicked(GtkButton *button) {
@@ -16,6 +17,21 @@ static void on_close_edit_button_clicked(GtkButton *button) {
 
     gtk_label_set_text(GTK_LABEL(edit_message_label), "");
     gtk_entry_set_text(GTK_ENTRY(message_entry), "");
+
+    (void)button;
+}
+
+static void on_close_reply_button_clicked(GtkButton *button) {
+    GtkWidget *reply_box =
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "reply_box"));
+    gtk_widget_hide(reply_box);
+    GtkWidget *message_reply_label = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "message_reply_label"));
+    GtkWidget *user_name_reply_lable = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "user_name_reply_lable"));
+
+    gtk_label_set_text(GTK_LABEL(message_reply_label), "");
+    gtk_label_set_text(GTK_LABEL(user_name_reply_lable), "");
 
     (void)button;
 }
@@ -63,7 +79,7 @@ static void submit(GtkButton *button) {
     } else {
         dto->text = g_strdup(message);
         dto->room_id = global_chat_id;
-        dto->reply_id = 0;
+        dto->reply_id = reply_message_id != -1 ? reply_message_id : 0;
     }
 
     GtkWidget *edit_message_box =
@@ -78,6 +94,9 @@ static void submit(GtkButton *button) {
     message = NULL;
     GtkWidget *message_entry =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "message_entry"));
+    GtkWidget *reply_box =
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "reply_box"));
+    gtk_widget_hide(reply_box);
     gtk_entry_set_text(GTK_ENTRY(message_entry), "");
     gtk_widget_hide(edit_message_box);
 
@@ -93,6 +112,8 @@ void init_message_form(int chat_id) {
         gtk_builder_get_object(global_builder, "send_message_button"));
     GtkWidget *close_edit_button = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "close_edit_button"));
+    GtkWidget *close_reply_button = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "close_reply_button"));
 
     gtk_entry_set_text(GTK_ENTRY(message_entry), "");
     g_signal_connect(G_OBJECT(message_entry), "changed",
@@ -101,6 +122,8 @@ void init_message_form(int chat_id) {
                      NULL);
     g_signal_connect(G_OBJECT(close_edit_button), "clicked",
                      G_CALLBACK(on_close_edit_button_clicked), NULL);
+    g_signal_connect(G_OBJECT(close_reply_button), "clicked",
+                     G_CALLBACK(on_close_reply_button_clicked), NULL);
 }
 
 void handle_edit_message(GtkButton *button, t_message *message) {
@@ -122,6 +145,28 @@ void handle_edit_message(GtkButton *button, t_message *message) {
     gtk_popover_popdown(GTK_POPOVER(popever));
 
     global_message = message;
+
+    (void)button;
+}
+
+void handle_reply_message(GtkButton *button, t_message *message) {
+    GtkWidget *popever =
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "message_popover"));
+    GtkWidget *reply_box =
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "reply_box"));
+    GtkWidget *user_name_reply_lable = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "user_name_reply_lable"));
+    GtkWidget *message_reply_label = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "message_reply_label"));
+
+    gtk_label_set_text(GTK_LABEL(message_reply_label), message->text);
+    gtk_label_set_text(GTK_LABEL(user_name_reply_lable),
+                       message->author->name);
+    gtk_widget_show(reply_box);
+
+    reply_message_id = message->id;
+
+    gtk_popover_popdown(GTK_POPOVER(popever));
 
     (void)button;
 }

@@ -54,6 +54,7 @@ void init_members_form(int room_id);
 void render_messages(int room_id);
 void init_message_form(int chat_id);
 void handle_edit_message(GtkButton *button, t_message *message);
+void handle_reply_message(GtkButton *button, t_message *message);
 
 // utils
 GdkPixbuf *load_pixbuf_from_url(const char *url);

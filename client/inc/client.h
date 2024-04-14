@@ -48,6 +48,7 @@ void set_room_name(t_room *room, GtkWidget *room_user_name);
 void render_rooms();
 void clean_up_room_creation();
 void init_edit_room_form(t_room *room);
+void init_members_form(int room_id);
 
 // message
 void render_messages(int room_id);
@@ -61,5 +62,8 @@ void init_theme_switcher(GtkBuilder *builder, GtkWidget *window,
                          char *theme_switcher_widget_name);
 gboolean is_empty_field(GtkEntry *entry);
 void unixTimeToHoursMinutes(time_t unixTime, int *hours, int *minutes);
+
+// members
+void render_room_members(int room_id);
 
 gboolean websocket_server_push_events(gpointer user_data);

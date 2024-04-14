@@ -60,6 +60,8 @@ void show_selected_room(t_room *room, bool should_render_messages) {
     g_signal_connect(room_settings_button, "clicked",
                      G_CALLBACK(show_room_settings_dialog), global_builder);
     init_edit_room_form(room);
+    init_members_form(room->id);
+    render_room_members(room->id);
 
     GtkWidget *scrolled_window = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "scrolled_chat_window"));

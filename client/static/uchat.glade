@@ -1505,7 +1505,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <child>
-                          <object class="GtkEntry">
+                          <object class="GtkEntry" id="add_member_entry">
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="margin-right">10</property>
@@ -1518,7 +1518,7 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkButton">
+                          <object class="GtkButton" id="add_member_submit">
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">True</property>
@@ -1544,10 +1544,11 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="member_error_message">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">label</property>
+                        <property name="margin-top">5</property>
+                        <property name="margin-bottom">5</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1565,7 +1566,7 @@
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <child>
-                              <object class="GtkBox">
+                              <object class="GtkBox" id="room_members_list">
                                 <property name="name">scroll</property>
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>

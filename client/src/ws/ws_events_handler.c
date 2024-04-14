@@ -44,6 +44,7 @@ static void handle_member_joined(t_string data) {
     MG_INFO(("Member joined: %d", payload->id));
 
     render_rooms();
+    render_room_members(payload->room_id);
 }
 
 static void handle_member_left(t_string data) {
@@ -52,6 +53,8 @@ static void handle_member_left(t_string data) {
     t_room_member *payload = message->payload;
     // Handle message event
     MG_INFO(("Member left: %d", payload->id));
+
+    render_room_members(payload->room_id);
 
     mx_ws_message_free(message, (t_func_free)mx_room_member_free);
 }

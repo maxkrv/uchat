@@ -4,6 +4,11 @@ char *new_room_name = NULL;
 char *new_room_description = NULL;
 char *new_contact_name = NULL;
 
+static void show_error_message(GtkLabel *err_label, const gchar *message) {
+    gtk_label_set_text(err_label, message);
+    gtk_widget_show(GTK_WIDGET(err_label));
+}
+
 static void on_room_name_entry_changed(GtkEntry *create_room_name) {
     const gchar *text = gtk_entry_get_text(create_room_name);
     new_room_name = g_strdup(text);
@@ -29,9 +34,11 @@ void on_submit_create_room(GtkButton *button, gpointer user_data) {
     GtkWidget *dialog = GTK_WIDGET(user_data);
     GtkWidget *create_room_name =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "create_room_name"));
+    GtkLabel *err_label_room = 
+        GTK_LABEL(gtk_builder_get_object(global_builder, "error_message_create_group_chat"));
 
     if (is_empty_field(GTK_ENTRY(create_room_name))) {
-        g_print("Room name is empty\n");
+        show_error_message(err_label_room, "Room name is empty\n");
         return;
     }
 
@@ -42,10 +49,12 @@ void on_submit_create_room(GtkButton *button, gpointer user_data) {
     t_response *response = mx_sdk_room_post(dto);
 
     if (mx_is_response_error(response)) {
-        g_print("Error: %s\n", mx_sdk_exception_get_message(response));
+        show_error_message(err_label_room, mx_sdk_exception_get_message(response));
         mx_sdk_response_free(response, (t_func_free)mx_room_free);
         return;
     }
+
+    gtk_label_set_text(err_label_room, "");
 
     render_rooms();
 
@@ -62,9 +71,11 @@ void on_submit_create_contact(GtkButton *button, gpointer user_data) {
     GtkWidget *dialog = GTK_WIDGET(user_data);
     GtkWidget *create_contact_name = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "create_contact_name"));
+    GtkLabel *err_label_contact = 
+        GTK_LABEL(gtk_builder_get_object(global_builder, "error_message_add_contact"));
 
     if (is_empty_field(GTK_ENTRY(create_contact_name))) {
-        g_print("Contact name is empty\n");
+        show_error_message(err_label_contact, "Contact name is empty\n");
         return;
     }
 
@@ -78,10 +89,12 @@ void on_submit_create_contact(GtkButton *button, gpointer user_data) {
     t_response *response = mx_sdk_room_direct_post(dto, new_contact_name);
 
     if (mx_is_response_error(response)) {
-        g_print("Error: %s\n", mx_sdk_exception_get_message(response));
+        show_error_message(err_label_contact, mx_sdk_exception_get_message(response));
         mx_sdk_response_free(response, (t_func_free)mx_room_free);
         return;
     }
+
+    gtk_label_set_text(err_label_contact, "");
 
     mx_sdk_response_free(response, (t_func_free)mx_room_free);
     gtk_widget_hide(dialog);

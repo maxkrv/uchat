@@ -5,6 +5,13 @@ char *new_tag = NULL;
 char *new_description = NULL;
 int new_photo_id = -1;
 
+GtkLabel *err_label = NULL;
+
+static void show_error_message(const gchar *message) {
+    gtk_label_set_text(err_label, message);
+    gtk_widget_show(GTK_WIDGET(err_label));
+}
+
 static void on_username_entry_changed(GtkEntry *entry) {
     const gchar *text = gtk_entry_get_text(entry);
     new_username = g_strdup(text);
@@ -75,12 +82,14 @@ static void on_update_user_button_clicked(void) {
     t_response *response = mx_sdk_user_put_me(dto);
 
     if (mx_is_response_error(response)) {
-        g_print("Error: %s\n", mx_sdk_exception_get_message(response));
+        show_error_message(mx_sdk_exception_get_message(response));
+        mx_sdk_response_free(response, (t_func_free)mx_user_free);
+        return;
     }
 
-    mx_sdk_response_free(response, (t_func_free)mx_user_free);
+    gtk_label_set_text(err_label, "");
     mx_sdk_response_free(user_response, (t_func_free)mx_user_free);
-    
+
     clean_up_settings();
 
     new_username = NULL;
@@ -101,10 +110,13 @@ void init_update_user_form_field(void) {
     GtkWidget *avatar_button =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "avatar_button"));
 
+    err_label = GTK_LABEL(
+        gtk_builder_get_object(global_builder, "error_message_update_user"));
+
     t_response *response = mx_sdk_user_get_me();
 
     if (mx_is_response_error(response)) {
-        g_print("Error: %s\n", mx_sdk_exception_get_message(response));
+        show_error_message(mx_sdk_exception_get_message(response));
         return;
     }
 

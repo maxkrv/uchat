@@ -2042,6 +2042,26 @@
                           </packing>
                         </child>
                         <child>
+                          <object class="GtkLabel" id="error_message_update_user">
+                            <property name="width-request">240</property>
+                            <property name="height-request">45</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="valign">center</property>
+                            <property name="margin-bottom">10</property>
+                            <property name="justify">center</property>
+                            <property name="ellipsize">start</property>
+                            <attributes>
+                              <attribute name="foreground" value="#efef29292929"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">False</property>
+                            <property name="position">8</property>
+                          </packing>
+                        </child>
+                        <child>
                           <object class="GtkButton" id="update_user_button">
                             <property name="label" translatable="yes">Update</property>
                             <property name="name">update_user_button</property>
@@ -2054,7 +2074,7 @@
                             <property name="expand">False</property>
                             <property name="fill">True</property>
                             <property name="padding">6</property>
-                            <property name="position">8</property>
+                            <property name="position">9</property>
                           </packing>
                         </child>
                         <style>

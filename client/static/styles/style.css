@@ -190,6 +190,11 @@ scrollbar slider:active {
     background: none;
 }
 
+.preview_box {
+    background-color: @secondary_color-light;
+    padding: 0px 10px 0px 10px;
+}
+
 /* end chat */
 
 /* settings start */

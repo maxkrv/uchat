@@ -62,11 +62,24 @@ static void append_message(t_message *message, t_user *user,
     GtkWidget *message_widget = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     GtkWidget *message_user_name = gtk_label_new(message->author->name);
     GtkWidget *message_text = gtk_label_new(message->text);
+    GtkWidget *message_image = NULL;
 
     int hours, minutes;
     unixTimeToHoursMinutes(message->created_at, &hours, &minutes);
     char *time = g_strdup_printf("%02d:%02d", hours, minutes);
     GtkWidget *message_time = gtk_label_new(time);
+
+    if (message->files) {
+        message_image = gtk_image_new();
+        t_file *file = message->files->data;
+        GdkPixbuf *pixbuf = load_pixbuf_from_url(file->url);
+        if (pixbuf != NULL) {
+            gtk_image_set_from_pixbuf(GTK_IMAGE(message_image), pixbuf);
+            g_object_unref(pixbuf);
+        } else {
+            g_printerr("Error loading image from URL\n");
+        }
+    }
 
     gtk_label_set_line_wrap(GTK_LABEL(message_text), TRUE);
     gtk_label_set_line_wrap_mode(GTK_LABEL(message_text), PANGO_WRAP_WORD | PANGO_WRAP_CHAR);
@@ -77,6 +90,12 @@ static void append_message(t_message *message, t_user *user,
 
     gtk_box_pack_start(GTK_BOX(message_widget), message_user_name, FALSE,
                        FALSE, 2);
+
+    if (message_image != NULL) {
+        gtk_box_pack_start(GTK_BOX(message_widget), message_image, FALSE, FALSE, 2);
+        gtk_widget_show_all(message_image);
+    }
+
     gtk_box_pack_start(GTK_BOX(message_widget), message_text, FALSE, FALSE, 2);
     gtk_box_pack_start(GTK_BOX(message_widget), message_time, FALSE, FALSE, 2);
 

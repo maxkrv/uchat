@@ -56,6 +56,9 @@ void init_message_form(int chat_id);
 void handle_edit_message(GtkButton *button, t_message *message);
 void handle_reply_message(GtkButton *button, t_message *message);
 
+// files
+void show_file_chooser_dialog(GtkWidget *button, gpointer user_data);
+
 // utils
 GdkPixbuf *load_pixbuf_from_url(const char *url);
 GdkPixbuf *create_circled_image(GdkPixbuf *src_pixbuf, int size);
@@ -66,6 +69,7 @@ gboolean is_empty_field(GtkEntry *entry);
 void unixTimeToHoursMinutes(time_t unixTime, int *hours, int *minutes);
 const char *get_file_extension(const char *file_path);
 gboolean call_scrollbar_once(gpointer data);
+char *find_format(const char *s, int c);
 
 // members
 void render_room_members(int room_id);

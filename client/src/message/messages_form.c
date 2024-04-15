@@ -4,6 +4,7 @@ char *message = NULL;
 int global_chat_id = -1;
 int edit_message_id = -1;
 int reply_message_id = -1;
+int new_file_id = -1;
 t_message *global_message = NULL;
 
 static void on_close_edit_button_clicked(GtkButton *button) {
@@ -33,6 +34,61 @@ static void on_close_reply_button_clicked(GtkButton *button) {
     gtk_label_set_text(GTK_LABEL(message_reply_label), "");
     gtk_label_set_text(GTK_LABEL(user_name_reply_lable), "");
 
+    (void)button;
+}
+
+static void on_close_image_preview_button_clicked(GtkButton *button, gpointer user_data) {
+    GtkWidget *image_preview_box = GTK_WIDGET(user_data);
+    gtk_widget_hide(image_preview_box);
+    (void)button;
+}
+
+static void on_cancel_file_chooser(GtkButton *button, gpointer user_data) {
+    GtkWidget *dialog = GTK_WIDGET(user_data);
+    gtk_widget_hide(dialog);
+    (void)button;
+}
+
+static void on_apply_button_clicked(GtkButton *button, gpointer user_data) {
+    GtkWidget *dialog = GTK_WIDGET(user_data);
+    char *new_file_path =
+        gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
+
+    if (new_file_path != NULL) {
+        char filename[MX_BUFFER_SIZE];
+        const char *extension = get_file_extension(new_file_path);
+        snprintf(filename, sizeof(filename), "file.%s", extension);
+        t_response *resp = mx_sdk_file_upload(new_file_path, filename);
+
+        if (mx_is_response_error(resp)) {
+            mx_sdk_response_free(resp, free);
+            return;
+        }
+
+        t_file *file = (t_file *)resp->data;
+        if (file != NULL)
+            new_file_id = file->id;
+        mx_sdk_response_free(resp, (t_func_free)mx_file_free);
+
+        GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file(new_file_path, NULL);
+        if (pixbuf != NULL) {
+            GdkPixbuf *scaled_pixbuf = gdk_pixbuf_scale_simple(pixbuf, 150, 150, GDK_INTERP_BILINEAR);
+            g_object_unref(pixbuf);
+
+            GtkWidget *image_preview = GTK_WIDGET(
+                gtk_builder_get_object(global_builder, "image_preview"));
+
+            gtk_image_set_from_pixbuf(GTK_IMAGE(image_preview), scaled_pixbuf);
+            g_object_unref(scaled_pixbuf);
+
+            GtkWidget *image_preview_box = GTK_WIDGET(
+                gtk_builder_get_object(global_builder, "image_preview_box"));
+                
+            gtk_widget_show(image_preview_box);
+        }
+        g_print("Выбранный файл: %s\n", new_file_path);
+    }
+    gtk_widget_hide(dialog);
     (void)button;
 }
 
@@ -75,11 +131,12 @@ static void submit(GtkButton *button) {
         dto->text = g_strdup(message);
         dto->reply_id = global_message->reply_id;
         dto->room_id = global_message->room_id;
-        dto->file_ids = NULL;
+        mx_push_back(&dto->file_ids, mx_itoa(new_file_id));
     } else {
         dto->text = g_strdup(message);
         dto->room_id = global_chat_id;
         dto->reply_id = reply_message_id != -1 ? reply_message_id : 0;
+        mx_push_back(&dto->file_ids, mx_itoa(new_file_id));
     }
 
     GtkWidget *edit_message_box =
@@ -91,13 +148,18 @@ static void submit(GtkButton *button) {
         send_message(dto);
     }
 
+    message = NULL;
+    new_file_id = -1;
     GtkWidget *message_entry =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "message_entry"));
     GtkWidget *reply_box =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "reply_box"));
+    GtkWidget *image_preview_box = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "image_preview_box"));
     gtk_widget_hide(reply_box);
     gtk_entry_set_text(GTK_ENTRY(message_entry), "");
     gtk_widget_hide(edit_message_box);
+    gtk_widget_hide(image_preview_box);
     message = NULL;
     edit_message_id = -1;
     reply_message_id = -1;
@@ -108,6 +170,7 @@ static void submit(GtkButton *button) {
 
     g_timeout_add_full(G_PRIORITY_DEFAULT, 1000, call_scrollbar_once,
                        scrolled_window, NULL);
+    gtk_widget_hide(image_preview_box);
 
     (void)button;
 }
@@ -123,6 +186,8 @@ void init_message_form(int chat_id) {
         gtk_builder_get_object(global_builder, "close_edit_button"));
     GtkWidget *close_reply_button = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "close_reply_button"));
+    GtkWidget *file_chooser_button = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "file_chooser_button"));
 
     gtk_entry_set_text(GTK_ENTRY(message_entry), "");
     g_signal_connect(G_OBJECT(message_entry), "changed",
@@ -133,6 +198,8 @@ void init_message_form(int chat_id) {
                      G_CALLBACK(on_close_edit_button_clicked), NULL);
     g_signal_connect(G_OBJECT(close_reply_button), "clicked",
                      G_CALLBACK(on_close_reply_button_clicked), NULL);
+    g_signal_connect(file_chooser_button, "clicked",
+                     G_CALLBACK(show_file_chooser_dialog), global_builder);
 }
 
 void handle_edit_message(GtkButton *button, t_message *message) {
@@ -178,4 +245,40 @@ void handle_reply_message(GtkButton *button, t_message *message) {
     gtk_popover_popdown(GTK_POPOVER(popever));
 
     (void)button;
+}
+
+void show_file_chooser_dialog(GtkWidget *button, gpointer user_data) {
+    GtkBuilder *builder = GTK_BUILDER(user_data);
+    GtkWidget *dialog = GTK_WIDGET(
+        gtk_builder_get_object(builder, "file_chooser_dialog"));
+    GtkWidget *cancel_button = GTK_WIDGET(
+        gtk_builder_get_object(builder, "file_chooser_cancel"));
+    GtkWidget *apply_button = GTK_WIDGET(
+        gtk_builder_get_object(builder, "file_chooser_apply"));
+    GtkWidget *close_image_preview_button = GTK_WIDGET(
+        gtk_builder_get_object(builder, "close_image_preview_button"));
+    GtkWidget *image_preview_box = GTK_WIDGET(
+        gtk_builder_get_object(builder, "image_preview_box"));
+
+    gtk_window_set_transient_for(
+        GTK_WINDOW(dialog),
+        GTK_WINDOW(gtk_widget_get_toplevel(GTK_WIDGET(button))));
+    gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_CENTER_ON_PARENT);
+
+    g_signal_connect(cancel_button, "clicked",
+                     G_CALLBACK(on_cancel_file_chooser), dialog);
+    g_signal_connect(apply_button, "clicked",
+                     G_CALLBACK(on_apply_button_clicked), dialog);
+    g_signal_connect(close_image_preview_button, "clicked",
+                     G_CALLBACK(on_close_image_preview_button_clicked), image_preview_box);
+
+    gint response = gtk_dialog_run(GTK_DIALOG(dialog));
+
+    if (response == GTK_RESPONSE_ACCEPT) {
+        g_print("OK\n");
+        // Perform actions for OK button
+    } else if (response == GTK_RESPONSE_CANCEL) {
+        g_print("Cancel\n");
+        // Perform actions for Cancel button
+    }
 }

@@ -63,6 +63,7 @@ void init_theme_switcher(GtkBuilder *builder, GtkWidget *window,
                          char *theme_switcher_widget_name);
 gboolean is_empty_field(GtkEntry *entry);
 void unixTimeToHoursMinutes(time_t unixTime, int *hours, int *minutes);
+const char *get_file_extension(const char *file_path);
 
 // members
 void render_room_members(int room_id);

@@ -46,12 +46,23 @@ void show_selected_room(t_room *room, bool should_render_messages) {
 
     GtkWidget *room_user_name = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "chat_room_username"));
-
     GtkWidget *room_description =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "room_description"));
+    GtkWidget *room_avatar =
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_avatar"));
 
+    gtk_image_set_from_file(GTK_IMAGE(room_avatar),
+                            "client/static/images/avatar.png");
+
+    if (g_strcmp0(room->type, "notes") != 0 &&
+        g_strcmp0(room->type, "direct") != 0) {
+        if (room->photo_id != 0) {
+            GdkPixbuf *pixbuf = load_pixbuf_from_url(room->photo->url);
+            gtk_image_set_from_pixbuf(GTK_IMAGE(room_avatar), pixbuf);
+        }
+    }
+    gtk_widget_show(room_avatar);
     set_room_name(room, room_user_name);
-
     gtk_label_set_text(GTK_LABEL(room_description), room->description);
 
     if (should_render_messages) {

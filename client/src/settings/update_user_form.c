@@ -36,7 +36,7 @@ char *find_format(const char *s, int c) {
     return NULL;
 }
 
-static const char *get_file_extension(const char *file_path) {
+const char *get_file_extension(const char *file_path) {
     const char *with_dot = (find_format(file_path, '.'));
 
     if (with_dot != NULL && with_dot != file_path) {

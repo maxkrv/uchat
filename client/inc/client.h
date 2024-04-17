@@ -64,6 +64,7 @@ void init_theme_switcher(GtkBuilder *builder, GtkWidget *window,
 gboolean is_empty_field(GtkEntry *entry);
 void unixTimeToHoursMinutes(time_t unixTime, int *hours, int *minutes);
 const char *get_file_extension(const char *file_path);
+gboolean call_scrollbar_once(gpointer data);
 
 // members
 void render_room_members(int room_id);

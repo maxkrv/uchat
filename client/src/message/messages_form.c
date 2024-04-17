@@ -103,6 +103,12 @@ static void submit(GtkButton *button) {
     reply_message_id = -1;
     
 
+    GtkWidget *scrolled_window = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "scrolled_chat_window"));
+
+    g_timeout_add_full(G_PRIORITY_DEFAULT, 1000, call_scrollbar_once,
+                       scrolled_window, NULL);
+
     (void)button;
 }
 

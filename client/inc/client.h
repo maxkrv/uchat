@@ -45,6 +45,7 @@ void clean_up_settings();
 void init_create_room(void);
 void append_room_to_list(t_room *room, bool is_favorite);
 void set_room_name(t_room *room, GtkWidget *room_user_name);
+void set_room_photo(t_room *room, GtkWidget *image);
 void render_rooms();
 void clean_up_room_creation();
 void init_edit_room_form(t_room *room);

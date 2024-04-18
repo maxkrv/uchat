@@ -91,7 +91,6 @@ static void submit(GtkButton *button) {
         send_message(dto);
     }
 
-    message = NULL;
     GtkWidget *message_entry =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "message_entry"));
     GtkWidget *reply_box =
@@ -99,6 +98,10 @@ static void submit(GtkButton *button) {
     gtk_widget_hide(reply_box);
     gtk_entry_set_text(GTK_ENTRY(message_entry), "");
     gtk_widget_hide(edit_message_box);
+    message = NULL;
+    edit_message_id = -1;
+    reply_message_id = -1;
+    
 
     (void)button;
 }

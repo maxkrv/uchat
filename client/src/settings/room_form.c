@@ -76,19 +76,9 @@ static void on_edit_room_submit(GtkButton *button, t_room *room) {
         gtk_builder_get_object(global_builder, "chat_room_username"));
     GtkWidget *room_description =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "room_description"));
-    GtkWidget *room_avatar =
-        GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_avatar"));
 
     set_room_name(updated_room, room_user_name);
     gtk_label_set_text(GTK_LABEL(room_description), updated_room->description);
-
-    if (updated_room->photo_id != 0) {
-        t_response *file_reponse = mx_sdk_file_find(room->photo_id);
-        t_file *image = file_reponse->data;
-
-        GdkPixbuf *pixbuf = load_pixbuf_from_url(image->url);
-        gtk_image_set_from_pixbuf(GTK_IMAGE(room_avatar), pixbuf);
-    }
 
     gtk_widget_hide(dialog);
 

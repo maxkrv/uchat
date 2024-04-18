@@ -47,24 +47,13 @@ void append_room_to_list(t_room *room, bool is_favorite) {
         GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_avatar"));
 
     GtkWidget *room_button = gtk_button_new();
-    bool should_load_image = room->photo_id != 0;
 
     GtkWidget *room_name = gtk_label_new("");
     GtkWidget *image = gtk_image_new();
 
     set_room_name(room, room_name);
+    set_room_photo(room, image);
 
-    if (should_load_image) {
-        GdkPixbuf *pixbuf = load_pixbuf_from_url(room->photo->url);
-        GdkPixbuf *rounded_pixbuf = create_circled_image(pixbuf, 40);
-        g_object_unref(pixbuf);
-        gtk_image_set_from_pixbuf(GTK_IMAGE(image), rounded_pixbuf);
-        gtk_image_set_from_pixbuf(GTK_IMAGE(room_avatar), rounded_pixbuf);
-        g_object_unref(rounded_pixbuf);
-    } else {
-        gtk_image_set_from_file(GTK_IMAGE(image),
-                                "client/static/images/avatar.png");
-    }
     (void)is_favorite;
     GtkWidget *room_info = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 2);
 

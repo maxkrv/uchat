@@ -135,7 +135,7 @@ bool mx_room_repo_put(int id, t_room_create_dto *dto) {
         return false;
     }
     const char *sql = "UPDATE room "
-                      "SET name = ?, photo_id = ?, type = ?, description = ? "
+                      "SET name = ?, photo_id = ?, description = ? "
                       "WHERE id = ?;";
 
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
@@ -143,9 +143,8 @@ bool mx_room_repo_put(int id, t_room_create_dto *dto) {
     }
     sqlite3_bind_text(stmt, 1, dto->name, -1, SQLITE_TRANSIENT);
     mx_sqlite3_bind_id(stmt, 2, dto->photo_id);
-    sqlite3_bind_text(stmt, 3, dto->type, -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 4, dto->description, -1, SQLITE_TRANSIENT);
-    mx_sqlite3_bind_id(stmt, 5, id);
+    sqlite3_bind_text(stmt, 3, dto->description, -1, SQLITE_TRANSIENT);
+    mx_sqlite3_bind_id(stmt, 4, id);
 
     bool res = sqlite3_step(stmt) == SQLITE_DONE;
 

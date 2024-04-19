@@ -43,7 +43,7 @@ GdkPixbuf *load_pixbuf_from_url(const char *url) {
             GdkPixbuf *pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
 
             if (pixbuf != NULL) {
-                GdkPixbuf *scaled_pixbuf = gdk_pixbuf_scale_simple(pixbuf, 50, 50, GDK_INTERP_BILINEAR);
+                GdkPixbuf *scaled_pixbuf = gdk_pixbuf_scale_simple(pixbuf, 40, 40, GDK_INTERP_BILINEAR);
                 g_object_unref(pixbuf);
 		return scaled_pixbuf;
             } else {

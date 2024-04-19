@@ -33,12 +33,12 @@ static void on_edit_room_avatar_clicked(GtkFileChooserButton *button) {
     char *new_room_avatar_path =
         gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(button));
     if (new_room_avatar_path != NULL) {
-        char filename[30];
+        char filename[MX_BUFFER_SIZE];
         const char *extension = get_file_extension(new_room_avatar_path);
         snprintf(filename, sizeof(filename), "room_avatar.%s", extension);
         t_response *resp = mx_sdk_file_upload(new_room_avatar_path, filename);
         if (mx_is_response_error(resp)) {
-            mx_sdk_response_free(resp, free);
+            mx_sdk_response_free(resp, (t_func_free)mx_file_free);
             return;
         } else {
             t_file *file = (t_file *)resp->data;

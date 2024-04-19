@@ -66,6 +66,14 @@ void append_room_to_list(t_room *room, bool is_favorite) {
     (void)is_favorite;
     GtkWidget *room_info = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 2);
 
+    if (g_strcmp0(room->type, "notes") == 0) {
+        GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file("client/static/images/notes.png", NULL);
+        GdkPixbuf *scaled_pixbuf = gdk_pixbuf_scale_simple(pixbuf, 35, 35, GDK_INTERP_BILINEAR);
+        gtk_image_set_from_pixbuf(GTK_IMAGE(image), scaled_pixbuf);
+        g_object_unref(pixbuf);
+        g_object_unref(scaled_pixbuf);
+    }
+
     gtk_box_pack_start(GTK_BOX(room_info), image, FALSE, FALSE, 2);
     gtk_box_pack_start(GTK_BOX(room_info), room_name, FALSE, FALSE, 2);
     gtk_widget_set_halign(room_name, GTK_ALIGN_START);

@@ -54,6 +54,14 @@ void show_selected_room(t_room *room, bool should_render_messages) {
     gtk_image_set_from_file(GTK_IMAGE(room_avatar),
                             "client/static/images/avatar.png");
 
+    if (g_strcmp0(room->type, "notes") == 0) {
+        GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file("client/static/images/notes.png", NULL);
+        GdkPixbuf *scaled_pixbuf = gdk_pixbuf_scale_simple(pixbuf, 35, 35, GDK_INTERP_BILINEAR);
+        gtk_image_set_from_pixbuf(GTK_IMAGE(room_avatar), scaled_pixbuf);
+        g_object_unref(pixbuf);
+        g_object_unref(scaled_pixbuf);
+    }
+
     if (g_strcmp0(room->type, "notes") != 0 &&
         g_strcmp0(room->type, "direct") != 0) {
         if (room->photo_id != 0) {

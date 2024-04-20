@@ -61,7 +61,7 @@ void handle_reply_message(GtkButton *button, t_message *message);
 void show_file_chooser_dialog(GtkWidget *button, gpointer user_data);
 
 // utils
-GdkPixbuf *load_pixbuf_from_url(const char *url);
+GdkPixbuf *load_pixbuf_from_url(const char *url, int width, int height);
 GdkPixbuf *create_circled_image(GdkPixbuf *src_pixbuf, int size);
 void load_css(GtkWidget *window, const gchar *css_path);
 void init_theme_switcher(GtkBuilder *builder, GtkWidget *window,

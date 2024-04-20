@@ -20,7 +20,7 @@ void render_user(void) {
 
     t_file *file = file_resp->data;
     if (file != NULL) {
-        GdkPixbuf *pixbuf = load_pixbuf_from_url(file->url);
+        GdkPixbuf *pixbuf = load_pixbuf_from_url(file->url, 40, 40);
         GdkPixbuf *rounded_pixbuf = create_circled_image(pixbuf, 40);
         g_object_unref(pixbuf);
 

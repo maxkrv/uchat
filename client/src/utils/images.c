@@ -21,7 +21,7 @@ static size_t write_callback(void *contents, size_t size, size_t nmemb,
 //     g_printerr("Error loading image from URL\n");
 // }
 // ```
-GdkPixbuf *load_pixbuf_from_url(const char *url) {
+GdkPixbuf *load_pixbuf_from_url(const char *url, int width, int height) {
     CURL *curl = curl_easy_init();
 
     if (curl) {
@@ -44,7 +44,7 @@ GdkPixbuf *load_pixbuf_from_url(const char *url) {
 
             if (pixbuf != NULL) {
                 GdkPixbuf *scaled_pixbuf = gdk_pixbuf_scale_simple(
-                    pixbuf, 40, 40, GDK_INTERP_BILINEAR);
+                    pixbuf, width, height, GDK_INTERP_BILINEAR);
                 g_object_unref(pixbuf);
                 return scaled_pixbuf;
             } else {

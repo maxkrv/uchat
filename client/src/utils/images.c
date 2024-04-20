@@ -39,13 +39,14 @@ GdkPixbuf *load_pixbuf_from_url(const char *url) {
                                     buffer->len, NULL);
             gdk_pixbuf_loader_close(loader, NULL);
             g_byte_array_unref(buffer);
-            
+
             GdkPixbuf *pixbuf = gdk_pixbuf_loader_get_pixbuf(loader);
 
             if (pixbuf != NULL) {
-                GdkPixbuf *scaled_pixbuf = gdk_pixbuf_scale_simple(pixbuf, 40, 40, GDK_INTERP_BILINEAR);
+                GdkPixbuf *scaled_pixbuf = gdk_pixbuf_scale_simple(
+                    pixbuf, 40, 40, GDK_INTERP_BILINEAR);
                 g_object_unref(pixbuf);
-		return scaled_pixbuf;
+                return scaled_pixbuf;
             } else {
                 g_object_unref(loader);
                 return NULL;
@@ -60,3 +61,38 @@ GdkPixbuf *load_pixbuf_from_url(const char *url) {
     return NULL;
 }
 
+/* Creates image in circle
+    @param src_pixbuf: source image
+    @param size: size of the circle(width and height)
+
+    @return: new image in circle
+ */
+GdkPixbuf *create_circled_image(GdkPixbuf *src_pixbuf, int size) {
+    // Create a surface to draw on
+    cairo_surface_t *surface =
+        cairo_image_surface_create(CAIRO_FORMAT_ARGB32, size, size);
+    cairo_t *cr = cairo_create(surface);
+
+    // Create a circular path
+    cairo_arc(cr, size / 2.0, size / 2.0, size / 2.0, 0, 2 * G_PI);
+    cairo_clip(cr);
+
+    // Scale and draw the image onto the circular path
+    double scale_x = (double)size / gdk_pixbuf_get_width(src_pixbuf);
+    double scale_y = (double)size / gdk_pixbuf_get_height(src_pixbuf);
+    cairo_scale(cr, scale_x, scale_y);
+    gdk_cairo_set_source_pixbuf(cr, src_pixbuf, 0, 0);
+    cairo_paint(cr);
+
+    // Cleanup
+    cairo_destroy(cr);
+    cairo_surface_flush(surface);
+
+    // Convert the surface back to a pixbuf
+    GdkPixbuf *result = gdk_pixbuf_get_from_surface(surface, 0, 0, size, size);
+
+    // Free resources
+    cairo_surface_destroy(surface);
+
+    return result;
+}

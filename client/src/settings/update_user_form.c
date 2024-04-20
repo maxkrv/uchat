@@ -49,7 +49,7 @@ static void on_avatar_button_clicked(GtkFileChooserButton *button) {
     char *new_avatar_path =
         gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(button));
     if (new_avatar_path != NULL) {
-        char filename[15];
+        char filename[MX_BUFFER_SIZE];
         const char *extension = get_file_extension(new_avatar_path);
         snprintf(filename, sizeof(filename), "avatar.%s", extension);
         t_response *resp = mx_sdk_file_upload(new_avatar_path, filename);

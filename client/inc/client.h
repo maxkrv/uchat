@@ -58,6 +58,7 @@ void handle_reply_message(GtkButton *button, t_message *message);
 
 // utils
 GdkPixbuf *load_pixbuf_from_url(const char *url);
+GdkPixbuf *create_circled_image(GdkPixbuf *src_pixbuf, int size);
 void load_css(GtkWidget *window, const gchar *css_path);
 void init_theme_switcher(GtkBuilder *builder, GtkWidget *window,
                          char *theme_switcher_widget_name);

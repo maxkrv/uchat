@@ -45,7 +45,7 @@ void append_room_to_list(t_room *room, bool is_favorite) {
         GTK_WIDGET(gtk_builder_get_object(global_builder, "rooms_list"));
     GtkWidget *room_avatar =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_avatar"));
-    
+
     GtkWidget *room_button = gtk_button_new();
     bool should_load_image = room->photo_id != 0;
 
@@ -56,9 +56,11 @@ void append_room_to_list(t_room *room, bool is_favorite) {
 
     if (should_load_image) {
         GdkPixbuf *pixbuf = load_pixbuf_from_url(room->photo->url);
-        gtk_image_set_from_pixbuf(GTK_IMAGE(image), pixbuf);        
+        GdkPixbuf *rounded_pixbuf = create_circled_image(pixbuf, 40);
         g_object_unref(pixbuf);
-        gtk_image_set_from_pixbuf(GTK_IMAGE(room_avatar), pixbuf);
+        gtk_image_set_from_pixbuf(GTK_IMAGE(image), rounded_pixbuf);
+        gtk_image_set_from_pixbuf(GTK_IMAGE(room_avatar), rounded_pixbuf);
+        g_object_unref(rounded_pixbuf);
     } else {
         gtk_image_set_from_file(GTK_IMAGE(image),
                                 "client/static/images/avatar.png");
@@ -67,8 +69,10 @@ void append_room_to_list(t_room *room, bool is_favorite) {
     GtkWidget *room_info = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 2);
 
     if (g_strcmp0(room->type, "notes") == 0) {
-        GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file("client/static/images/notes.png", NULL);
-        GdkPixbuf *scaled_pixbuf = gdk_pixbuf_scale_simple(pixbuf, 35, 35, GDK_INTERP_BILINEAR);
+        GdkPixbuf *pixbuf =
+            gdk_pixbuf_new_from_file("client/static/images/notes.png", NULL);
+        GdkPixbuf *scaled_pixbuf =
+            gdk_pixbuf_scale_simple(pixbuf, 35, 35, GDK_INTERP_BILINEAR);
         gtk_image_set_from_pixbuf(GTK_IMAGE(image), scaled_pixbuf);
         g_object_unref(pixbuf);
         g_object_unref(scaled_pixbuf);
@@ -183,7 +187,8 @@ void render_rooms() {
     for (t_list *current = favorite_rooms; current; current = current->next) {
         append_room_to_list(current->data, true);
     }
-    t_list *other_rooms = get_other_rooms(rooms_response->data, favorite_rooms);
+    t_list *other_rooms =
+        get_other_rooms(rooms_response->data, favorite_rooms);
 
     for (t_list *current = other_rooms; current; current = current->next) {
         append_room_to_list(current->data, false);

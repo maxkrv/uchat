@@ -17,14 +17,17 @@ void render_user(void) {
         GTK_WIDGET(gtk_builder_get_object(global_builder, "user_avatar"));
 
     t_response *file_resp = mx_sdk_file_find(user->photo_id);
-    
+
     t_file *file = file_resp->data;
     if (file != NULL) {
         GdkPixbuf *pixbuf = load_pixbuf_from_url(file->url);
+        GdkPixbuf *rounded_pixbuf = create_circled_image(pixbuf, 40);
+        g_object_unref(pixbuf);
+
         if (pixbuf != NULL) {
             gtk_image_set_pixel_size(GTK_IMAGE(user_avatar), 20);
-            gtk_image_set_from_pixbuf(GTK_IMAGE(user_avatar), pixbuf);
-            g_object_unref(pixbuf);
+            gtk_image_set_from_pixbuf(GTK_IMAGE(user_avatar), rounded_pixbuf);
+            g_object_unref(rounded_pixbuf);
         }
     }
 

@@ -63,6 +63,9 @@ static void append_message(t_message *message, t_user *user,
     GtkWidget *message_user_name = gtk_label_new(message->author->name);
     GtkWidget *message_text = gtk_label_new(message->text);
     GtkWidget *message_image = NULL;
+    GtkWidget *reply_box = NULL;
+    GtkWidget *reply_user_name = NULL;
+    GtkWidget *reply_text = NULL;
 
     int hours, minutes;
     unixTimeToHoursMinutes(message->created_at, &hours, &minutes);
@@ -81,6 +84,19 @@ static void append_message(t_message *message, t_user *user,
         }
     }
 
+    if (message->reply_id > 0) {
+        t_response *response = mx_sdk_message_find(message->reply_id);
+        if (response && response->data) {
+
+            t_message *reply_message = (t_message *)response->data;
+
+            reply_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+            reply_user_name = gtk_label_new(mx_strdup(reply_message->author->name));
+            reply_text = gtk_label_new(mx_strdup(reply_message->text));
+        }
+        mx_sdk_response_free(response, (t_func_free)mx_message_free);
+    }
+
     gtk_label_set_line_wrap(GTK_LABEL(message_text), TRUE);
     gtk_label_set_line_wrap_mode(GTK_LABEL(message_text), PANGO_WRAP_WORD | PANGO_WRAP_CHAR);
 
@@ -94,6 +110,15 @@ static void append_message(t_message *message, t_user *user,
     if (message_image != NULL) {
         gtk_box_pack_start(GTK_BOX(message_widget), message_image, FALSE, FALSE, 2);
         gtk_widget_show_all(message_image);
+    }
+
+    if (reply_user_name != NULL && reply_text != NULL) {
+        gtk_label_set_xalign(GTK_LABEL(reply_user_name), 0);
+        gtk_label_set_xalign(GTK_LABEL(reply_text), 0);
+
+        gtk_box_pack_start(GTK_BOX(reply_box), reply_user_name, FALSE, FALSE, 2);
+        gtk_box_pack_start(GTK_BOX(reply_box), reply_text, FALSE, FALSE, 2);
+        gtk_box_pack_start(GTK_BOX(message_widget), reply_box, FALSE, FALSE, 2);
     }
 
     gtk_box_pack_start(GTK_BOX(message_widget), message_text, FALSE, FALSE, 2);
@@ -126,6 +151,15 @@ static void append_message(t_message *message, t_user *user,
 
     context = gtk_widget_get_style_context(message_button);
     gtk_style_context_add_class(context, "message_bubble");
+
+    context = gtk_widget_get_style_context(reply_user_name);
+    gtk_style_context_add_class(context, "message_username");
+
+    context = gtk_widget_get_style_context(reply_text);
+    gtk_style_context_add_class(context, "message_text");
+
+    context = gtk_widget_get_style_context(reply_box);
+    gtk_style_context_add_class(context, "reply_box");
 
     g_signal_connect(message_button, "clicked", G_CALLBACK(on_message_click),
                      message);

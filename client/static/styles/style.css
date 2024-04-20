@@ -149,7 +149,7 @@ scrollbar slider:active {
 }
 
 .message_box {
-    background-color: @bg_color;
+    background-color: @secondary_color-light;
     border: 2px solid @border_color;
     border-width: 2px;
     border-radius: 10px;
@@ -193,6 +193,15 @@ scrollbar slider:active {
 .preview_box {
     background-color: @secondary_color-light;
     padding: 0px 10px 0px 10px;
+}
+
+.reply_box {
+    background-color: @bg_color;
+    border: 2px solid @border_color;
+    border-width: 2px;
+    border-radius: 10px;
+    margin-left: 10px;
+    padding: 5px 5px 5px 5px;
 }
 
 /* end chat */

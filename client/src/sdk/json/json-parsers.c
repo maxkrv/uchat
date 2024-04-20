@@ -24,6 +24,7 @@ t_message *mx_message_parse_cjson(cJSON *obj) {
 
     message->id = mx_cjson_get_number(obj, "id");
     message->room_id = mx_cjson_get_number(obj, "room_id");
+    message->reply_id = mx_cjson_get_number(obj, "reply_id");
     message->author_id = mx_cjson_get_number(obj, "author_id");
     message->text = mx_cjson_get_string(obj, "text");
     message->created_at = mx_cjson_get_number(obj, "created_at");

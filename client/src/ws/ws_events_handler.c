@@ -76,6 +76,8 @@ static void handle_message_pinned(t_string data) {
     // Handle message event
     MG_INFO(("Message pinned: %d", payload->id));
 
+    show_pin_message(payload->room_id);
+
     mx_ws_message_free(message, (t_func_free)mx_room_pined_free);
 }
 

@@ -54,7 +54,7 @@ void mx_room_ctrl_get_pined(t_connection *c, t_http_message *m) {
         mx_http_reply_exception(c, m, HTTP_STATUS_FORBIDDEN, "No permissions");
         return;
     }
-    t_list *pines = mx_room_get_pined_messages(user_id);
+    t_list *pines = mx_room_get_pined_messages(room_id); // <<<<< misha proebalsya
     t_string json_string = mx_pined_messages_stringify(pines);
 
     mg_http_reply(c, HTTP_STATUS_OK, MX_HEADERS_JSON,

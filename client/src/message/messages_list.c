@@ -1,6 +1,7 @@
 #include "client.h"
 
 static int user_id = -1;
+static int global_room_id = -1;
 
 static void handle_delete_message(GtkButton *button, t_message *message) {
 
@@ -19,6 +20,15 @@ static void handle_delete_message(GtkButton *button, t_message *message) {
     (void)button;
 }
 
+static void pin_message_cb(GtkButton *button, t_message *message) {
+    if (!global_room_id) {
+        return;
+    }
+
+    handle_pin_message(global_room_id, message->id);
+    (void)button;
+}
+
 void on_message_click(GtkWidget *widget, t_message *message) {
     bool is_mine = message->author_id == user_id;
 
@@ -31,6 +41,8 @@ void on_message_click(GtkWidget *widget, t_message *message) {
         gtk_builder_get_object(global_builder, "delete_message_button"));
     GtkWidget *edit_button = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "edit_message_button"));
+    GtkWidget *pin_message_button = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "pin_message_button"));
 
     gtk_widget_hide(delete_button);
     gtk_widget_hide(edit_button);
@@ -45,6 +57,8 @@ void on_message_click(GtkWidget *widget, t_message *message) {
     g_signal_connect(edit_button, "clicked", G_CALLBACK(handle_edit_message),
                      message);
     g_signal_connect(reply_button, "clicked", G_CALLBACK(handle_reply_message),
+                     message);
+    g_signal_connect(pin_message_button, "clicked", G_CALLBACK(pin_message_cb),
                      message);
 
     if (is_mine) {
@@ -91,14 +105,16 @@ static void append_message(t_message *message, t_user *user,
             t_message *reply_message = (t_message *)response->data;
 
             reply_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-            reply_user_name = gtk_label_new(mx_strdup(reply_message->author->name));
+            reply_user_name =
+                gtk_label_new(mx_strdup(reply_message->author->name));
             reply_text = gtk_label_new(mx_strdup(reply_message->text));
         }
         mx_sdk_response_free(response, (t_func_free)mx_message_free);
     }
 
     gtk_label_set_line_wrap(GTK_LABEL(message_text), TRUE);
-    gtk_label_set_line_wrap_mode(GTK_LABEL(message_text), PANGO_WRAP_WORD | PANGO_WRAP_CHAR);
+    gtk_label_set_line_wrap_mode(GTK_LABEL(message_text),
+                                 PANGO_WRAP_WORD | PANGO_WRAP_CHAR);
 
     gtk_label_set_xalign(GTK_LABEL(message_user_name), 0);
     gtk_label_set_xalign(GTK_LABEL(message_text), 0);
@@ -108,7 +124,8 @@ static void append_message(t_message *message, t_user *user,
                        FALSE, 2);
 
     if (message_image != NULL) {
-        gtk_box_pack_start(GTK_BOX(message_widget), message_image, FALSE, FALSE, 2);
+        gtk_box_pack_start(GTK_BOX(message_widget), message_image, FALSE,
+                           FALSE, 2);
         gtk_widget_show_all(message_image);
     }
 
@@ -116,9 +133,11 @@ static void append_message(t_message *message, t_user *user,
         gtk_label_set_xalign(GTK_LABEL(reply_user_name), 0);
         gtk_label_set_xalign(GTK_LABEL(reply_text), 0);
 
-        gtk_box_pack_start(GTK_BOX(reply_box), reply_user_name, FALSE, FALSE, 2);
+        gtk_box_pack_start(GTK_BOX(reply_box), reply_user_name, FALSE, FALSE,
+                           2);
         gtk_box_pack_start(GTK_BOX(reply_box), reply_text, FALSE, FALSE, 2);
-        gtk_box_pack_start(GTK_BOX(message_widget), reply_box, FALSE, FALSE, 2);
+        gtk_box_pack_start(GTK_BOX(message_widget), reply_box, FALSE, FALSE,
+                           2);
     }
 
     gtk_box_pack_start(GTK_BOX(message_widget), message_text, FALSE, FALSE, 2);
@@ -181,6 +200,7 @@ static void append_message(t_message *message, t_user *user,
 }
 
 void render_messages(int room_id) {
+    global_room_id = room_id;
     GtkWidget *message_list_box = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "messages_list_box"));
 

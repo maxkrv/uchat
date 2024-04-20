@@ -54,29 +54,7 @@ void show_selected_room(t_room *room, bool should_render_messages) {
     GtkWidget *room_avatar =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_avatar"));
 
-    gtk_image_set_from_file(GTK_IMAGE(room_avatar),
-                            "client/static/images/avatar.png");
-
-    if (g_strcmp0(room->type, "notes") == 0) {
-        GdkPixbuf *pixbuf =
-            gdk_pixbuf_new_from_file("client/static/images/notes.png", NULL);
-        GdkPixbuf *scaled_pixbuf =
-            gdk_pixbuf_scale_simple(pixbuf, 35, 35, GDK_INTERP_BILINEAR);
-        gtk_image_set_from_pixbuf(GTK_IMAGE(room_avatar), scaled_pixbuf);
-        g_object_unref(pixbuf);
-        g_object_unref(scaled_pixbuf);
-    }
-
-    if (g_strcmp0(room->type, "notes") != 0 &&
-        g_strcmp0(room->type, "direct") != 0) {
-        if (room->photo_id != 0) {
-            GdkPixbuf *pixbuf = load_pixbuf_from_url(room->photo->url);
-            GdkPixbuf *rounded_pixbuf = create_circled_image(pixbuf, 40);
-            g_object_unref(pixbuf);
-            gtk_image_set_from_pixbuf(GTK_IMAGE(room_avatar), rounded_pixbuf);
-            g_object_unref(rounded_pixbuf);
-        }
-    }
+    set_room_photo(room, room_avatar);
     gtk_widget_show(room_avatar);
     set_room_name(room, room_user_name);
     gtk_label_set_text(GTK_LABEL(room_description), room->description);

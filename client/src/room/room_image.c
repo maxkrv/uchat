@@ -41,12 +41,24 @@ void set_room_photo(t_room *room, GtkWidget *image) {
 
         GdkPixbuf *pixbuf = load_pixbuf_from_url(other_user->photo->url);
         if (pixbuf == NULL) {
-            g_printerr("Error loading image from URL\n");
+            gtk_image_set_from_file(GTK_IMAGE(image),
+                                "client/static/images/avatar.png");
             return;
         }
-
-        gtk_image_set_from_pixbuf(GTK_IMAGE(image), pixbuf);
+        GdkPixbuf *rounded_pixbuf = create_circled_image(pixbuf, 40);
         g_object_unref(pixbuf);
+        gtk_image_set_from_pixbuf(GTK_IMAGE(image), rounded_pixbuf);
+        g_object_unref(rounded_pixbuf);
+
+    } else if (g_strcmp0(room->type, "notes") == 0) {
+        GdkPixbuf *pixbuf =
+            gdk_pixbuf_new_from_file("client/static/images/notes.png", NULL);
+        GdkPixbuf *scaled_pixbuf =
+            gdk_pixbuf_scale_simple(pixbuf, 35, 35, GDK_INTERP_BILINEAR);
+
+        gtk_image_set_from_pixbuf(GTK_IMAGE(image), scaled_pixbuf);
+        g_object_unref(pixbuf);
+        g_object_unref(scaled_pixbuf);
     } else {
         GdkPixbuf *pixbuf = load_pixbuf_from_url(room->photo->url);
         if (pixbuf == NULL) {
@@ -54,9 +66,11 @@ void set_room_photo(t_room *room, GtkWidget *image) {
                                 "client/static/images/avatar.png");
             return;
         }
-
-        gtk_image_set_from_pixbuf(GTK_IMAGE(image), pixbuf);
+        
+        GdkPixbuf *rounded_pixbuf = create_circled_image(pixbuf, 40);
         g_object_unref(pixbuf);
+        gtk_image_set_from_pixbuf(GTK_IMAGE(image), rounded_pixbuf);
+        g_object_unref(rounded_pixbuf);
     }
 
     mx_sdk_response_free(response_user, (t_func_free)mx_user_free);

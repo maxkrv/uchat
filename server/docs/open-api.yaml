@@ -269,7 +269,7 @@ paths:
       tags: ['Favorites']
       parameters:
         - in: query
-          name: favorite_id
+          name: room_id
           schema:
             nullable: false
             $ref: '#/components/schemas/ID'

@@ -19,19 +19,20 @@ static t_list *bind_columns_to_favorite(sqlite3_stmt *stmt) {
     return favs;
 }
 
-t_favorite_room *mx_favorites_repo_get(int id) {
+t_favorite_room *mx_favorites_repo_get(int room_id, int user_id) {
     sqlite3 *db = mx_env_get()->db_connection;
     sqlite3_stmt *stmt;
     const char *sql = "SELECT f_r.*, r.*, rf.* "
                       "FROM favourite_room f_r "
                       "LEFT JOIN room r ON f_r.room_id = r.id "
                       "LEFT JOIN file rf ON r.photo_id = rf.id "
-                      "WHERE f_r.id = ? ;";
+                      "WHERE f_r.room_id = ? AND f_r.user_id = ? ;";
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
         return NULL;
     }
 
-    mx_sqlite3_bind_id(stmt, 1, id);
+    mx_sqlite3_bind_id(stmt, 1, room_id);
+    mx_sqlite3_bind_id(stmt, 2, user_id);
 
     if (sqlite3_step(stmt) != SQLITE_ROW) {
         sqlite3_finalize(stmt);
@@ -96,21 +97,22 @@ int mx_favorites_repo_create(int user_id, int room_id) {
     return fav_id;
 }
 
-bool mx_favorites_repo_delete(int id) {
+bool mx_favorites_repo_delete(int room_id, int user_id) {
     sqlite3 *db = mx_env_get()->db_connection;
     sqlite3_stmt *stmt;
 
-    if (id <= 0) {
+    if (room_id <= 0 || user_id <= 0) {
         return false;
     }
 
     const char *sql = "DELETE FROM favourite_room "
-                      "WHERE id = ?;";
+                      "WHERE room_id = ? AND user_id = ? ;";
 
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
         return false;
     }
-    mx_sqlite3_bind_id(stmt, 1, id);
+    mx_sqlite3_bind_id(stmt, 1, room_id);
+    mx_sqlite3_bind_id(stmt, 2, user_id);
 
     bool res = sqlite3_step(stmt) == SQLITE_DONE;
 

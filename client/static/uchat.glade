@@ -218,35 +218,77 @@
         <property name="name">auth_stack</property>
         <property name="visible">True</property>
         <property name="can-focus">False</property>
-        <property name="halign">center</property>
-        <property name="valign">center</property>
         <property name="margin-bottom">3</property>
         <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkLabel" id="title">
-            <property name="name">title</property>
+        <child type="center">
+          <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="label" translatable="yes">uchat</property>
-            <style>
-              <class name="title"/>
-            </style>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="sub-title">
-            <property name="name">sub-title</property>
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="label" translatable="yes">Free and secure chat</property>
-            <style>
-              <class name="sub-title"/>
-            </style>
+            <property name="halign">center</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkImage" id="logo">
+                <property name="width-request">10</property>
+                <property name="height-request">10</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="pixbuf">images/logo.png</property>
+                <style>
+                  <class name="logo"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="title">
+                <property name="name">title</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">uchat</property>
+                <style>
+                  <class name="title"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="sub-title">
+                <property name="name">sub-title</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Free and secure chat</property>
+                <style>
+                  <class name="sub-title"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSwitch" id="theme_switcher">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <style>
+                  <class name="theme_switcher"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -255,34 +297,47 @@
           </packing>
         </child>
         <child>
-          <object class="GtkImage" id="logo">
-            <property name="width-request">10</property>
-            <property name="height-request">10</property>
+          <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="pixbuf">images/logo.png</property>
-            <style>
-              <class name="logo"/>
-            </style>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Made with ❤️ by</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLinkButton">
+                <property name="label" translatable="yes">Outside the box thinkers</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="relief">none</property>
+                <property name="uri">https://github.com/maxkrv/uchat</property>
+                <style>
+                  <class name="link_button"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkSwitch" id="theme_switcher">
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <style>
-              <class name="theme_switcher"/>
-            </style>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">3</property>
+            <property name="pack-type">end</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <style>

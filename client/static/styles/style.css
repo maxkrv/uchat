@@ -24,6 +24,19 @@ button:active {
     background: @secondary_color-dark;
 }
 
+.link_button {
+    background: none;
+}
+
+.link_button:active {
+    background: none;
+}
+
+.link_button > * {
+    color: @text_color;
+}
+
+
 .scroll {
     border: 0;
     outline: 0;

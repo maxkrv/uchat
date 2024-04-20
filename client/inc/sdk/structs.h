@@ -80,6 +80,8 @@ struct s_room {
     t_list *messages;
     t_list *pined_messages;
     t_file *photo;
+
+    bool is_favorite;
 };
 
 struct s_user {

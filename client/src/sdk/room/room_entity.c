@@ -15,6 +15,8 @@ t_room *mx_room_init(void) {
     room->pined_messages = NULL;
     room->photo = NULL;
 
+    room->is_favorite = false;
+
     return room;
 }
 

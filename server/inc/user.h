@@ -93,15 +93,15 @@ void mx_user_ctrl_delete_favorite(t_connection *c, t_http_message *m);
 
 // services
 t_list *mx_user_get_favorites(int user_id);
-t_favorite_room *mx_user_get_favorite(int fav_id);
+t_favorite_room *mx_user_get_favorite(int room_id, int user_id);
 t_favorite_room *mx_user_add_favorite(int user_id, int room_id);
-t_favorite_room *mx_user_delete_favorite(int id);
+t_favorite_room *mx_user_delete_favorite(int room_id, int user_id);
 
 // repositories
-t_favorite_room *mx_favorites_repo_get(int id);
+t_favorite_room *mx_favorites_repo_get(int room_id, int user_id);
 t_list *mx_favorites_repo_get_many(int user_id);
 int mx_favorites_repo_create(int user_id, int room_id);
-bool mx_favorites_repo_delete(int id);
+bool mx_favorites_repo_delete(int room_id, int user_id);
 
 // json
 cJSON *mx_favorite_to_cjson(t_favorite_room *fav);

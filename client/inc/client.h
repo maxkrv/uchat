@@ -56,6 +56,9 @@ void render_messages(int room_id);
 void init_message_form(int chat_id);
 void handle_edit_message(GtkButton *button, t_message *message);
 void handle_reply_message(GtkButton *button, t_message *message);
+void show_pin_message(int room_id);
+void hide_pin_message();
+void handle_pin_message(int room_id, int message_id);
 
 // files
 void show_file_chooser_dialog(GtkWidget *button, gpointer user_data);

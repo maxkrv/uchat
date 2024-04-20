@@ -15,6 +15,7 @@ gboolean call_scrollbar_once(gpointer data) {
 }
 
 void show_selected_room(t_room *room, bool should_render_messages) {
+    g_print("SHOW BLYAT\n");
     GtkWidget *chat_container =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_container"));
     GtkWidget *chat_stack =
@@ -29,14 +30,17 @@ void show_selected_room(t_room *room, bool should_render_messages) {
         gtk_builder_get_object(global_builder, "room_settings_button"));
     GtkWidget *image_preview_box = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "image_preview_box"));
+    GtkWidget *close_pin_message_button = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "close_pin_message_button"));
 
     gtk_widget_hide(empty_state_widget);
     gtk_widget_hide(edit_message_box);
     gtk_widget_hide(reply_box);
     gtk_widget_hide(room_settings_button);
     gtk_widget_hide(image_preview_box);
-
     gtk_widget_hide(chat_stack);
+
+    show_pin_message(room->id);
 
     gtk_box_pack_start(GTK_BOX(chat_container), chat_stack, TRUE, TRUE, 0);
 
@@ -67,6 +71,8 @@ void show_selected_room(t_room *room, bool should_render_messages) {
 
     g_signal_connect(room_settings_button, "clicked",
                      G_CALLBACK(show_room_settings_dialog), global_builder);
+    g_signal_connect(close_pin_message_button, "clicked",
+                     G_CALLBACK(hide_pin_message), global_builder);
     init_edit_room_form(room);
     init_members_form(room->id);
     render_room_members(room->id);

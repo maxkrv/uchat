@@ -161,7 +161,7 @@ t_response *mx_sdk_room_pined_post(int room_id, int message_id) {
     char *url = mg_mprintf("%s/api/v1/rooms/pined?room_id=%d&message_id=%d",
                            env->backend_url, room_id, message_id);
     t_response *response = mx_fetch(url, MX_HTTP_METHOD_POST,
-                                    mx_headers_push_back_token(NULL), NULL);
+                                    mx_headers_push_back_token(NULL), mx_strdup(MX_EMPTY));
 
     mx_parse_server_response(response, (t_func_parser)mx_pined_parse_cjson);
     mx_strdel(&url);

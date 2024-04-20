@@ -75,7 +75,7 @@ static void append_message(t_message *message, t_user *user,
     if (message->files) {
         message_image = gtk_image_new();
         t_file *file = message->files->data;
-        GdkPixbuf *pixbuf = load_pixbuf_from_url(file->url);
+        GdkPixbuf *pixbuf = load_pixbuf_from_url(file->url, 200, 200);
         if (pixbuf != NULL) {
             gtk_image_set_from_pixbuf(GTK_IMAGE(message_image), pixbuf);
             g_object_unref(pixbuf);

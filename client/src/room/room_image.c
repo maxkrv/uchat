@@ -39,7 +39,7 @@ void set_room_photo(t_room *room, GtkWidget *image) {
             return;
         }
 
-        GdkPixbuf *pixbuf = load_pixbuf_from_url(other_user->photo->url);
+        GdkPixbuf *pixbuf = load_pixbuf_from_url(other_user->photo->url, 40, 40);
         if (pixbuf == NULL) {
             gtk_image_set_from_file(GTK_IMAGE(image),
                                 "client/static/images/avatar.png");
@@ -60,7 +60,7 @@ void set_room_photo(t_room *room, GtkWidget *image) {
         g_object_unref(pixbuf);
         g_object_unref(scaled_pixbuf);
     } else {
-        GdkPixbuf *pixbuf = load_pixbuf_from_url(room->photo->url);
+        GdkPixbuf *pixbuf = load_pixbuf_from_url(room->photo->url, 40, 40);
         if (pixbuf == NULL) {
             gtk_image_set_from_file(GTK_IMAGE(image),
                                 "client/static/images/avatar.png");

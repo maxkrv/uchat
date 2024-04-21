@@ -30,7 +30,7 @@ To get started with Uchat, clone the repository and follow the instructions in t
 First of all you have to compile all static libs and repository code
 
 `make`
-
+After that [install gtk+3](https://letmegooglethat.com/?q=how+to+install+gtk3) if you dont have it.
 Than you need to start server.
 There is 2 ways to do it:
 
@@ -79,6 +79,8 @@ You can find doc at `server/docs/open-api.yaml`
 How to open it? Google it if you are really interested 😉
 
 (We used `OpenAPI (Swagger) Editor` VS code extenstion preview option)
+
+[Link to docs](https://uchat-api-docs.vercel.app/)
 
 ### <img src="assets/asyncapi-logo.svg" width="15" height="15"/> AsyncAPI Documentation <img src="assets/asyncapi-logo.svg" width="15" height="15"/>
 

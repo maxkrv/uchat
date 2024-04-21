@@ -24,7 +24,7 @@ void show_pin_message(int room_id) {
     gtk_widget_hide(pin_message_preview);
     t_pined_message *message = get_pin_message(room_id);
     if (message == NULL) {
-        MG_INFO(("1"));
+        return;
     }
     gtk_label_set_text(GTK_LABEL(pin_username),
                        message->message->author->name);

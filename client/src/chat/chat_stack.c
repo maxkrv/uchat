@@ -15,7 +15,6 @@ gboolean call_scrollbar_once(gpointer data) {
 }
 
 void show_selected_room(t_room *room, bool should_render_messages) {
-    g_print("SHOW BLYAT\n");
     GtkWidget *chat_container =
         GTK_WIDGET(gtk_builder_get_object(global_builder, "chat_container"));
     GtkWidget *chat_stack =

@@ -892,7 +892,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="margin-right">5</property>
-                <property name="pixbuf">images/icons/pin-icon.svg</property>
+                <property name="pixbuf">images/icons/pin-icon.png</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -947,7 +947,7 @@
                   <object class="GtkImage">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="pixbuf">images/icons/close-icon.svg</property>
+                    <property name="pixbuf">images/icons/close-icon.png</property>
                   </object>
                 </child>
               </object>

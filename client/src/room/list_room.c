@@ -114,7 +114,7 @@ void append_room_to_list(t_room *room, bool is_favorite) {
     if (is_favorite) {
         GtkWidget *fav_icon = gtk_image_new();
         gtk_image_set_from_file(GTK_IMAGE(fav_icon),
-                                "client/static/images/icons/pin-icon.svg");
+                                "client/static/images/icons/pin-icon.png");
         gtk_box_pack_start(GTK_BOX(room_info), fav_icon, TRUE, TRUE, 2);
 
         gtk_widget_set_halign(fav_icon, GTK_ALIGN_END);

@@ -75,7 +75,7 @@ static void append_message(t_message *message, t_user *user,
     GtkWidget *message_button = gtk_button_new();
     GtkWidget *message_widget = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     GtkWidget *message_user_name = gtk_label_new(message->author->name);
-    GtkWidget *message_text = gtk_label_new(message->text);
+    GtkWidget *message_text = NULL;
     GtkWidget *message_image = NULL;
     GtkWidget *reply_box = NULL;
     GtkWidget *reply_user_name = NULL;
@@ -85,6 +85,14 @@ static void append_message(t_message *message, t_user *user,
     unixTimeToHoursMinutes(message->created_at, &hours, &minutes);
     char *time = g_strdup_printf("%02d:%02d", hours, minutes);
     GtkWidget *message_time = gtk_label_new(time);
+
+    if (message->text) {
+        message_text = gtk_label_new(message->text);
+        gtk_label_set_line_wrap(GTK_LABEL(message_text), TRUE);
+        gtk_label_set_line_wrap_mode(GTK_LABEL(message_text),
+                                 PANGO_WRAP_WORD | PANGO_WRAP_CHAR);
+        gtk_label_set_xalign(GTK_LABEL(message_text), 0);
+    }
 
     if (message->files) {
         message_image = gtk_image_new();
@@ -111,13 +119,7 @@ static void append_message(t_message *message, t_user *user,
         }
         mx_sdk_response_free(response, (t_func_free)mx_message_free);
     }
-
-    gtk_label_set_line_wrap(GTK_LABEL(message_text), TRUE);
-    gtk_label_set_line_wrap_mode(GTK_LABEL(message_text),
-                                 PANGO_WRAP_WORD | PANGO_WRAP_CHAR);
-
     gtk_label_set_xalign(GTK_LABEL(message_user_name), 0);
-    gtk_label_set_xalign(GTK_LABEL(message_text), 0);
     gtk_label_set_xalign(GTK_LABEL(message_time), 0);
 
     gtk_box_pack_start(GTK_BOX(message_widget), message_user_name, FALSE,
@@ -183,18 +185,20 @@ static void append_message(t_message *message, t_user *user,
     g_signal_connect(message_button, "clicked", G_CALLBACK(on_message_click),
                      message);
 
-    const gchar *str_message_text = message->text;
-    GString *wrapped_text = g_string_new("");
-    while (strlen(str_message_text) > 30) {
-        gchar *symbols = g_strndup(str_message_text, 30);
-        wrapped_text = g_string_append(wrapped_text, symbols);
-        wrapped_text = g_string_append(wrapped_text, "\n");
-        g_free(symbols);
-        str_message_text += 30;
+    if (message->text) {
+        const gchar *str_message_text = message->text;
+        GString *wrapped_text = g_string_new("");
+        while (strlen(str_message_text) > 30) {
+            gchar *symbols = g_strndup(str_message_text, 30);
+            wrapped_text = g_string_append(wrapped_text, symbols);
+            wrapped_text = g_string_append(wrapped_text, "\n");
+            g_free(symbols);
+            str_message_text += 30;
+        }
+        wrapped_text = g_string_append(wrapped_text, str_message_text);
+        gtk_label_set_text(GTK_LABEL(message_text), wrapped_text->str);
+        g_string_free(wrapped_text, TRUE);
     }
-    wrapped_text = g_string_append(wrapped_text, str_message_text);
-    gtk_label_set_text(GTK_LABEL(message_text), wrapped_text->str);
-    g_string_free(wrapped_text, TRUE);
 
     gtk_widget_show_all(message_button);
 }

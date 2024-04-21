@@ -248,7 +248,7 @@
                 <property name="name">title</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">uchat</property>
+                <property name="label" translatable="yes">Cozy Chat</property>
                 <style>
                   <class name="title"/>
                 </style>
@@ -2343,7 +2343,7 @@
                         <child>
                           <object class="GtkLabel" id="error_message_update_user">
                             <property name="width-request">240</property>
-                            <property name="height-request">45</property>
+                            <property name="height-request">24</property>
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <property name="valign">center</property>
@@ -2367,7 +2367,6 @@
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">True</property>
-                            <property name="halign">start</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -2483,7 +2482,6 @@
                             <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">True</property>
-                            <property name="halign">start</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>

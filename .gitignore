@@ -5,6 +5,7 @@ db/db.sqlite
 .*o
 *.txt
 /test
+/.nx
 .DS_Store
 uchat
 uchat_server

@@ -86,7 +86,6 @@ static void on_apply_button_clicked(GtkButton *button, gpointer user_data) {
                 
             gtk_widget_show(image_preview_box);
         }
-        g_print("Выбранный файл: %s\n", new_file_path);
     }
     gtk_widget_hide(dialog);
     (void)button;
@@ -119,7 +118,7 @@ static void edit_message(t_message_create_dto *dto) {
 }
 
 static void submit(GtkButton *button) {
-    if (!message || strlen(message) == 0 || message == NULL) {
+    if ((!message || strlen(message) == 0 || message == NULL) && new_file_id == -1) {
         return;
     }
 
@@ -175,6 +174,61 @@ static void submit(GtkButton *button) {
     (void)button;
 }
 
+static void on_sticker_clicked(GtkWidget *widget) {
+    char *file_path = (char *)g_object_get_data(G_OBJECT(widget), "file_path");
+    if (file_path != NULL) {
+        char filename[MX_BUFFER_SIZE];
+        const char *extension = get_file_extension(file_path);
+        snprintf(filename, sizeof(filename), "file.%s", extension);
+        t_response *resp = mx_sdk_file_upload(file_path, filename);
+
+        if (mx_is_response_error(resp)) {
+            mx_sdk_response_free(resp, free);
+            return;
+        }
+
+        t_file *file = (t_file *)resp->data;
+        if (file != NULL)
+            new_file_id = file->id;
+        mx_sdk_response_free(resp, (t_func_free)mx_file_free);
+    }
+
+    submit(NULL);
+    new_file_id = -1;
+
+    GtkWidget *stickers_popover =
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "stickers_popover"));
+
+    gtk_popover_popdown(GTK_POPOVER(stickers_popover));
+}
+
+static void on_stickers_button_clicked(GtkWidget *widget, gpointer user_data) {
+    GtkWidget *stickers_popover = GTK_WIDGET(user_data);
+
+    for (int i = 1; i <= 9; i++) {
+        GtkWidget *sticker_button = GTK_WIDGET(
+            gtk_builder_get_object(global_builder, g_strdup_printf("sticker_button%d", i)));
+
+        char *file_path = g_strdup_printf("./client/static/images/stickers/sticker%d.png", i);
+        GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file(file_path, NULL);
+
+        GdkPixbuf *scaled_pixbuf = gdk_pixbuf_scale_simple(
+            pixbuf, 70, 70, GDK_INTERP_BILINEAR);
+
+        GtkWidget *sticker = gtk_image_new_from_pixbuf(scaled_pixbuf);
+
+        gtk_button_set_image(GTK_BUTTON(sticker_button), sticker);
+
+        g_object_set_data_full(G_OBJECT(sticker_button), "file_path", file_path, g_free);
+        g_signal_connect(sticker_button, "clicked", G_CALLBACK(on_sticker_clicked), NULL);
+    }
+
+    gtk_popover_set_relative_to(GTK_POPOVER(stickers_popover), widget);
+    gtk_popover_set_position(GTK_POPOVER(stickers_popover), GTK_POS_TOP);
+
+    gtk_popover_popup(GTK_POPOVER(stickers_popover));
+}
+
 void init_message_form(int chat_id) {
     global_chat_id = chat_id;
 
@@ -188,6 +242,10 @@ void init_message_form(int chat_id) {
         gtk_builder_get_object(global_builder, "close_reply_button"));
     GtkWidget *file_chooser_button = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "file_chooser_button"));
+    GtkWidget *stickers_button = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "stickers_button"));
+    GtkWidget *stickers_popover = GTK_WIDGET(
+        gtk_builder_get_object(global_builder, "stickers_popover"));
 
     gtk_entry_set_text(GTK_ENTRY(message_entry), "");
     g_signal_connect(G_OBJECT(message_entry), "changed",
@@ -200,6 +258,8 @@ void init_message_form(int chat_id) {
                      G_CALLBACK(on_close_reply_button_clicked), NULL);
     g_signal_connect(file_chooser_button, "clicked",
                      G_CALLBACK(show_file_chooser_dialog), global_builder);
+    g_signal_connect(G_OBJECT(stickers_button), "clicked",
+                     G_CALLBACK(on_stickers_button_clicked), stickers_popover);
 }
 
 void handle_edit_message(GtkButton *button, t_message *message) {

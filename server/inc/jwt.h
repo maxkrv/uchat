@@ -5,6 +5,7 @@
 #include "utils.h"
 #include <time.h>
 #include <openssl/sha.h>
+#include <openssl/evp.h>
 
 typedef struct {
     char *alg;

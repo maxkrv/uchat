@@ -18,7 +18,7 @@ LIBSQLITE3 = $(LIB_DIR)/sqlite3/libsqlite3.a
 TARGET = uchat_server
 
 INC_FILES := -I$(INC_DIR) -I$(dir $(LIBMX))/inc -I$(dir $(LIBMONGOOSE))/inc -I$(dir $(LIBCJSON))/inc -I$(dir $(LIBSQLITE3))/inc
-SRC_FILES := $(shell find $(SRC_DIR) -type f -name '*.c')
+SRC_FILES := $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/**/*.c) $(wildcard $(SRC_DIR)/**/**/*.c) $(wildcard $(SRC_DIR)/**/**/**/*.c)
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 LINKS := -L$(dir $(LIBMX)) -lmx -L$(dir $(LIBMONGOOSE)) -lmongoose -L$(dir $(LIBCJSON))  -lcjson -L$(dir $(LIBSQLITE3)) -lsqlite3  -lcrypto
 

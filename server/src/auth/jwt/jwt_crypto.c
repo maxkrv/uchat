@@ -34,11 +34,15 @@ char *mx_create_sha256_signature(char *input_string, char *secret_key) {
     if (!input_string) {
         return NULL;
     }
-
     unsigned char buf_output[SHA256_DIGEST_LENGTH];
     char *to_hash = mx_strjoin(input_string, secret_key);
+    const EVP_MD *md = EVP_sha256();
+    EVP_MD_CTX *mdctx = EVP_MD_CTX_new();
 
-    SHA256((unsigned char *)to_hash, strlen(to_hash), buf_output);
+    EVP_DigestInit_ex(mdctx, md, NULL);
+    EVP_DigestUpdate(mdctx, to_hash, strlen(to_hash));
+    EVP_DigestFinal_ex(mdctx, buf_output, NULL);
+    EVP_MD_CTX_free(mdctx);
     mx_strdel(&to_hash);
 
     return mx_base64_encode(buf_output, SHA256_DIGEST_LENGTH);

@@ -79,7 +79,7 @@
                     <property name="can-focus">False</property>
                     <property name="margin-left">5</property>
                     <property name="margin-right">5</property>
-                    <property name="pixbuf">images/icons/settings-icon.svg</property>
+                    <property name="pixbuf">images/icons/settings-icon.png</property>
                   </object>
                 </child>
                 <style>
@@ -111,7 +111,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="valign">center</property>
-                <property name="pixbuf">images/icons/plus-icon.svg</property>
+                <property name="pixbuf">images/icons/plus-icon.png</property>
               </object>
             </child>
             <style>
@@ -859,7 +859,7 @@
                     <property name="can-focus">False</property>
                     <property name="margin-left">5</property>
                     <property name="margin-right">5</property>
-                    <property name="pixbuf">images/icons/settings-icon.svg</property>
+                    <property name="pixbuf">images/icons/settings-icon.png</property>
                   </object>
                 </child>
                 <style>
@@ -1015,7 +1015,7 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">images/icons/reply-icon.svg</property>
+                <property name="pixbuf">images/icons/reply-icon.png</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1070,7 +1070,7 @@
                   <object class="GtkImage">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="pixbuf">images/icons/close-icon.svg</property>
+                    <property name="pixbuf">images/icons/close-icon.png</property>
                   </object>
                 </child>
               </object>
@@ -1101,7 +1101,7 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="pixbuf">images/icons/edit-icon.svg</property>
+                <property name="pixbuf">images/icons/edit-icon.png</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -1130,7 +1130,7 @@
                   <object class="GtkImage">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="pixbuf">images/icons/close-icon.svg</property>
+                    <property name="pixbuf">images/icons/close-icon.png</property>
                   </object>
                 </child>
               </object>
@@ -1168,7 +1168,7 @@
                   <object class="GtkImage">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="pixbuf">images/icons/close-icon.svg</property>
+                    <property name="pixbuf">images/icons/close-icon.png</property>
                   </object>
                 </child>
               </object>
@@ -1223,7 +1223,7 @@
                   <object class="GtkImage">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="pixbuf">images/icons/attach-icon.svg</property>
+                    <property name="pixbuf">images/icons/attach-icon.png</property>
                   </object>
                 </child>
                 <style>
@@ -1267,7 +1267,7 @@
                   <object class="GtkImage">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="pixbuf">images/icons/sticker-icon.svg</property>
+                    <property name="pixbuf">images/icons/sticker-icon.png</property>
                   </object>
                 </child>
                 <style>
@@ -1293,7 +1293,7 @@
                   <object class="GtkImage">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="pixbuf">images/icons/send-icon.svg</property>
+                    <property name="pixbuf">images/icons/send-icon.png</property>
                   </object>
                 </child>
                 <style>
@@ -1946,7 +1946,7 @@
                               <object class="GtkImage">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="pixbuf">images/icons/plus-icon.svg</property>
+                                <property name="pixbuf">images/icons/plus-icon.png</property>
                               </object>
                             </child>
                           </object>
@@ -2112,7 +2112,7 @@
                       <object class="GtkImage">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="pixbuf">images/icons/vertical-dots-icon.svg</property>
+                        <property name="pixbuf">images/icons/vertical-dots-icon.png</property>
                       </object>
                     </child>
                     <style>

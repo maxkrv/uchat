@@ -20,7 +20,7 @@ all: install
 server: install
 	@$(MAKE) -sC $(dir $(SERVER)) install
 	@$(MV) $(SERVER) ./$(TARGET_SERVER)
-	./$(TARGET_SERVER) --secret SECRET 
+	./$(TARGET_SERVER) 3000 --secret SECRET 
 client: install
 	@$(MAKE) -sC $(dir $(CLIENT))
 	@$(MV) $(CLIENT) ./$(TARGET_CLIENT)

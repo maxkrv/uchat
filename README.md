@@ -1,6 +1,6 @@
-# 🚀 Uchat - your ultimate chat application 🚀
+# 🚀 Cozy Chat - your ultimate chat application 🚀
 
-Welcome to Uchat, a powerful chat application built with C and SQLite.
+Welcome to Cozy Chat, a powerful chat application built with C and SQLite.
 
 ## 🛠️ Technologies Used 🛠️
 
@@ -25,7 +25,7 @@ Welcome to Uchat, a powerful chat application built with C and SQLite.
 
 ## 🚀 Getting Started 🚀
 
-To get started with Uchat, clone the repository and follow the instructions in the Makefile.
+To get started with Cozy Chat, clone the repository and follow the instructions in the Makefile.
 
 First of all you have to compile all static libs and repository code
 
@@ -59,7 +59,7 @@ There is 2 ways to do it:
 
 Project uses migration to save db state amoung developers, triggers to change updated_at data, foreign keys to ensure security of provided data
 
-Here is the schema of the Uchat database:
+Here is the schema of the Cozy Chat database:
 
 ![UChat Database Schema](assets/uchat-db.png)
 
@@ -67,7 +67,7 @@ Here is the schema of the Uchat database:
 
 Api is written on C using mongoose embeded framework.
 It provides RESTfull architecture and uses MVC architeture design.
-UChat provides comprehensive API documentation using OpenAPI and AsyncAPI specifications.
+Cozy Chat provides comprehensive API documentation using OpenAPI and AsyncAPI specifications.
 
 ![server-design-image](assets/server-request-flow.png)
 

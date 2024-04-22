@@ -20,6 +20,7 @@ int main(int argc, char *argv[]) {
         g_print("Error: %s\n", "Failed to load auth_window");
         return EXIT_FAILURE;
     }
+    gtk_window_set_title(GTK_WINDOW(global_window), "Cozy Chat");
 
     load_css(global_window, "client/static/styles/light.css");
     load_css(global_window, "client/static/styles/style.css");

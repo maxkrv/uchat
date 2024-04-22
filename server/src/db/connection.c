@@ -13,8 +13,8 @@ sqlite3 *mx_connect_to_database(const char *dbname) {
         exit(EXIT_FAILURE);
         return NULL;
     }
-    MG_INFO(("Connection to db established"));
-    MG_INFO(("DB path: %s", dbname));
+    printf("Connection to db established\n");
+    // MG_INFO(("DB path: %s", dbname));
 
     return db;
 }

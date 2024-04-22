@@ -37,7 +37,8 @@ static void on_close_reply_button_clicked(GtkButton *button) {
     (void)button;
 }
 
-static void on_close_image_preview_button_clicked(GtkButton *button, gpointer user_data) {
+static void on_close_image_preview_button_clicked(GtkButton *button,
+                                                  gpointer user_data) {
     GtkWidget *image_preview_box = GTK_WIDGET(user_data);
     gtk_widget_hide(image_preview_box);
     (void)button;
@@ -72,7 +73,8 @@ static void on_apply_button_clicked(GtkButton *button, gpointer user_data) {
 
         GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file(new_file_path, NULL);
         if (pixbuf != NULL) {
-            GdkPixbuf *scaled_pixbuf = gdk_pixbuf_scale_simple(pixbuf, 150, 150, GDK_INTERP_BILINEAR);
+            GdkPixbuf *scaled_pixbuf =
+                gdk_pixbuf_scale_simple(pixbuf, 150, 150, GDK_INTERP_BILINEAR);
             g_object_unref(pixbuf);
 
             GtkWidget *image_preview = GTK_WIDGET(
@@ -83,7 +85,7 @@ static void on_apply_button_clicked(GtkButton *button, gpointer user_data) {
 
             GtkWidget *image_preview_box = GTK_WIDGET(
                 gtk_builder_get_object(global_builder, "image_preview_box"));
-                
+
             gtk_widget_show(image_preview_box);
         }
     }
@@ -118,7 +120,8 @@ static void edit_message(t_message_create_dto *dto) {
 }
 
 static void submit(GtkButton *button) {
-    if ((!message || strlen(message) == 0 || message == NULL) && new_file_id == -1) {
+    if ((!message || strlen(message) == 0 || message == NULL) &&
+        new_file_id == -1) {
         return;
     }
 
@@ -162,7 +165,6 @@ static void submit(GtkButton *button) {
     message = NULL;
     edit_message_id = -1;
     reply_message_id = -1;
-    
 
     GtkWidget *scrolled_window = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "scrolled_chat_window"));
@@ -206,21 +208,24 @@ static void on_stickers_button_clicked(GtkWidget *widget, gpointer user_data) {
     GtkWidget *stickers_popover = GTK_WIDGET(user_data);
 
     for (int i = 1; i <= 9; i++) {
-        GtkWidget *sticker_button = GTK_WIDGET(
-            gtk_builder_get_object(global_builder, g_strdup_printf("sticker_button%d", i)));
+        GtkWidget *sticker_button = GTK_WIDGET(gtk_builder_get_object(
+            global_builder, g_strdup_printf("sticker_button%d", i)));
 
-        char *file_path = g_strdup_printf("./client/static/images/stickers/sticker%d.png", i);
+        char *file_path = g_strdup_printf(
+            "./client/static/images/stickers/sticker%d.png", i);
         GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file(file_path, NULL);
 
-        GdkPixbuf *scaled_pixbuf = gdk_pixbuf_scale_simple(
-            pixbuf, 70, 70, GDK_INTERP_BILINEAR);
+        GdkPixbuf *scaled_pixbuf =
+            gdk_pixbuf_scale_simple(pixbuf, 70, 70, GDK_INTERP_BILINEAR);
 
         GtkWidget *sticker = gtk_image_new_from_pixbuf(scaled_pixbuf);
 
         gtk_button_set_image(GTK_BUTTON(sticker_button), sticker);
 
-        g_object_set_data_full(G_OBJECT(sticker_button), "file_path", file_path, g_free);
-        g_signal_connect(sticker_button, "clicked", G_CALLBACK(on_sticker_clicked), NULL);
+        g_object_set_data_full(G_OBJECT(sticker_button), "file_path",
+                               file_path, g_free);
+        g_signal_connect(sticker_button, "clicked",
+                         G_CALLBACK(on_sticker_clicked), NULL);
     }
 
     gtk_popover_set_relative_to(GTK_POPOVER(stickers_popover), widget);
@@ -242,10 +247,10 @@ void init_message_form(int chat_id) {
         gtk_builder_get_object(global_builder, "close_reply_button"));
     GtkWidget *file_chooser_button = GTK_WIDGET(
         gtk_builder_get_object(global_builder, "file_chooser_button"));
-    GtkWidget *stickers_button = GTK_WIDGET(
-        gtk_builder_get_object(global_builder, "stickers_button"));
-    GtkWidget *stickers_popover = GTK_WIDGET(
-        gtk_builder_get_object(global_builder, "stickers_popover"));
+    GtkWidget *stickers_button =
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "stickers_button"));
+    GtkWidget *stickers_popover =
+        GTK_WIDGET(gtk_builder_get_object(global_builder, "stickers_popover"));
 
     gtk_entry_set_text(GTK_ENTRY(message_entry), "");
     g_signal_connect(G_OBJECT(message_entry), "changed",
@@ -309,16 +314,16 @@ void handle_reply_message(GtkButton *button, t_message *message) {
 
 void show_file_chooser_dialog(GtkWidget *button, gpointer user_data) {
     GtkBuilder *builder = GTK_BUILDER(user_data);
-    GtkWidget *dialog = GTK_WIDGET(
-        gtk_builder_get_object(builder, "file_chooser_dialog"));
-    GtkWidget *cancel_button = GTK_WIDGET(
-        gtk_builder_get_object(builder, "file_chooser_cancel"));
-    GtkWidget *apply_button = GTK_WIDGET(
-        gtk_builder_get_object(builder, "file_chooser_apply"));
+    GtkWidget *dialog =
+        GTK_WIDGET(gtk_builder_get_object(builder, "file_chooser_dialog"));
+    GtkWidget *cancel_button =
+        GTK_WIDGET(gtk_builder_get_object(builder, "file_chooser_cancel"));
+    GtkWidget *apply_button =
+        GTK_WIDGET(gtk_builder_get_object(builder, "file_chooser_apply"));
     GtkWidget *close_image_preview_button = GTK_WIDGET(
         gtk_builder_get_object(builder, "close_image_preview_button"));
-    GtkWidget *image_preview_box = GTK_WIDGET(
-        gtk_builder_get_object(builder, "image_preview_box"));
+    GtkWidget *image_preview_box =
+        GTK_WIDGET(gtk_builder_get_object(builder, "image_preview_box"));
 
     gtk_window_set_transient_for(
         GTK_WINDOW(dialog),
@@ -330,7 +335,8 @@ void show_file_chooser_dialog(GtkWidget *button, gpointer user_data) {
     g_signal_connect(apply_button, "clicked",
                      G_CALLBACK(on_apply_button_clicked), dialog);
     g_signal_connect(close_image_preview_button, "clicked",
-                     G_CALLBACK(on_close_image_preview_button_clicked), image_preview_box);
+                     G_CALLBACK(on_close_image_preview_button_clicked),
+                     image_preview_box);
 
     gint response = gtk_dialog_run(GTK_DIALOG(dialog));
 

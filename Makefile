@@ -24,7 +24,7 @@ server: install
 client: install
 	@$(MAKE) -sC $(dir $(CLIENT))
 	@$(MV) $(CLIENT) ./$(TARGET_CLIENT)
-	./$(TARGET_CLIENT)
+	./$(TARGET_CLIENT) localhost 3000
 
 install: $(LIBMX) $(LIBMONGOOSE) $(LIBCJSON) $(LIBSQLITE3) $(TARGET_SERVER) $(TARGET_CLIENT)
 

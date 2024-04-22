@@ -27,22 +27,13 @@ static void on_description_entry_changed(GtkEntry *entry) {
     new_description = g_strdup(text);
 }
 
-char *find_format(const char *s, int c) {
-    while (*s != '\0') {
-        if (*s == c)
-            return (char *)s;
-        s++;
-    }
-    return NULL;
-}
-
 const char *get_file_extension(const char *file_path) {
-    const char *with_dot = (find_format(file_path, '.'));
-
-    if (with_dot != NULL && with_dot != file_path) {
-        return with_dot + 1;
+    const char *extension = strrchr(file_path, '.');
+    if (extension != NULL) {
+        return extension + 1;
     }
-    return "";
+
+    return NULL;
 }
 
 static void on_avatar_button_clicked(GtkFileChooserButton *button) {
